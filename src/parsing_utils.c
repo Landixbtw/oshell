@@ -15,31 +15,37 @@ char **parse(char *input)
 {
 
     size_t num_tokens = 0;
-    while (input != NULL)
-    {
-        if (isblank(input))
-        {
-            num_tokens++;
-        }
-    }
+    // FIX: This crashes the program
+    
+    // while (input != NULL)
+    // {
+        // printf("if statement crashes the program\n");
+        // if (isblank(input))
+        // {
+        //     num_tokens++;
+        //     printf("%ld", num_tokens);
+        // }
+    // }
 
     // pointer to a pointer -- represents an array of strings 
     char **args = malloc(sizeof(char *) * num_tokens);
     
     int i = 0;
 
+    // FIX: This only prints the first token
+
     // split the input string everytime there is a space 
     char *token = strtok(input, " ");
     while (token != NULL)
     {
+        // printf("%s", token);
         // increments post storing the token is args
         args[i++] = token;
         token = strtok(NULL, " ");
     }
     args[i] = NULL; 
 
-    // free(args);
-
+    // NOTE: args should be freed outside of this function
     return args;
 }
 

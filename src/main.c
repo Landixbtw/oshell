@@ -50,7 +50,8 @@ int main(void){
             }
         }
     
-        execute_command(input, );
+        char **args = parse(input);
+        // execute_command(input, args);
 
         free(input);
     }
