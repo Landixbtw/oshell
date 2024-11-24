@@ -13,23 +13,28 @@
 
 char **parse(char *input)
 {
-
     size_t num_tokens = 0;
-    // FIX: This crashes the program
     
-    // while (input != NULL)
-    // {
-        // printf("if statement crashes the program\n");
-        // if (isblank(input))
-        // {
-        //     num_tokens++;
-        //     printf("%ld", num_tokens);
-        // }
-    // }
-
+    // FIX: THIS IS A STEAMING PILE OF SHIT. INFINITE LOOP ...
+    for (int i = 0; i < strlen(input); i++) 
+    {
+        while (input[i] != '\0' || input[i] != '\n') 
+        {
+            if (isblank(input[i]))
+            {
+                num_tokens++;
+                printf("%ld", num_tokens);
+            }
+        }
+    }
+    
     // pointer to a pointer -- represents an array of strings 
     char **args = malloc(sizeof(char *) * num_tokens);
-    
+    if (args == NULL) {
+        fprintf(stderr, "Failed to allocate enough memory for **args"); 
+        exit(EXIT_FAILURE);
+    }
+
     int i = 0;
 
     // FIX: This only prints the first token
@@ -69,8 +74,6 @@ void execute_command(char *input, char **args) {
         // Execute as a system command
         char **parsed = parse(input);
         
-
-
         pid_t pid = fork();
         if (pid == 0)
         {

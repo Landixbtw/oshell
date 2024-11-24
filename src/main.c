@@ -9,7 +9,7 @@
 
 
 int main(void){
-    show_usage();
+    // show_usage();
     for(;;) {
         // everything happens in here
         // if something happens a child process will be created with fork()
@@ -25,6 +25,7 @@ int main(void){
         char *input = NULL;
 
         printf("> ");
+        // TODO: Maybe change input method or   
         if ((chars_read = getline(&input, &size, stdin)) == EOF)
         {
             perror("getline() failed:");
