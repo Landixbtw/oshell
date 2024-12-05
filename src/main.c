@@ -20,25 +20,46 @@ int main(void){
         // parse it
         // execute it
 
-        size_t size = 0;
-        ssize_t chars_read = 0;
-        char *input = NULL;
+
+        char *input = malloc(1025);
+        char buffer[sizeof(input)] = "\n";
+
+        if(!input) {
+            perror("malloc() failed");
+            free(input);
+        }
+
+        // input[0] = '\0';
 
         printf("> ");
-        // TODO: Maybe change input method or   
-        if ((chars_read = getline(&input, &size, stdin)) == EOF)
-        {
-            perror("getline() failed:");
-            exit(EXIT_FAILURE);
-        }
 
-        if (chars_read < 0)
-        {
-            printf("getline() failed. status:");
-            free(input);
-            return 1;
-        }
 
+
+        while(fgets(input, sizeof(input), stdin))
+        {
+            /* Checks if the last char in buffer is newline */
+            size_t len = strlen(buffer);
+
+            // resize memory for input 
+            // we need to add one for null terminator
+            size_t new_size = strlen(input) + len + 1;
+            char *new_input = realloc(input, new_size);
+
+            if(!new_input) {
+                perror("realloc() failed");
+                free(input);
+                free(new_input);
+                return 1;
+            }
+
+            input = new_input;
+
+            // append buffer to input
+            strcat(input, buffer);
+
+            // if the buffer ends with a newline we break
+            if (buffer[len - 1] == '\n') free(new_input); break;
+        }
 
         const char *EXIT_OSHELL_KEYWORD = "exit\n";
         char *command = strtok(input, " ");
@@ -50,10 +71,11 @@ int main(void){
                 exit(EXIT_SUCCESS);
             }
         }
-    
+
         char **args = parse(input);
         // execute_command(input, args);
 
+        // free(args);
         free(input);
     }
     return 0;

@@ -1,3 +1,4 @@
+#include <complex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,39 +12,38 @@
 
 // TODO: Set errno values on error
 
+
+// TODO: Is the newline char passed on to input ?
+
 char **parse(char *input)
 {
     size_t num_tokens = 0;
-    
-    // FIX: THIS IS A STEAMING PILE OF SHIT. INFINITE LOOP ...
+
     for (int i = 0; i < strlen(input); i++) 
     {
-        while (input[i] != '\0' || input[i] != '\n') 
+        if (isblank(input[i]))
         {
-            if (isblank(input[i]))
-            {
-                num_tokens++;
-                printf("%ld", num_tokens);
-            }
+            printf("input[%d] is blank", i);
+            num_tokens++;
+            printf("%ld", num_tokens);
         }
     }
-    
+
     // pointer to a pointer -- represents an array of strings 
     char **args = malloc(sizeof(char *) * num_tokens);
     if (args == NULL) {
-        fprintf(stderr, "Failed to allocate enough memory for **args"); 
+        perror("malloc(): **args"); 
         exit(EXIT_FAILURE);
     }
 
     int i = 0;
 
-    // FIX: This only prints the first token
 
     // split the input string everytime there is a space 
     char *token = strtok(input, " ");
     while (token != NULL)
     {
-        // printf("%s", token);
+        printf("%s", token);
         // increments post storing the token is args
         args[i++] = token;
         token = strtok(NULL, " ");
@@ -73,7 +73,7 @@ void execute_command(char *input, char **args) {
     } else {
         // Execute as a system command
         char **parsed = parse(input);
-        
+
         pid_t pid = fork();
         if (pid == 0)
         {
