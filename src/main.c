@@ -62,7 +62,7 @@ int main(void){
 
         // is_valid_command(input);
         char **args = parse(input);
-        execute_command(input, args);
+        execute_command(args);
 
         // free(args);
         free(input);

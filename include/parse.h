@@ -7,10 +7,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-
-
 char **parse(char *input);
 bool is_valid_command(const char *command);
-void execute_command(char *input, char **args);
+int execute_command(char **args);
 
 #endif

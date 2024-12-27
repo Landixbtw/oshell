@@ -9,49 +9,51 @@
 #include "../../include/utils.h"
 
 
-void execute_command(char *input, char **args) 
+int execute_command(char **args) 
 {
-    char *command = strtok(input, " ");
-    // Handle built-in command
-    if (strcmp(command, "exit\n") == 0) 
+    char *command = strtok(args[0], " ");
+
+    // Handle built-in args[0]
+    if (strcmp(args[0], "exit\n") == 0) 
     {
         printf("Exiting Shell...\n");
-        exit(EXIT_SUCCESS);
+        return 0;
     }
-    if (strcmp(command, "help\n") == 0) 
+    if (strcmp(args[0], "help\n") == 0) 
     {
         show_usage();
     }
 
+    // FIX: These have to be desinged more compact this is basically the same code but with \n this is stupid
+
     // cd -> CD function
-    if (args[0] != NULL) 
+    if (args[0] != NULL && args[1] != NULL && strcmp("cd", command) == 0) 
     {
-        printf("command arg: %s \n" ,args[1]);
-        if (args[1] != NULL && strcmp(command, "cd"))
-        {
-            system("pwd");
-            int status = change_directory(args[1]); // the function handles sets errno value
-            if (status != 0) perror("change_directory() Error"); exit(EXIT_FAILURE);
-            system("pwd");
-            exit(EXIT_SUCCESS);
-        } else if (args[1] == NULL){
-            printf("this is triggered when there is no arg given to cd\n");
-            // navigate to home dir with chdir 
-            exit(EXIT_SUCCESS);
-        }
+        system("pwd");
+        int status = change_directory(args[1]); // the function handles sets errno value
+        if (status != 0) perror("change_directory() Error"); return 1;
+        system("pwd");
+        return 0;
+    } else if (args[0] != NULL && args[1] == NULL && strcmp("cd\n", command) == 0) {
+        printf("Navigating to home dir.\n");
+        // handle no cd input --> to home dir 
+        return 0;
     }
 
     // kill -> kill function 
-    // if (args[0] != NULL) {
-    //     if (strcmp(command, "kill")) {
-    //         int status = kill_by_name(); // the function handles sets errno value
-    //         if (status != 0) perror("kill_by_name() Error");
-    //     }
-    // }
+    if (args[0] != NULL && args[1] != NULL && strcmp("kill", command) == 0) {
+        int status = kill_by_name(args[1]); // the function handles sets errno value
+        if (status != 0) perror("kill_by_name() Error");
+        return 0;
+    } else if (args[1] == NULL && strcmp("kill\n", command) == 0) {
+        printf("Please give a process to kill.\n");
+        return 1;
+    }
+
     // pipe -> something weird
 
-// Execute as a system command
-    char **parsed = parse(input);
+// Execute as a system args[0]
+    char **parsed = parse(args[0]);
 
     pid_t pid = fork();
     if (pid == 0)
@@ -60,8 +62,7 @@ void execute_command(char *input, char **args)
         waitpid(pid, NULL, 0);
     } else if (pid > 0){
         // Parent
-        // args[0] is the command, the rest is the arguments 
-        printf("command: %s  args: %s\n", args[0], args[1]);
+        // args[0] is the args[0], the rest is the arguments 
         // int res = execvp(args[0], args);
         // if (res == -1) perror("execvp()"); exit(EXIT_FAILURE);
     } else {
@@ -71,5 +72,6 @@ void execute_command(char *input, char **args)
         exit(EXIT_FAILURE);
     }
     free(parsed);
+    return 0;
 }
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../include/utils.h"
 #include <unistd.h>
-
+#include <stdlib.h>
 
 void show_usage()
 {
@@ -21,7 +21,8 @@ int change_directory(const char *directory)
         perror("Could not change directory"); 
         return 1;
     } else {
-        printf("succesfully changed to %s\n", directory);
+        printf("succesfully changed directory to %s\n", directory);
+        system("pwd");
     }
     // set errno for error x 
     return 0;
@@ -29,7 +30,7 @@ int change_directory(const char *directory)
 
 int kill_by_name(const char *process_name)
 {
-    printf("kill process with name of xxx\n");
+    printf("killed %s\n", process_name);
     // set errno for error x 
     return 0;
 }
