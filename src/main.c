@@ -3,13 +3,10 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 #include "../include/utils.h"
 #include "../include/parse.h"
 
-
 int main(void){
-    // show_usage();
     for(;;) {
         // everything happens in here
         // if something happens a child process will be created with fork()
@@ -29,11 +26,13 @@ int main(void){
             free(input);
         }
 
-        // input[0] = '\0';
+        // FIX: Why is > printed if there are multiple lines of output ?, how can this be limited to one
 
-        printf("> ");
+        fprintf(stdout, "> ");
 
-
+        // FIX: More error handling ie 
+        // buffer overflow
+        // is the while loop for fgets needed ? ie will there ever be more then one \n in a command
 
         while(fgets(input, sizeof(input), stdin))
         {
@@ -48,32 +47,22 @@ int main(void){
             if(!new_input) {
                 perror("realloc() failed");
                 free(input);
-                free(new_input);
                 return 1;
             }
-
             input = new_input;
 
             // append buffer to input
-            strcat(input, buffer);
+            // strcat(input, buffer);
 
             // if the buffer ends with a newline we break
-            if (buffer[len - 1] == '\n') free(new_input); break;
-        }
-
-        const char *EXIT_OSHELL_KEYWORD = "exit\n";
-        char *command = strtok(input, " ");
-        if (is_valid_command(command)) {
-            // if user input is exit EXIT
-            if (strncmp(input, EXIT_OSHELL_KEYWORD, strlen(input)) == 0)
-            {
-                printf("exiting oshell ...\n");
-                exit(EXIT_SUCCESS);
+            if (buffer[len - 1] == '\n') { 
+                break;
             }
         }
 
+        // is_valid_command(input);
         char **args = parse(input);
-        // execute_command(input, args);
+        execute_command(input, args);
 
         // free(args);
         free(input);

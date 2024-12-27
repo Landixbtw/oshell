@@ -1,6 +1,4 @@
 # oshell
-
-
 Todo
 
 Key features
@@ -15,4 +13,4 @@ Key features
 
 
 MVP
-- read a command parse it and execute it 
+- read a system command parse it and execute it 
