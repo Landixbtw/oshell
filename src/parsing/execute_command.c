@@ -30,7 +30,6 @@ int execute_command(char **args)
     // cd -> CD function
     if (args[0] != NULL && args[1] != NULL && strcmp("cd", command) == 0) 
     {
-        // FIX: args[1] for Dokumente only gives Doku ????
         int status = change_directory(args[1]);
         if (status != 0) {
             perror("change_directory() Error");
@@ -55,32 +54,26 @@ int execute_command(char **args)
 
     // pipe -> | function
 
-// Execute as a system args[0]
-    char **parsed = parse(args[0]);
-
     pid_t pid = fork();
     if (pid == 0)
     {
         // child
         waitpid(pid, NULL, 0);
-    // } else if (pid > 0){
-    //     // Parent
-    //     // args[0] is the args[0], the rest is the arguments 
-    //     // FIX: This is not working, 
-    //
-    //     int res = execvp(args[0], args);
-    //     if (res == -1) {
-    //         perror("execvp() failed");
-    //         free(parsed);
-    //         exit(EXIT_FAILURE);
-    //     }
-    // } else {
-    //     fprintf(stderr, "fork() failed.\n");
-    //     // set errno
-    //     free(parsed);
-    //     exit(EXIT_FAILURE);
+    } else if (pid > 0){
+        // Parent
+        // args[0] is the args[0], the rest is the arguments 
+        // FIX: This is not working, 
+
+        int res = execvp(args[0], args);
+        if (res == -1) {
+            perror("execvp() failed");
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        fprintf(stderr, "fork() failed.\n");
+        // set errno
+        exit(EXIT_FAILURE);
     }
-    free(parsed);
     return 0;
 }
 

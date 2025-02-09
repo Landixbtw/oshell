@@ -44,6 +44,8 @@ int kill_process(const char *process_name_or_id)
     return 0;
 }
 
+
+// this reads the input
 char *oshell_read_line()
 {
     char *line = NULL;
@@ -65,19 +67,13 @@ char *oshell_read_line()
 
 void oshell_loop()
 {
-    char **args = parse(oshell_read_line());
+    char *user_input = oshell_read_line();
+    char **args = parse(user_input);
+
     // TODO: what to do if command not valid system command? 
-    if (is_valid_command(args) == false) exit(EXIT_FAILURE);
-    // FIX: Prints only first four characters of the command arguments.
-    // executes change_directory, with first four letters of argumet and 
-    // then after that prints the next four letters of the argument
-    // even only when just printing the input
+    // if (is_valid_command(args) == false) exit(EXIT_FAILURE);
 
-    for (int i = 0; i < sizeof(args); i++) {
-        printf("args[%i]: %s\n", i ,args[i]);
-    }
     execute_command(args);
-
     free(args);
 }
 
