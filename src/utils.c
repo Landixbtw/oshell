@@ -2,6 +2,9 @@
 #include "../include/utils.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <signal.h>
+
+#include "../include/parse.h"
 
 void show_usage()
 {
@@ -14,23 +17,67 @@ void show_usage()
 
 int change_directory(const char *directory)
 {
+    printf("changing to %s\n", directory);
     int ret;
     ret = chdir(directory);
-    printf("changing to %s\n", directory);
     if (ret == -1) {
-        perror("Could not change directory"); 
         return 1;
     } else {
+        char cwd[1024];
+        getcwd(cwd, sizeof(cwd));
         printf("succesfully changed directory to %s\n", directory);
-        system("pwd");
+        printf("%s", cwd);
     }
     // set errno for error x 
     return 0;
 }
 
-int kill_by_name(const char *process_name)
+int kill_process(const char *process_name_or_id)
 {
-    printf("killed %s\n", process_name);
+    // kill(2)
+    // kill(__pid_t pid, int sig)
+    // need to check if input is pid or process name
+    // need to get the pid from the name
+    // pass the pid to the kill function, with signal for kill (is 9)?
+    printf("killed %s\n", process_name_or_id);
     // set errno for error x 
     return 0;
 }
+
+char *oshell_read_line()
+{
+    char *line = NULL;
+    ssize_t bufsize = 0;
+
+    if(getline(&line, &bufsize, stdin) == -1)
+    {
+        if(feof(stdin))
+        {
+            // EOF
+            exit(EXIT_SUCCESS);
+        } else {
+            perror("oshell: readline");
+            exit(EXIT_FAILURE);
+        }
+    }
+    return line;
+}
+
+void oshell_loop()
+{
+    char **args = parse(oshell_read_line());
+    // TODO: what to do if command not valid system command? 
+    if (is_valid_command(args) == false) exit(EXIT_FAILURE);
+    // FIX: Prints only first four characters of the command arguments.
+    // executes change_directory, with first four letters of argumet and 
+    // then after that prints the next four letters of the argument
+    // even only when just printing the input
+
+    for (int i = 0; i < sizeof(args); i++) {
+        printf("args[%i]: %s\n", i ,args[i]);
+    }
+    execute_command(args);
+
+    free(args);
+}
+
