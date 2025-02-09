@@ -64,6 +64,7 @@ int execute_command(char **args)
         // args[0] is the args[0], the rest is the arguments 
         // FIX: This is not working, 
 
+        printf("command: %s %s %s\n", args[0], args[1], args[2]);
         int res = execvp(args[0], args);
         if (res == -1) {
             perror("execvp() failed");

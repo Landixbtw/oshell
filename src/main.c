@@ -25,13 +25,11 @@ int main(void){
 
         // FIX: Why is > printed if there are multiple lines of output ?, how can this be limited to one
 
+        // TODO: only print this, when there is actuall input to be made, dont print this everytime
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
         fprintf(stdout, "%s > ", cwd);
         fflush(stdout);
-        // FIX: More error handling ie 
-        // buffer overflow
-        // is the while loop for fgets needed ? ie will there ever be more then one \n in a command
 
         oshell_loop();
     }

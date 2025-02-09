@@ -41,16 +41,12 @@ char **parse(char *input)
 
     // pointer to a pointer -- represents an array of strings 
     char **args = malloc(sizeof(char *) * num_tokens); // WARN: ADDRESS IS 0 BYTES AFTER A BLOCK OF SIZE 8 was ALLOCD
-    if (args == NULL) {
-        perror("malloc(): **args"); 
-        exit(EXIT_FAILURE);
-    }
+    // args should never be NULL
+    assert(args != NULL);
 
     int i = 0;
 
     #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
-
-
 
     // split the input string everytime there is a space 
     char *token = strtok(input, " ");

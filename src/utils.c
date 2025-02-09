@@ -72,7 +72,6 @@ void oshell_loop()
 
     // TODO: what to do if command not valid system command? 
     // if (is_valid_command(args) == false) exit(EXIT_FAILURE);
-
     execute_command(args);
     free(args);
 }
