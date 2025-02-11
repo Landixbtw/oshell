@@ -23,12 +23,12 @@ int main(void){
         // parse it
         // execute it
 
-        // FIX: Why is > printed if there are multiple lines of output ?, how can this be limited to one
 
-        // TODO: only print this, when there is actuall input to be made, dont print this everytime
+        // TODO: infront of the wd should be user@machine e.g ole@tux
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
-        fprintf(stdout, "%s > ", cwd);
+        printf("user@machine:\n");
+        printf("  %s > ", cwd);
         fflush(stdout);
 
         oshell_loop();

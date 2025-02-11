@@ -1,9 +1,11 @@
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <complex.h>
+#include <assert.h>
 
 #include "../../include/parse.h"
 #include "../../include/utils.h"
@@ -27,7 +29,7 @@ int execute_command(char **args)
 
     // FIX: These have to be desinged more compact this is basically the same code but with \n this is stupid
 
-    // cd -> CD function
+    // cd -> CD function - utils.c
     if (args[0] != NULL && args[1] != NULL && strcmp("cd", command) == 0) 
     {
         int status = change_directory(args[1]);
@@ -41,7 +43,7 @@ int execute_command(char **args)
         return 0;
     }
 
-    // kill -> kill function 
+    // kill -> kill function - utils.c
     if (args[0] != NULL && args[1] != NULL && strcmp("kill", command) == 0) {
         int status = kill_process(args[1]); // the function handles sets errno value
         if (status != 0) perror("kill_by_name() Error");
@@ -54,27 +56,44 @@ int execute_command(char **args)
 
     // pipe -> | function
 
-    pid_t pid = fork();
-    if (pid == 0)
-    {
-        // child
-        waitpid(pid, NULL, 0);
-    } else if (pid > 0){
-        // Parent
-        // args[0] is the args[0], the rest is the arguments 
-        // FIX: This is not working, 
+    pid_t pid;
+    int status;
 
+    // FIX: there is always one letter missing
+
+    size_t scmd_len = strlen("usr/bin/") + strlen(args[0]) + 1;
+    printf("scmd_len: %ld\n", scmd_len); // prints 11
+    char *scmd = malloc(scmd_len);
+    assert(scmd);
+    snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
+    printf("scmd length: %ld\n", strlen(scmd)); // prints 10
+    printf("command: %s\n", scmd);
+
+    if ((pid = fork()) < 0)
+        perror("oshell: fork() error");
+    else if (pid == 0) {
+        //child 
         printf("command: %s %s %s\n", args[0], args[1], args[2]);
-        int res = execvp(args[0], args);
+        int res = execv(scmd, args);
         if (res == -1) {
-            perror("execvp() failed");
+            perror("execv() failed");
             exit(EXIT_FAILURE);
         }
-    } else {
-        fprintf(stderr, "fork() failed.\n");
-        // set errno
-        exit(EXIT_FAILURE);
+        sleep(5);
+        exit(1);
     }
+    else do {
+        if ((pid = waitpid(pid, &status, WNOHANG)) == -1)
+            perror("oshell: waitpid() error");
+        else if (pid == 0) {
+            printf("child is still running.\n");
+            sleep(1);
+        } else {
+            if (WIFEXITED(status))
+            printf("child exited with status of %d\n", WEXITSTATUS(status));
+            else puts("child did not exit succesfully");
+        }
+   } while (pid == 0);
     return 0;
 }
 

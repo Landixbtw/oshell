@@ -13,7 +13,9 @@ executable(
    'oshell', 
 ['src/main.c', 
     'src/utils.c',
-    'src/parsing/parsing.c', 'src/parsing/execute_command.c', 'src/parsing/validate_command.c'
+    'src/parsing/parsing.c', 'src/parsing/execute_command.c', 
+    'src/parsing/input_redirection.c', 'src/parsing/output_redirection.c',
+    'src/parsing/piping.c'
 
   ],
 include_directories: inc_dir,
