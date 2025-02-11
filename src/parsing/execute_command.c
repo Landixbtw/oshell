@@ -59,14 +59,10 @@ int execute_command(char **args)
     pid_t pid;
     int status;
 
-    // FIX: there is always one letter missing
-
-    size_t scmd_len = strlen("usr/bin/") + strlen(args[0]) + 1;
-    printf("scmd_len: %ld\n", scmd_len); // prints 11
+    size_t scmd_len = strlen("/usr/bin/") + strlen(args[0]) + 1;
     char *scmd = malloc(scmd_len);
     assert(scmd);
     snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
-    printf("scmd length: %ld\n", strlen(scmd)); // prints 10
     printf("command: %s\n", scmd);
 
     if ((pid = fork()) < 0)
@@ -86,11 +82,10 @@ int execute_command(char **args)
         if ((pid = waitpid(pid, &status, WNOHANG)) == -1)
             perror("oshell: waitpid() error");
         else if (pid == 0) {
-            printf("child is still running.\n");
             sleep(1);
         } else {
             if (WIFEXITED(status))
-            printf("child exited with status of %d\n", WEXITSTATUS(status));
+                printf("child exited with status of %d\n", WEXITSTATUS(status));
             else puts("child did not exit succesfully");
         }
    } while (pid == 0);

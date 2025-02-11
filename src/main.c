@@ -12,7 +12,6 @@
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 
 
-
 int main(void){
     for(;;) {
         // everything happens in here
