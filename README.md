@@ -13,4 +13,7 @@ Key features
 
 
 MVP
-- read a system command parse it and execute it 
+- read a system command parse it and execute it
+
+Maybe some good stuff in here.  
+https://pdos.csail.mit.edu/6.828/2018/labguide.html
