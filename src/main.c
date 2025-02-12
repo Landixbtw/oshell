@@ -14,15 +14,6 @@
 
 int main(void){
     for(;;) {
-        // everything happens in here
-        // if something happens a child process will be created with fork()
-        //
-        // for the MVP
-        // get command 
-        // parse it
-        // execute it
-
-
         // TODO: infront of the wd should be user@machine e.g ole@tux
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));

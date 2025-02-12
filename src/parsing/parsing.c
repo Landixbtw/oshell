@@ -40,7 +40,7 @@ char **parse(char *input)
     }
 
     // pointer to a pointer -- represents an array of strings 
-    char **args = malloc(sizeof(char *) * num_tokens); // WARN: ADDRESS IS 0 BYTES AFTER A BLOCK OF SIZE 8 was ALLOCD
+    char **args = malloc(sizeof(char *) * (num_tokens + 1));
     // args should never be NULL
     assert(args != NULL);
 
@@ -60,7 +60,7 @@ char **parse(char *input)
     }while (token != NULL);
 
     // go till char is NULL
-    while(args[i] != NULL)
+    while(args[i] != NULL) // FIX: Invalid read size of 8 
     {
         i++;
     }

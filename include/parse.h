@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 char **parse(char *input);
-bool is_valid_command(char **command);
 int execute_command(char **args);
+char *input_redirection(const char *filename);
 
 #endif

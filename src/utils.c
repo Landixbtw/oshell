@@ -9,7 +9,7 @@
 void show_usage()
 {
     printf("oshell usage: \n"
-        "\t this is just a basic shell, just not as feature rich as zsh or bash.\n"
+        "\nthis is just a basic shell, just not as feature rich as zsh or bash.\n"
         "\nexit: will exit the shell\n"
         "help: will print this menu\n"
     "\n");
@@ -25,7 +25,6 @@ int change_directory(const char *directory)
     } else {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
-        printf("succesfully changed directory to %s\n", directory);
         printf("%s", cwd);
     }
     // set errno for error x 
@@ -70,8 +69,6 @@ void oshell_loop()
     char *user_input = oshell_read_line();
     char **args = parse(user_input);
 
-    // TODO: what to do if command not valid system command? 
-    // if (is_valid_command(args) == false) exit(EXIT_FAILURE);
     execute_command(args);
     free(args);
 }
