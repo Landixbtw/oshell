@@ -45,6 +45,7 @@ char **parse(char *input)
     // pointer to a pointer -- represents an array of strings 
     char **args = malloc(sizeof(char *) * strlen(input));
     // args should never be NULL
+
     assert(args != NULL);
 
     // split the input string everytime there is a space 

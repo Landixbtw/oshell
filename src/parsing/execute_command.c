@@ -6,6 +6,9 @@
 #include <sys/wait.h>
 #include <complex.h>
 #include <assert.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 
 #include "../../include/parse.h"
 #include "../../include/utils.h"
@@ -26,6 +29,9 @@ int execute_command(char **args)
         show_usage();
         return 0;
     }
+
+    if (command == NULL) return 1;
+
 
     // FIX: These have to be desinged more compact this is basically the same code but with \n this is stupid
 
@@ -60,10 +66,35 @@ int execute_command(char **args)
     // pipe -> | function
 
     // NOTE: var assinged input_redirection has to be freed
-    
-    // input redirection -> < function - input_redirection.c
+
+    // TODO: Programm exits after sort < xxx
+
+    /*
+     * input redirection -> < function
+     * this function works directly with stdin, and changes the stdin, to the 
+     * file content the user wants to redirect. It basically duplicates the 
+     * file content into stdin, 'replacing' the old stdin,
+     * */
     if (args[0] != NULL && args[1] != NULL && args[2] != NULL && strcmp("<", args[1]) == 0) {
-        args[1] = input_redirection(args[2]);
+        char *filename = args[2];
+        FILE        *file = fopen(filename, "r");
+
+        assert(file != NULL);
+
+        if (feof(file) || ferror(file)) {
+            perror("oshell: fread() failed");
+            exit(EXIT_FAILURE);
+        }
+
+        // open filebased pipeline channel for file 'filename' in read only
+        size_t fd = open(filename, O_RDONLY);
+        assert(fd != 0); // 0 = stdin | 1 = stdout | 2 = stderr
+
+        close(0); // we close stdin 
+        dup(fd); // we duplicate fd, into stdin
+        close(fd); // and close the fd again.
+
+        args[1] = NULL;
     }
 
     pid_t pid = 0;
@@ -77,7 +108,7 @@ int execute_command(char **args)
         perror("oshell: fork() error");
     else if (pid == 0) {
         //child 
-        printf("command: %s %s %s ", args[0], args[1], args[2]);
+        fprintf(stdout, "command: %s %s %s ", args[0], args[1], args[2]); // WARN: this is not printed
         int res = execv(scmd, args);
         if (res == -1) {
             perror("execv() failed");

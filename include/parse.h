@@ -9,6 +9,5 @@
 
 char **parse(char *input);
 int execute_command(char **args);
-char *input_redirection(const char *filename);
 
 #endif

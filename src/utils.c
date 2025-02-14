@@ -2,16 +2,15 @@
 #include "../include/utils.h"
 #include <unistd.h>
 #include <stdlib.h>
-#include <signal.h>
 
 #include "../include/parse.h"
 
 void show_usage()
 {
     printf("oshell usage: \n"
-        "\nthis is just a basic shell, just not as feature rich as zsh or bash.\n"
-        "\nexit: will exit the shell\n"
-        "help: will print this menu\n"
+        "\tthis is just a basic shell, I made for fun.\n"
+        "\n\texit: will exit the shell\n"
+        "\thelp: will print this menu\n"
     "\n");
 }
 
@@ -48,7 +47,7 @@ int kill_process(const char *process_name_or_id)
 char *oshell_read_line()
 {
     char *line = NULL;
-    ssize_t bufsize = 0;
+    size_t bufsize = 0;
 
     if(getline(&line, &bufsize, stdin) == -1)
     {

@@ -15,14 +15,15 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include <ctype.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 
 #include "../../include/parse.h"
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
-char *input_redirection(const char *filename)
+void input_redirection(const char *filename)
 {
     // we want to open the file, read it, take out all whats in it. and execute that
     FILE        *file = fopen(filename, "r");
@@ -49,34 +50,40 @@ char *input_redirection(const char *filename)
     // NOTE: I think this is reading past the buffer, it just repeats itself
     // https://imgur.com/a/GBUTdFs
 
-    // this should only add numbers to command no newlines, but there are still newlines
 
-    // PERF: do we even need ret
-    int ret = 0;
-    while((ret = fread(buffer, sizeof(*buffer), ARRAY_SIZE(buffer), file)) != 0)
-    {
-        size_t i = 0;
-        size_t cmd_pos = 0;
-        do {
-            if (buffer[i] == '\n') { 
-                buffer[i] += ' ';
-            }
-            printf("buffer[%ld]: %c ", i ,buffer[i]);
-            // strcat requires a null terminated string
-                if(i == ret) {
-                    buffer[strlen(buffer) - 1] = '\0';
-                    printf("buffer[%ld]: %c ", i ,buffer[i]);
-                    strcat(command, &buffer[i]);
-                    break;
-                }
+    // NOTE: this is not needed, and absolutely useless, will keep maybe I need it
 
-            command[cmd_pos++] = buffer[i];
-            buffer[i++] += ' ';
-        i++;
-        }while (i < strlen(buffer));
-    }
+    // int ret = 0;
+    // while((ret = fread(buffer, sizeof(*buffer), ARRAY_SIZE(buffer), file)) != 0)
+    // {
+    //     size_t i = 0;
+    //     size_t cmd_pos = 0;
+    //     do {
+    //         if (buffer[i] == '\n') { 
+    //             buffer[i] += ' ';
+    //         }
+    //         printf("buffer[%ld]: %c ", i ,buffer[i]);
+    //         // strcat requires a null terminated string
+    //             if(i == ret) {
+    //                 buffer[strlen(buffer) - 1] = '\0';
+    //                 printf("buffer[%ld]: %c ", i ,buffer[i]);
+    //                 strcat(command, &buffer[i]);
+    //                 break;
+    //             }
+    //
+    //         command[cmd_pos++] = buffer[i];
+    //         buffer[i++] += ' ';
+    //     i++;
+    //     }while (i < strlen(buffer));
+    // }
+    //
+    // fclose(file);
 
-    fclose(file);
-    // NOTE: free command outside of function
-    return command;
+    // open filebased pipeline channel for file 'filename' in read only
+    size_t fd = open(filename, O_RDONLY);
+    assert(fd != 0); // 0 = stdin | 1 = stdout | 2 = stderr
+
+    close(0); // we close stdin 
+    dup(fd); // we duplicate fd, into stdin
+    close(fd); // and close the fd again.
 }
