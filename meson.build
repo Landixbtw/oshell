@@ -8,7 +8,6 @@ default_options: [
 
 inc_dir = include_directories('include')
 
-
 executable(
    'oshell', 
 ['src/main.c', 

@@ -23,6 +23,7 @@
  */
 
 
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 // TODO: Set errno values on error
 
 char **parse(char *input)
@@ -30,6 +31,8 @@ char **parse(char *input)
     // counts number of token the input has i.e the number of words
     // every time a ' ' is detected the counter goes +1
     size_t num_tokens = 0;
+
+    int i = 0;
 
     for (int i = 0; i < strlen(input); i++) 
     {
@@ -40,26 +43,23 @@ char **parse(char *input)
     }
 
     // pointer to a pointer -- represents an array of strings 
-    char **args = malloc(sizeof(char *) * (num_tokens + 1));
+    char **args = malloc(sizeof(char *) * strlen(input));
     // args should never be NULL
     assert(args != NULL);
-
-    int i = 0;
-
-    #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 
     // split the input string everytime there is a space 
     char *token = strtok(input, " ");
     do {
-        printf("token: %s ",token);
         // increments post storing the token is args
-        args[i++] = token;
-        printf("args length: %ld\n", NELEMS(args));
-
+        args[i] = token;
+        i++;
         token = strtok(NULL, " ");
     }while (token != NULL);
 
     // go till char is NULL
+    for(int j = 0; j < i; j++) {
+        printf("args[%i]: %s \n", j, args[j]);
+    }
     while(args[i] != NULL) // FIX: Invalid read size of 8 
     {
         i++;

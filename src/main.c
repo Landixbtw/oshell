@@ -9,8 +9,7 @@
 #include "../include/utils.h"
 
 // this gives the length of array
-#define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
-
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 int main(void){
     for(;;) {

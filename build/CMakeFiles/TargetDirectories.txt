@@ -1,0 +1,3 @@
+/home/ole/Dokumente/Projekte/c/oshell/build/CMakeFiles/oshell.dir
+/home/ole/Dokumente/Projekte/c/oshell/build/CMakeFiles/edit_cache.dir
+/home/ole/Dokumente/Projekte/c/oshell/build/CMakeFiles/rebuild_cache.dir

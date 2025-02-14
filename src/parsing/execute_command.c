@@ -59,29 +59,25 @@ int execute_command(char **args)
 
     // pipe -> | function
 
-    // NOTE: Even with this commented out cat < test.txt gives segfault
-
+    // NOTE: var assinged input_redirection has to be freed
+    
     // input redirection -> < function - input_redirection.c
-    printf("command: %s %s %s\n", args[0], args[1], args[2]);
-    if (args[0] != NULL && args[1] != NULL && args[2] != NULL && strcmp("<",args[1])) {
-        printf("input redirection");
-        // input_redirection(args[2]);
+    if (args[0] != NULL && args[1] != NULL && args[2] != NULL && strcmp("<", args[1]) == 0) {
+        args[1] = input_redirection(args[2]);
     }
 
-    pid_t pid;
-    int status;
+    pid_t pid = 0;
+    int status = 0;
 
     size_t scmd_len = strlen("/usr/bin/") + strlen(args[0]) + 1;
     char *scmd = malloc(scmd_len);
     assert(scmd);
     snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
-    printf("command: %s\n", scmd);
-
     if ((pid = fork()) < 0)
         perror("oshell: fork() error");
     else if (pid == 0) {
         //child 
-        printf("command: %s %s %s\n", args[0], args[1], args[2]);
+        printf("command: %s %s %s ", args[0], args[1], args[2]);
         int res = execv(scmd, args);
         if (res == -1) {
             perror("execv() failed");
