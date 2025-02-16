@@ -59,7 +59,7 @@ char **parse(char *input)
 
     // go till char is NULL
     for(int j = 0; j < i; j++) {
-        printf("args[%i]: %s \n", j, args[j]);
+        fprintf(stderr,"args[%i]: %s \n", j, args[j]);
     }
     while(args[i] != NULL) // FIX: Invalid read size of 8 
     {

@@ -1,16 +1,3 @@
-/*
- *  input redirection 
- *  
- *  stdin redirection: < 
- *
- *  Redirect the content of a file to stdin of a command
- *
- *  command < file
- *
- *
- * */
-
-#include <endian.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -47,10 +34,6 @@ void input_redirection(const char *filename)
      * command, that way something like sort can properly deal with it
      * */
 
-    // NOTE: I think this is reading past the buffer, it just repeats itself
-    // https://imgur.com/a/GBUTdFs
-
-
     // NOTE: this is not needed, and absolutely useless, will keep maybe I need it
 
     // int ret = 0;
@@ -76,14 +59,4 @@ void input_redirection(const char *filename)
     //     i++;
     //     }while (i < strlen(buffer));
     // }
-    //
-    // fclose(file);
-
-    // open filebased pipeline channel for file 'filename' in read only
-    size_t fd = open(filename, O_RDONLY);
-    assert(fd != 0); // 0 = stdin | 1 = stdout | 2 = stderr
-
-    close(0); // we close stdin 
-    dup(fd); // we duplicate fd, into stdin
-    close(fd); // and close the fd again.
 }

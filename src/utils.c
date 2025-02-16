@@ -7,7 +7,7 @@
 
 void show_usage()
 {
-    printf("oshell usage: \n"
+    fprintf(stderr, "oshell usage: \n"
         "\tthis is just a basic shell, I made for fun.\n"
         "\n\texit: will exit the shell\n"
         "\thelp: will print this menu\n"
@@ -16,7 +16,7 @@ void show_usage()
 
 int change_directory(const char *directory)
 {
-    printf("changing to %s\n", directory);
+    fprintf(stderr, "changing to %s\n", directory);
     int ret;
     ret = chdir(directory);
     if (ret == -1) {
@@ -24,7 +24,7 @@ int change_directory(const char *directory)
     } else {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
-        printf("%s", cwd);
+        fprintf(stderr,"%s", cwd);
     }
     // set errno for error x 
     return 0;
