@@ -26,7 +26,7 @@ int change_directory(const char *directory)
         getcwd(cwd, sizeof(cwd));
         fprintf(stderr,"%s", cwd);
     }
-    // set errno for error x 
+    // set errno for error x
     return 0;
 }
 
@@ -37,8 +37,8 @@ int kill_process(const char *process_name_or_id)
     // need to check if input is pid or process name
     // need to get the pid from the name
     // pass the pid to the kill function, with signal for kill (is 9)?
-    printf("killed %s\n", process_name_or_id);
-    // set errno for error x 
+    fprintf(stderr,"killed %s\n", process_name_or_id);
+    // set errno for error x
     return 0;
 }
 
@@ -71,4 +71,3 @@ void oshell_loop()
     execute_command(args);
     free(args);
 }
-

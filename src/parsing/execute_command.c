@@ -71,6 +71,8 @@ int execute_command(char **args)
     }
 
 
+    // FIX: This exits the shell
+
     /*
      * input redirection -> < function
      * this function works directly with stdin, and changes the stdin, to the

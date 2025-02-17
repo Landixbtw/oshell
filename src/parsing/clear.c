@@ -1,20 +1,26 @@
 /*
  * the clear function just "clears" the screen, it does so by moving x amount of pixels down
  * to create the illusion that the screen is cleared
+ * this takes the amount of rows in the terminal and moves the cursor down that amount of rows
+ * we just get the amount of rows, and print that amount of newlines
+ * https://stackoverflow.com/questions/1022957/getting-terminal-width-in-c
  * */
 
 #include <stdio.h>
 
+#include <sys/ioctl.h>
+
 #include "../../include/utils.h"
 
 void clear(void)
-{
-    // TODO: we want to "move" the screen, so far to the top that the screen seems
-    // clear
-    // I think we can achive this by just printing enough newlines,
-    // We just need to figure out how many newlines we need to print
-    // to move the screen so far up that it seems clear
-    for (int i = 0; i < 50; i++) {
-    fprintf(stderr, "\n");
+{    struct winsize w;
+    // stdin , request type, struct for the size
+    ioctl(0, TIOCGWINSZ, &w);
+
+    for (int i = 0; i < w.ws_row; i++) {
+        fprintf(stderr, "\n");
     }
+
+    fprintf(stderr, "\033[0;0H");
+    return;
 }
