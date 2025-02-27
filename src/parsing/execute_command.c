@@ -31,7 +31,6 @@ int execute_command(char **args)
     }
 
     assert(command != NULL);
-
     // FIX: These have to be desinged more compact this is basically the same code but with \n this is stupid
 
     // cd -> CD function - utils.c
@@ -70,15 +69,14 @@ int execute_command(char **args)
         return 0;
     }
 
-
-    // FIX: This exits the shell
-
     /*
      * input redirection -> < function
      * this function works directly with stdin, and changes the stdin, to the
      * file content the user wants to redirect. It basically duplicates the
      * file content into stdin, 'replacing' the old stdin,
      * */
+
+    // FIX: This exits the shell, return 0 
     if (args[0] != NULL && args[1] != NULL && args[2] != NULL && strcmp("<", args[1]) == 0) {
         char *filename = args[2];
         FILE        *file = fopen(filename, "r");
@@ -108,16 +106,35 @@ int execute_command(char **args)
      *  https://stackoverflow.com/questions/12812579/how-redirection-internally-works-in-unix
      * */
 
-    if (args[0] != NULL && args[1] != NULL && args[2] != NULL && (strcmp(">", args[1]) || strcmp(">>", args[1]))) {
-        size_t fd = open(args[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        if (dup2(fd, STDOUT_FILENO) == -1)
-            perror("oshell: output redirection file error"); return 1;
-        close(fd);
-        fflush(stdout);
-    }
-    // FIX: It seems that stdout, is still "open", all the output from
-    // commands after redirection are being sent to the file,
+    // we save the original stdout
+    int saved_stdout = dup(STDOUT_FILENO);
+    bool do_redirection = 0;
+    int fd = 0;
 
+    // redirect stdout to the file
+    if (args[0] != NULL && args[1] != NULL && args[2] != NULL &&
+        (strcmp(">", args[1]) == 0 || strcmp(">>", args[1]) == 0)) {
+        // > truncate (overwrite) ; >> append
+
+        int flags = O_WRONLY | O_CREAT;
+        if (strcmp(">>", args[1]) == 0)
+            flags |= O_APPEND;
+        else
+            flags |= O_TRUNC;
+
+        fd = open(args[2], flags , 0644);
+        assert(fd != -1);
+
+        if (dup2(fd, STDOUT_FILENO) == -1) {
+            perror("oshell: dup2 error");
+            close(fd);
+            return 1;
+        }
+
+        args[1] = NULL;
+        args[2] = NULL;
+        do_redirection = 1;
+    }
 
     pid_t pid = 0;
     int status = 0;
@@ -135,6 +152,15 @@ int execute_command(char **args)
         if (res == -1) {
             perror("execv() failed");
             exit(EXIT_FAILURE);
+        }
+
+        if (do_redirection) {
+            fprintf(stderr, "DO_REDIRECTION TRUE: %i", do_redirection);
+            fflush(stdout);
+            dup2(saved_stdout, STDOUT_FILENO);
+            close(saved_stdout);
+            if (fd != -1)
+                close(fd);
         }
         sleep(5);
         exit(1);
