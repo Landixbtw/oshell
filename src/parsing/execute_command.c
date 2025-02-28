@@ -76,6 +76,10 @@ int execute_command(char **args)
      * file content into stdin, 'replacing' the old stdin,
      * */
 
+    int saved_stdin = dup(STDIN_FILENO);
+    int do_input_redirection = 0;
+    int fd_in = 0;
+
     // FIX: This exits the shell, return 0 
     if (args[0] != NULL && args[1] != NULL && args[2] != NULL && strcmp("<", args[1]) == 0) {
         char *filename = args[2];
@@ -89,14 +93,19 @@ int execute_command(char **args)
         }
 
         // open filebased pipeline channel for file 'filename' in read only
-        size_t fd = open(filename, O_RDONLY);
-        assert(fd != 0); // 0 = stdin | 1 = stdout | 2 = stderr
+        fd_in = open(filename, O_RDONLY);
+        assert(fd_in != 0); // 0 = stdin | 1 = stdout | 2 = stderr
 
-        close(0); // we close stdin
-        dup(fd); // we duplicate fd, into stdin
-        close(fd); // and close the fd again.
+        close(STDIN_FILENO); // we close stdin
+        // we duplicate fd, into stdin
+        if (dup2(fd_in, STDIN_FILENO) == -1) {
+            perror("oshell: dup2 error");
+            close(fd_in);
+            return 1;
+        }
+        args[1] = NULL; // remove '<' from the command
 
-        args[1] = NULL;
+        do_input_redirection = 1;
     }
 
     /*
@@ -108,7 +117,7 @@ int execute_command(char **args)
 
     // we save the original stdout
     int saved_stdout = dup(STDOUT_FILENO);
-    bool do_redirection = 0;
+    int do_redirection = 0;
     int fd = 0;
 
     // redirect stdout to the file
@@ -118,6 +127,9 @@ int execute_command(char **args)
 
         int flags = O_WRONLY | O_CREAT;
         if (strcmp(">>", args[1]) == 0)
+            // inplace bitwise OR (x |= y ; x = x | y)
+            // add flag O_APPEND to flags
+            // &= ~xyz (remove xyz)
             flags |= O_APPEND;
         else
             flags |= O_TRUNC;
@@ -141,26 +153,17 @@ int execute_command(char **args)
 
     size_t scmd_len = strlen("/usr/bin/") + strlen(args[0]) + 1;
     char *scmd = malloc(scmd_len);
-    assert(scmd);
+    assert(scmd != NULL);
     snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
     if ((pid = fork()) < 0)
         perror("oshell: fork() error");
     else if (pid == 0) {
         //child
-        fprintf(stderr, "command: %s %s %s \n", args[0], args[1], args[2]); // WARN: this is not printed
+        fprintf(stderr, "Command: %s %s %s \n", args[0], args[1], args[2]);
         int res = execv(scmd, args);
         if (res == -1) {
             perror("execv() failed");
             exit(EXIT_FAILURE);
-        }
-
-        if (do_redirection) {
-            fprintf(stderr, "DO_REDIRECTION TRUE: %i", do_redirection);
-            fflush(stdout);
-            dup2(saved_stdout, STDOUT_FILENO);
-            close(saved_stdout);
-            if (fd != -1)
-                close(fd);
         }
         sleep(5);
         exit(1);
@@ -171,11 +174,26 @@ int execute_command(char **args)
         else if (pid == 0) {
             sleep(1);
         } else {
-            if (WIFEXITED(status))
-                continue;
+            if (WIFEXITED(status)) {
+                break;
                 // printf("child exited with status of %d\n", WEXITSTATUS(status));
-            else puts("child did not exit succesfully");
+            } else {
+                puts("child did not exit succesfully");
+            }
         }
    } while (pid == 0);
+
+    if (do_redirection) {
+        fflush(stdout);
+        dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdout);
+        if (fd != -1)
+            close(fd);
+    } else if (do_input_redirection) {
+        dup2(saved_stdin, STDIN_FILENO);
+        close(saved_stdin);
+        if (fd_in != -1)
+            close(fd_in);
+    }
     return 0;
 }
