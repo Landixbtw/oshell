@@ -62,7 +62,7 @@ int execute_command(char **args)
     }
 
     // pipe -> | function
-
+    _pipe(args);
     // clear -> clear function
     if (args[0] != NULL && strcmp("clear", command) == 0) {
         clear();
