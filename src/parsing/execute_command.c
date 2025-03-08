@@ -62,7 +62,10 @@ int execute_command(char **args)
     }
 
     // pipe -> | function
-    _pipe(args);
+    if (args[0] != NULL && args[1] != NULL && args[2] != NULL && strcmp("|", args[1]) == 0) {
+        _pipe(args);
+    }
+
     // clear -> clear function
     if (args[0] != NULL && strcmp("clear", command) == 0) {
         clear();
@@ -151,15 +154,12 @@ int execute_command(char **args)
     pid_t pid = 0;
     int status = 0;
 
-    size_t scmd_len = strlen("/usr/bin/") + strlen(args[0]) + 1;
-    char *scmd = malloc(scmd_len);
-    assert(scmd != NULL);
-    snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
+    char *scmd = make_command(args);
     if ((pid = fork()) < 0)
         perror("oshell: fork() error");
     else if (pid == 0) {
         //child
-        fprintf(stderr, "Command: %s %s %s \n", args[0], args[1], args[2]);
+        fprintf(stderr, "Command: %s %s %s \n", scmd, args[1], args[2]);
         int res = execv(scmd, args);
         if (res == -1) {
             perror("execv() failed");

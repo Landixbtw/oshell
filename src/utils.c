@@ -2,6 +2,7 @@
 #include "../include/utils.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../include/parse.h"
 
@@ -70,4 +71,15 @@ void oshell_loop()
 
     execute_command(args);
     free(args);
+}
+
+char *make_command(char **args) {
+    size_t scmd_len = strlen("/usr/bin/") + strlen(args[0]) + 1;
+    char *scmd = malloc(scmd_len);
+    if(scmd == NULL) {
+        perror("oshell: not able to allocate enough Memory for scmd");
+        exit(EXIT_FAILURE);
+    }
+    snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
+    return scmd;
 }

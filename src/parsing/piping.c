@@ -13,24 +13,48 @@
  * */
 
 #include <stdio.h>
+#include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
-#include <stdlib.h>
 #include <assert.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
-char **_pipe(char **args)
+#include "../../include/utils.h"
+
+int _pipe(char **args)
 {
+    int pipe_pos = 0;
+    while(args[pipe_pos] != NULL && strcmp("|", args[pipe_pos]) != 0) {
+        pipe_pos++;
+    }
+
+    if (args[pipe_pos] == NULL) {
+        fprintf(stderr, "No pipe symbol found.\n");
+        return -1;
+    }
+
+    // this splits the args into two command
+    args[pipe_pos] = NULL;
+    char **cmd1 = args;
+    char **cmd2 = &args[pipe_pos + 1 ];
+
     int fildes[2];
     const int BSIZE = 100;
     char buf[BSIZE];
     ssize_t nbytes = 0;
-    int status = 0;
 
-    status = pipe(fildes);
-    assert(status != -1);
 
-    fcntl(fildes[0], F_SETFD, fcntl(fildes[0], F_GETFD | FD_CLOEXEC)); // read end
-    fcntl(fildes[1], F_SETFD, fcntl(fildes[1], F_GETFD | FD_CLOEXEC)); // write end
+    // NOTE: assert only for debugging, since it disapears in the "release" build
+    if (pipe(fildes) == -1) {
+        perror("ohsell: _pipe");
+        return -1;
+    }
+
+    fcntl(fildes[0], F_SETFD, FD_CLOEXEC); // read end 
+    fcntl(fildes[1], F_SETFD, FD_CLOEXEC); // write end 
+
+    char *scmd = "";
 
     switch (fork()) {
         case -1: // handle error
@@ -46,23 +70,29 @@ char **_pipe(char **args)
             if (read(fildes[0], args[0], sizeof(args[0])) > 0)
                 // 'buf' reads, the first command ie ls (ls | grep xxx)
                 puts("oshell: _pipe(): EOF or error detected.");
-            dup2(fildes[0], STDOUT_FILENO);
+            if(dup2(fildes[0], STDOUT_FILENO) == -1) {
+                perror("oshell: _pipe() dup2");
+                exit(EXIT_FAILURE);
+            }
             fprintf(stderr, "fildes[0] %i\n", fildes[0]);
-            // execvp
-            close(fildes[0]);
-            close(fildes[1]);
-            exit(EXIT_SUCCESS);
-
+            scmd = make_command(cmd1);
+            fprintf(stderr, "scmd: command:: %s", scmd);
+            // how can "|" be added as arg ? rn command is lsgrep not ls | grep xxx
+            execv(scmd, cmd2);
         default: // parent writes to pipe
             close(fildes[0]); // read end is unused
             // 'input' would write the second command ie grep xxx
             write(fildes[1], args[2], sizeof(args[2]));
-            dup2(fildes[1], STDIN_FILENO);
+            if(dup2(fildes[1], STDIN_FILENO) == -1) {
+                perror("oshell: _pipe() dup2");
+                exit(EXIT_FAILURE);
+            }
             fprintf(stderr, "fildes[1] %i\n", fildes[1]);
-            // execvp
-            close(fildes[0]);
-            close(fildes[1]);
-            exit(EXIT_SUCCESS);
+            // scmd = make_command(cmd1);
+            // execv(scmd, cmd2);
     }
+    close(fildes[0]);
+    close(fildes[1]);
+
     return 0;
 }

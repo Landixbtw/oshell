@@ -8,6 +8,7 @@ int change_directory(const char *directory);
 int kill_process(const char *process_name_or_id);
 void oshell_loop();
 void clear(void);
-char **_pipe(char **args);
+int _pipe(char **args);
+char *make_command(char **args);
 
 #endif
