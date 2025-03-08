@@ -16,4 +16,5 @@ MVP
 - read a system command parse it and execute it
 
 Maybe some good stuff in here.  
-https://pdos.csail.mit.edu/6.828/2018/labguide.html
+https://pdos.csail.mit.edu/6.828/2018/labguide.html  
+https://barsky.ca/marina/SR/c2018/lectures/7.pipe/06.01.FileDescriptorsPipes.pdf  
