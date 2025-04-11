@@ -22,7 +22,6 @@ int main(void){
         // we print all the "constant" stuff, to stderr, because if you use
         // > >> the stdout is sent to the file, so this will also be sent to the file
         // so all shell prompts messages etc that is not from the user is printed to stderr
-        //
         char* user = getenv("USER");
         char *hostname = malloc(128);
         assert(hostname != NULL);

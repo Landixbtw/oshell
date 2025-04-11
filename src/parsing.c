@@ -4,7 +4,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "../../include/parse.h"
+#include "../include/parse.h"
 
 /*
  * TODO:  

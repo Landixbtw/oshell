@@ -10,9 +10,13 @@
 #include <unistd.h>
 
 
-#include "../../include/parse.h"
-#include "../../include/utils.h"
+#include "../include/parse.h"
+#include "../include/utils.h"
 
+
+/*
+ * char ** is a pointer to a pointer
+ * */
 
 int execute_command(char **args)
 {
@@ -31,8 +35,6 @@ int execute_command(char **args)
     }
 
     assert(command != NULL);
-    // FIX: These have to be desinged more compact this is basically the same code but with \n this is stupid
-
     // cd -> CD function - utils.c
     if (command != NULL && args[1] != NULL && strcmp("cd", command) == 0)
     {
@@ -72,6 +74,14 @@ int execute_command(char **args)
         return 0;
     }
 
+    // env -> getenvvar
+    // if the first char after echo is a $ we want to pass it on to getenvvar()
+    // else just pass it to execute
+    if(strcmp("$",args[1][0]) == 0) {
+        getenv(args[1][0]);
+        return 0;
+    }
+    
     /*
      * input redirection -> < function
      * this function works directly with stdin, and changes the stdin, to the

@@ -65,11 +65,11 @@ include_directories(include)
 set(SOURCES
     src/main.c
     src/utils.c
-    src/parsing/parsing.c
-    src/parsing/execute_command.c
-    src/parsing/input_redirection.c
-    src/parsing/piping.c
-    src/parsing/clear.c
+    src/parsing.c
+    src/execute_command.c
+    src/input_redirection.c
+    src/piping.c
+    src/clear.c
 )
 
 # Create executable

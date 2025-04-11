@@ -20,7 +20,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-#include "../../include/utils.h"
+#include "../include/utils.h"
 
 int _pipe(char **args)
 {
@@ -74,9 +74,11 @@ int _pipe(char **args)
                 perror("oshell: _pipe() dup2");
                 exit(EXIT_FAILURE);
             }
-            fprintf(stderr, "fildes[0] %i\n", fildes[0]);
+	    fprintf(stderr, "cmd1: %s\n", cmd1[0]);
+	    fprintf(stderr, "cmd2: %s\n", cmd2[0]);
             scmd = make_command(cmd1);
-            fprintf(stderr, "scmd: command:: %s", scmd);
+	    // FIX: command one and two are added to scmd, usr/bin/lsgrep
+            fprintf(stderr, "scmd: %s", scmd);
             // how can "|" be added as arg ? rn command is lsgrep not ls | grep xxx
             execv(scmd, cmd2);
         default: // parent writes to pipe
@@ -87,7 +89,6 @@ int _pipe(char **args)
                 perror("oshell: _pipe() dup2");
                 exit(EXIT_FAILURE);
             }
-            fprintf(stderr, "fildes[1] %i\n", fildes[1]);
             // scmd = make_command(cmd1);
             // execv(scmd, cmd2);
     }

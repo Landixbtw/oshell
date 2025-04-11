@@ -81,5 +81,6 @@ char *make_command(char **args) {
         exit(EXIT_FAILURE);
     }
     snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
+    fprintf(stderr, "%s\n", scmd);
     return scmd;
 }

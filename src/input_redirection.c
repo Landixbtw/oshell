@@ -6,8 +6,6 @@
 #include <unistd.h>
 
 
-#include "../../include/parse.h"
-
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 void input_redirection(const char *filename)

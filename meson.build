@@ -12,9 +12,9 @@ executable(
    'oshell', 
 ['src/main.c', 
     'src/utils.c',
-    'src/parsing/parsing.c', 'src/parsing/execute_command.c', 
-    'src/parsing/input_redirection.c', 'src/parsing/output_redirection.c',
-    'src/parsing/piping.c'
+    'src/parsing.c', 'src/execute_command.c', 
+    'src/input_redirection.c', 'src/output_redirection.c',
+    'src/piping.c', 'src/clear.c'
 
   ],
 include_directories: inc_dir,
