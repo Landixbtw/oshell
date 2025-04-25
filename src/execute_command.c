@@ -77,8 +77,11 @@ int execute_command(char **args)
     // env -> getenvvar
     // if the first char after echo is a $ we want to pass it on to getenvvar()
     // else just pass it to execute
-    if(strcmp("$",args[1][0]) == 0) {
-        getenv(args[1][0]);
+    // how can we access the first char
+    // NOTE: This is not how
+    if(args[0] != NULL && args[1] != NULL && strcmp("$",&args[1][0]) == 0) {
+        getenv(&args[1][0]);
+	fprintf(stderr, "$ detected\n");
         return 0;
     }
     
