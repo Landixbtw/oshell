@@ -1,8 +1,10 @@
+#include <signal.h>
 #include <stdio.h>
 #include "../include/utils.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #include "../include/parse.h"
 
@@ -31,16 +33,67 @@ int change_directory(const char *directory)
     return 0;
 }
 
-int kill_process(const char *process_name_or_id)
+/*
+ * we convert the string to int
+ * string: -1
+ * int: the int could be 0?
+ * error: -2 ... 
+ * */
+int string_to_int(char *string) {
+    long val = 0;
+    int base = 10;
+    char *endptr, *str;
+    str = string;
+    errno = 0;
+    val = strtol(str, &endptr, base);
+
+    // check for errors
+    if (errno == ERANGE) {
+        perror("strtol");
+        return -2;
+    }
+
+    if (endptr == str) {
+        return -1;
+    }
+    return val;
+}
+
+// https://www.man7.org/linux/man-pages/man2/getpid.2.html
+/*
+ * getpid only gets the pid from the calling process, 
+ * */
+int kill_process(char *process_name_or_id)
 {
     // kill(2)
     // kill(__pid_t pid, int sig)
     // need to check if input is pid or process name
     // need to get the pid from the name
     // pass the pid to the kill function, with signal for kill (is 9)?
-    fprintf(stderr,"killed %s\n", process_name_or_id);
-    // set errno for error x
-    return 0;
+
+    // c23 has typeof, c11 does not how can we check if process_name_or_id
+    // is int or char*
+    //
+    // if string_to_int returns 1 this mean there were no numbers found
+    if(string_to_int(process_name_or_id) == -1) {
+        /*
+         * We need to open every /proc/pid/cmdline file  (opendir() and readdir()) and check if the content matches
+         * the process name if yes, we have to corresponding pid and we can kill the 
+         * process 
+         * */
+
+        pid_t pid = 0;
+        // process_name_or_id is string
+        kill(pid, 9);
+        fprintf(stderr,"killed %i\n", pid);
+        return 0;
+    } else {
+        pid_t pid = string_to_int(process_name_or_id);
+        kill(pid, 9);
+        fprintf(stderr,"killed %i\n", pid);
+        return 0;
+    }
+    return -1;
 }
 
 
@@ -84,3 +137,4 @@ char *make_command(char **args) {
     fprintf(stderr, "%s\n", scmd);
     return scmd;
 }
+

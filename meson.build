@@ -14,7 +14,7 @@ executable(
     'src/utils.c',
     'src/parsing.c', 'src/execute_command.c', 
     'src/input_redirection.c', 'src/output_redirection.c',
-    'src/piping.c', 'src/clear.c'
+    'src/piping.c', 'src/clear.c',
 
   ],
 include_directories: inc_dir,

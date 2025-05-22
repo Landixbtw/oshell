@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +16,7 @@
 
 
 /*
+ * NOTE: More explanation on pointer to pointer, why? what? how?
  * char ** is a pointer to a pointer
  * */
 
@@ -77,14 +79,31 @@ int execute_command(char **args)
     // env -> getenvvar
     // if the first char after echo is a $ we want to pass it on to getenvvar()
     // else just pass it to execute
-    // how can we access the first char
-    // NOTE: This is not how
-    if(args[0] != NULL && args[1] != NULL && strcmp("$",&args[1][0]) == 0) {
-        getenv(&args[1][0]);
-	fprintf(stderr, "$ detected\n");
+    char envChar; 
+    // init envVar
+    char *envVar = malloc(sizeof(args[1]));
+    if(envVar == NULL) {
+        fprintf(stderr, "execute_command(): *envVar: Error when trying to allocate 'sizeof(args[1])' memory. \n");
+        return -1;
+    }
+
+    // NOTE: echo $HOST, echo $OSTYPE return null on oshell, but return something with zsh
+
+    envChar = args[1][0];
+
+    // we start at the first second char, this should be the first letter after
+    // $ and we copy everything short of 1 and put it together into one String
+    strncpy(envVar, &args[1][1], sizeof(args[1] -1));
+
+    char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
+    // when we just use envChar, (a non null terminated char) strcmp wont now when the 
+    // strings ends, and just read garbage strcmp wont now when the 
+    // strings ends, and just read garbage
+    if(args[0] != NULL && args[1] != NULL && strcmp("$",envCharStr) == 0) {
+        fprintf(stderr, "%s\n", secure_getenv(envVar));
         return 0;
     }
-    
+
     /*
      * input redirection -> < function
      * this function works directly with stdin, and changes the stdin, to the
