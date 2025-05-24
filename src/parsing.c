@@ -61,6 +61,8 @@ char **parse(char *input)
     for(int j = 0; j < i; j++) {
         fprintf(stderr,"args[%i]: %s \n", j, args[j]);
     }
+    // NOTE: ==32488== Conditional jump or move depends on uninitialised value(s)
+    // ==32488==  Uninitialised value was created by a heap allocation
     while(args[i] != NULL) // FIX: Invalid read size of 8 
     {
         i++;
