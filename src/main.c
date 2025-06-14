@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
-
-#include "../include/utils.h"
-
-// this gives the length of array
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+#include "../include/Header.h"
 
 int main(void){
     for(;;) {

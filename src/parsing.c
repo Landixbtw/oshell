@@ -1,10 +1,4 @@
-#include <complex.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-
-#include "../include/parse.h"
+#include "../include/Header.h"
 
 /*
  * TODO:  
@@ -22,8 +16,6 @@
  *      - what delimits arguments
  */
 
-
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 // TODO: Set errno values on error
 
 char **parse(char *input)

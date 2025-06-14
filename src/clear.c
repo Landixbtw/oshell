@@ -6,11 +6,7 @@
  * https://stackoverflow.com/questions/1022957/getting-terminal-width-in-c
  * */
 
-#include <stdio.h>
-
-#include <sys/ioctl.h>
-
-#include "../../include/utils.h"
+#include "../include/Header.h"
 
 void clear(void)
 {    struct winsize w;

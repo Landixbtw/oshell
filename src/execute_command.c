@@ -1,19 +1,6 @@
 #define _GNU_SOURCE
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <complex.h>
-#include <assert.h>
-#include <fcntl.h>
-#include <unistd.h>
 
-
-#include "../include/parse.h"
-#include "../include/utils.h"
-
+#include "../include/Header.h"
 
 /*
  * NOTE: More explanation on pointer to pointer, why? what? how?

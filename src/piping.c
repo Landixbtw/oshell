@@ -12,15 +12,8 @@
  *
  * */
 
-#include <stdio.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <assert.h>
-#include <fcntl.h>
-#include <stdlib.h>
 
-#include "../include/utils.h"
+#include "../include/Header.h"
 
 int _pipe(char **args)
 {
