@@ -1,0 +1,466 @@
+==11298== Memcheck, a memory error detector
+==11298== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==11298== Using Valgrind-3.25.1-4441567fbe-20250520 and LibVEX; rerun with -h for copyright info
+==11298== Command: ./build/oshell
+==11298== Parent PID: 7231
+==11298== 
+--11298-- 
+--11298-- Valgrind options:
+--11298--    --leak-check=full
+--11298--    --show-leak-kinds=all
+--11298--    --track-origins=yes
+--11298--    --verbose
+--11298--    --log-file=valgrind-out.txt
+--11298-- Contents of /proc/version:
+--11298--   Linux version 6.15.2-arch1-1 (linux@archlinux) (gcc (GCC) 15.1.1 20250425, GNU ld (GNU Binutils) 2.44.0) #1 SMP PREEMPT_DYNAMIC Tue, 10 Jun 2025 21:32:33 +0000
+--11298-- 
+--11298-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed-fma
+--11298-- Page sizes: currently 4096, max supported 4096
+--11298-- Valgrind library directory: /usr/lib/valgrind
+--11298-- Reading syms from /home/ole/Dokumente/Projekte/c/oshell/build/oshell
+--11298-- Reading syms from /usr/lib/ld-linux-x86-64.so.2
+==11298== Downloading debug info for /usr/lib/ld-linux-x86-64.so.2...
+--11298--   Considering /home/ole/.cache/debuginfod_client/880803fb40ebf69518d6a56628ce2be9c5f5c89b/debuginfo ..
+--11298--   .. CRC is valid
+==11298== Successfully downloaded debug file for /usr/lib/ld-linux-x86-64.so.2
+--11298-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--11298--    object doesn't have a dynamic symbol table
+--11298-- Scheduler: using generic scheduler lock implementation.
+--11298-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==11298== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-11298-by-ole-on-???
+==11298== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-11298-by-ole-on-???
+==11298== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-11298-by-ole-on-???
+==11298== 
+==11298== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==11298== don't want to do, unless you know exactly what you're doing,
+==11298== or are doing some strange experiment):
+==11298==   /usr/lib/valgrind/../../bin/vgdb --pid=11298 ...command...
+==11298== 
+==11298== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==11298==   /path/to/gdb ./build/oshell
+==11298== and then give GDB the following command
+==11298==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=11298
+==11298== --pid is optional if only one valgrind process is running
+==11298== 
+==11298== Downloading debug info for /usr/lib/valgrind/memcheck-amd64-linux...
+--11298--   Considering /home/ole/.cache/debuginfod_client/d3be6428a75911b4e88b7f513aaf1d171beabc21/debuginfo ..
+--11298--   .. CRC is valid
+==11298== Successfully downloaded debug file for /usr/lib/valgrind/memcheck-amd64-linux
+--11298-- Warning: cross-CU LIMITATION: some inlined fn names
+--11298-- might be shown as UnknownInlinedFun
+--11298-- REDIR: 0x4032520 (ld-linux-x86-64.so.2:strlen) redirected to 0x5823f6d2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--11298-- REDIR: 0x4030ee0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x5823f6ec (vgPlain_amd64_linux_REDIR_FOR_strcmp)
+--11298-- REDIR: 0x4030cb0 (ld-linux-x86-64.so.2:index) redirected to 0x5823f725 (vgPlain_amd64_linux_REDIR_FOR_index)
+--11298-- REDIR: 0x4030040 (ld-linux-x86-64.so.2:bcmp) redirected to 0x5823f707 (vgPlain_amd64_linux_REDIR_FOR_memcmp)
+--11298-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--11298-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+==11298== WARNING: new redirection conflicts with existing -- ignoring it
+--11298--     old: 0x04030ee0 (strcmp              ) R-> (0000.0) 0x5823f6ec vgPlain_amd64_linux_REDIR_FOR_strcmp
+==11298== Downloading debug info for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so...
+--11298--   Considering /home/ole/.cache/debuginfod_client/403753d6c7387bebdec4dfaaa93f7790525577d9/debuginfo ..
+--11298--   .. CRC is valid
+==11298== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--11298--     new: 0x04030ee0 (strcmp              ) R-> (2016.0) 0x0485b2f0 strcmp
+==11298== WARNING: new redirection conflicts with existing -- ignoring it
+--11298--     old: 0x04032520 (strlen              ) R-> (0000.0) 0x5823f6d2 vgPlain_amd64_linux_REDIR_FOR_strlen
+--11298--     new: 0x04032520 (strlen              ) R-> (2007.0) 0x04859e80 strlen
+--11298-- REDIR: 0x4030310 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x485fa80 (mempcpy)
+--11298-- Reading syms from /usr/lib/libubsan.so.1.0.0
+--11298-- Reading syms from /usr/lib/libc.so.6
+==11298== Downloading debug info for /usr/lib/libc.so.6...
+--11298--   Considering /home/ole/.cache/debuginfod_client/468e3585c794491a48ea75fceb9e4d6b1464fc35/debuginfo ..
+--11298--   .. CRC is valid
+==11298== Successfully downloaded debug file for /usr/lib/libc.so.6
+--11298-- Reading syms from /usr/lib/libstdc++.so.6.0.34
+--11298-- Reading syms from /usr/lib/libm.so.6
+--11298-- Reading syms from /usr/lib/libgcc_s.so.1
+--11298-- REDIR: 0x40326c0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x485aa50 (strncmp)
+==11298== Downloading debug info for /usr/lib/valgrind/vgpreload_core-amd64-linux.so...
+--11298--   Considering /home/ole/.cache/debuginfod_client/0c51105d9993ab51719a1f2cded9603486a0d0b6/debuginfo ..
+--11298--   .. CRC is valid
+==11298== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--11298-- REDIR: 0x4f62140 (libc.so.6:strncasecmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5f3d0 (libc.so.6:mempcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f75890 (libc.so.6:wcpncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5f740 (libc.so.6:stpcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4fd9320 (libc.so.6:__memmove_chk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f83e20 (libc.so.6:wmemcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f60390 (libc.so.6:strcat) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5ea00 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f77740 (libc.so.6:wcsncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4fd9210 (libc.so.6:__memcpy_chk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+==11298== WARNING: new redirection conflicts with existing -- ignoring it
+--11298--     old: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2024.0) 0x0485f460 __memmove_chk
+--11298--     new: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2030.0) 0x0485fb90 __memcpy_chk
+--11298-- REDIR: 0x4f76e80 (libc.so.6:wcslen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5f560 (libc.so.6:memset) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f777b0 (libc.so.6:wcsnlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f62440 (libc.so.6:strnlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f624c0 (libc.so.6:strpbrk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f60500 (libc.so.6:strcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5f4e0 (libc.so.6:memrchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f75ca0 (libc.so.6:wcschr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f60400 (libc.so.6:index) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f624f0 (libc.so.6:rindex) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f75d40 (libc.so.6:wcscmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5f7b0 (libc.so.6:stpncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f83da0 (libc.so.6:wmemchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f622e0 (libc.so.6:strncmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5f810 (libc.so.6:strcasecmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f615e0 (libc.so.6:strcspn) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f76c60 (libc.so.6:wcscpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f621e0 (libc.so.6:strncasecmp_l) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f60480 (libc.so.6:strchrnul) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5e910 (libc.so.6:bcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f61570 (libc.so.6:strcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5f8b0 (libc.so.6:strcasecmp_l) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f620c0 (libc.so.6:strlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f62380 (libc.so.6:strncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f5f2c0 (libc.so.6:memmove) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+==11298== Preferring higher priority redirection:
+--11298--     old: 0x0501ff80 (__memcpy_avx_unalign) R-> (2018.0) 0x0485c9a0 __memcpy_avx_unaligned_erms
+--11298--     new: 0x0501ff80 (__memcpy_avx_unalign) R-> (2018.1) 0x0485e730 memmove
+--11298-- REDIR: 0x4f5e890 (libc.so.6:memchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x4f626f0 (libc.so.6:strspn) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+==11298== WARNING: new redirection conflicts with existing -- ignoring it
+--11298--     old: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2024.0) 0x0485f460 __memmove_chk
+--11298--     new: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2030.0) 0x0485fb90 __memcpy_chk
+--11298-- REDIR: 0x4f62ff0 (libc.so.6:strstr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--11298-- REDIR: 0x5024bb0 (libc.so.6:__strrchr_avx2) redirected to 0x48595e0 (rindex)
+--11298-- REDIR: 0x5022d00 (libc.so.6:__strlen_avx2) redirected to 0x4859d60 (strlen)
+--11298-- REDIR: 0x501f820 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x485dd20 (bcmp)
+--11298-- REDIR: 0x5023de0 (libc.so.6:__strncmp_avx2) redirected to 0x485a820 (strncmp)
+--11298-- REDIR: 0x4f5a610 (libc.so.6:malloc) redirected to 0x4850730 (malloc)
+--11298-- REDIR: 0x5022360 (libc.so.6:__strchrnul_avx2) redirected to 0x485f510 (strchrnul)
+--11298-- REDIR: 0x501ff80 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x485e730 (memmove)
+--11298-- REDIR: 0x501f580 (libc.so.6:__memchr_avx2) redirected to 0x485b3b0 (memchr)
+--11298-- REDIR: 0x50424b0 (libc.so.6:__strspn_sse42) redirected to 0x485ff00 (strspn)
+--11298-- REDIR: 0x503f780 (libc.so.6:__strcspn_sse42) redirected to 0x485fe00 (strcspn)
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x4005135: parse (parsing.c:58)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+--11298-- REDIR: 0x5022550 (libc.so.6:__strcmp_avx2) redirected to 0x485b180 (strcmp)
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x4005578: execute_command (execute_command.c:28)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x400574D: execute_command (execute_command.c:90)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x40057D8: execute_command (execute_command.c:130)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11304== Conditional jump or move depends on uninitialised value(s)
+==11304==    at 0x4F17E87: __printf_buffer (vfprintf-process-arg.c:408)
+==11304==    by 0x4F1A678: __vfprintf_internal (vfprintf-internal.c:1544)
+==11304==    by 0x4F0D95B: fprintf (fprintf.c:32)
+==11304==    by 0x4005EFD: execute_command (execute_command.c:165)
+==11304==    by 0x40040B5: oshell_loop (utils.c:227)
+==11304==    by 0x4003CCB: main (main.c:27)
+==11304==  Uninitialised value was created by a heap allocation
+==11304==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11304==    by 0x4004FFF: parse (parsing.c:38)
+==11304==    by 0x40040AA: oshell_loop (utils.c:225)
+==11304==    by 0x4003CCB: main (main.c:27)
+==11304== 
+==11304== Syscall param execve(argv) points to uninitialised byte(s)
+==11304==    at 0x4F98BCB: execve (syscall-template.S:120)
+==11304==    by 0x4005F1C: execute_command (execute_command.c:166)
+==11304==    by 0x40040B5: oshell_loop (utils.c:227)
+==11304==    by 0x4003CCB: main (main.c:27)
+==11304==  Address 0x5474648 is 8 bytes inside a block of size 24 alloc'd
+==11304==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11304==    by 0x4004FFF: parse (parsing.c:38)
+==11304==    by 0x40040AA: oshell_loop (utils.c:225)
+==11304==    by 0x4003CCB: main (main.c:27)
+==11304==  Uninitialised value was created by a heap allocation
+==11304==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11304==    by 0x4004FFF: parse (parsing.c:38)
+==11304==    by 0x40040AA: oshell_loop (utils.c:225)
+==11304==    by 0x4003CCB: main (main.c:27)
+==11304== 
+--11298-- REDIR: 0x4f5ad60 (libc.so.6:free) redirected to 0x4853880 (free)
+==11305== Conditional jump or move depends on uninitialised value(s)
+==11305==    at 0x4F17E87: __printf_buffer (vfprintf-process-arg.c:408)
+==11305==    by 0x4F1A678: __vfprintf_internal (vfprintf-internal.c:1544)
+==11305==    by 0x4F0D95B: fprintf (fprintf.c:32)
+==11305==    by 0x4005EFD: execute_command (execute_command.c:165)
+==11305==    by 0x40040B5: oshell_loop (utils.c:227)
+==11305==    by 0x4003CCB: main (main.c:27)
+==11305==  Uninitialised value was created by a heap allocation
+==11305==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11305==    by 0x4004FFF: parse (parsing.c:38)
+==11305==    by 0x40040AA: oshell_loop (utils.c:225)
+==11305==    by 0x4003CCB: main (main.c:27)
+==11305== 
+==11305== Syscall param execve(argv) points to uninitialised byte(s)
+==11305==    at 0x4F98BCB: execve (syscall-template.S:120)
+==11305==    by 0x4005F1C: execute_command (execute_command.c:166)
+==11305==    by 0x40040B5: oshell_loop (utils.c:227)
+==11305==    by 0x4003CCB: main (main.c:27)
+==11305==  Address 0x5474878 is 8 bytes inside a block of size 72 alloc'd
+==11305==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11305==    by 0x4004FFF: parse (parsing.c:38)
+==11305==    by 0x40040AA: oshell_loop (utils.c:225)
+==11305==    by 0x4003CCB: main (main.c:27)
+==11305==  Uninitialised value was created by a heap allocation
+==11305==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11305==    by 0x4004FFF: parse (parsing.c:38)
+==11305==    by 0x40040AA: oshell_loop (utils.c:225)
+==11305==    by 0x4003CCB: main (main.c:27)
+==11305== 
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x4005630: execute_command (execute_command.c:56)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x4005770: execute_command (execute_command.c:90)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x40057FF: execute_command (execute_command.c:130)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11441== Conditional jump or move depends on uninitialised value(s)
+==11441==    at 0x4F17E87: __printf_buffer (vfprintf-process-arg.c:408)
+==11441==    by 0x4F1A678: __vfprintf_internal (vfprintf-internal.c:1544)
+==11441==    by 0x4F0D95B: fprintf (fprintf.c:32)
+==11441==    by 0x4005EFD: execute_command (execute_command.c:165)
+==11441==    by 0x40040B5: oshell_loop (utils.c:227)
+==11441==    by 0x4003CCB: main (main.c:27)
+==11441==  Uninitialised value was created by a heap allocation
+==11441==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11441==    by 0x4004FFF: parse (parsing.c:38)
+==11441==    by 0x40040AA: oshell_loop (utils.c:225)
+==11441==    by 0x4003CCB: main (main.c:27)
+==11441== 
+==11441== Syscall param execve(argv) points to uninitialised byte(s)
+==11441==    at 0x4F98BCB: execve (syscall-template.S:120)
+==11441==    by 0x4005F1C: execute_command (execute_command.c:166)
+==11441==    by 0x40040B5: oshell_loop (utils.c:227)
+==11441==    by 0x4003CCB: main (main.c:27)
+==11441==  Address 0x5474af0 is 16 bytes inside a block of size 120 alloc'd
+==11441==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11441==    by 0x4004FFF: parse (parsing.c:38)
+==11441==    by 0x40040AA: oshell_loop (utils.c:225)
+==11441==    by 0x4003CCB: main (main.c:27)
+==11441==  Uninitialised value was created by a heap allocation
+==11441==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11441==    by 0x4004FFF: parse (parsing.c:38)
+==11441==    by 0x40040AA: oshell_loop (utils.c:225)
+==11441==    by 0x4003CCB: main (main.c:27)
+==11441== 
+==11298== 
+==11298== Process terminating with default action of signal 2 (SIGINT)
+==11298==    at 0x4F46006: __internal_syscall_cancel (cancellation.c:64)
+==11298==    by 0x4F46023: __syscall_cancel (cancellation.c:75)
+==11298==    by 0x4FC05DD: read (read.c:26)
+==11298==    by 0x4F40C3B: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:518)
+==11298==    by 0x4F34D51: getdelim (iogetdelim.c:77)
+==11298==    by 0x400409A: getline (stdio.h:120)
+==11298==    by 0x400409A: oshell_read_line (utils.c:208)
+==11298==    by 0x400409A: oshell_loop (utils.c:224)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== HEAP SUMMARY:
+==11298==     in use at exit: 75,788 bytes in 13 blocks
+==11298==   total heap usage: 16 allocs, 3 frees, 76,004 bytes allocated
+==11298== 
+==11298== Searching for pointers to 13 not-freed blocks
+==11298== Checked 6,047,240 bytes
+==11298== 
+==11298== 44 bytes in 3 blocks are definitely lost in loss record 1 of 7
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004141: make_command (utils.c:233)
+==11298==    by 0x4005915: execute_command (execute_command.c:160)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 120 bytes in 1 blocks are still reachable in loss record 2 of 7
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4F34D25: getdelim (iogetdelim.c:65)
+==11298==    by 0x400409A: getline (stdio.h:120)
+==11298==    by 0x400409A: oshell_read_line (utils.c:208)
+==11298==    by 0x400409A: oshell_loop (utils.c:224)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 120 bytes in 1 blocks are possibly lost in loss record 3 of 7
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4F34D25: getdelim (iogetdelim.c:65)
+==11298==    by 0x400409A: getline (stdio.h:120)
+==11298==    by 0x400409A: oshell_read_line (utils.c:208)
+==11298==    by 0x400409A: oshell_loop (utils.c:224)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 240 bytes in 2 blocks are definitely lost in loss record 4 of 7
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4F34D25: getdelim (iogetdelim.c:65)
+==11298==    by 0x400409A: getline (stdio.h:120)
+==11298==    by 0x400409A: oshell_read_line (utils.c:208)
+==11298==    by 0x400409A: oshell_loop (utils.c:224)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 512 bytes in 4 blocks are definitely lost in loss record 5 of 7
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4003CF1: main (main.c:16)
+==11298== 
+==11298== 1,024 bytes in 1 blocks are still reachable in loss record 6 of 7
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4F330BC: _IO_file_doallocate (filedoalloc.c:101)
+==11298==    by 0x4F43105: _IO_doallocbuf (genops.c:373)
+==11298==    by 0x4F43105: _IO_doallocbuf (genops.c:368)
+==11298==    by 0x4F40CCE: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:487)
+==11298==    by 0x4F34D51: getdelim (iogetdelim.c:77)
+==11298==    by 0x400409A: getline (stdio.h:120)
+==11298==    by 0x400409A: oshell_read_line (utils.c:208)
+==11298==    by 0x400409A: oshell_loop (utils.c:224)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 73,728 bytes in 1 blocks are still reachable in loss record 7 of 7
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x5151E7F: pool (eh_alloc.cc:235)
+==11298==    by 0x5151E7F: __static_initialization_and_destruction_0 (eh_alloc.cc:373)
+==11298==    by 0x5151E7F: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:456)
+==11298==    by 0x40102F6: call_init (dl-init.c:74)
+==11298==    by 0x40102F6: call_init (dl-init.c:26)
+==11298==    by 0x40103CC: _dl_init (dl-init.c:121)
+==11298==    by 0x402861F: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+==11298== 
+==11298== LEAK SUMMARY:
+==11298==    definitely lost: 796 bytes in 9 blocks
+==11298==    indirectly lost: 0 bytes in 0 blocks
+==11298==      possibly lost: 120 bytes in 1 blocks
+==11298==    still reachable: 74,872 bytes in 3 blocks
+==11298==         suppressed: 0 bytes in 0 blocks
+==11298== 
+==11298== ERROR SUMMARY: 16 errors from 11 contexts (suppressed: 0 from 0)
+==11298== 
+==11298== 1 errors in context 1 of 11:
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x40057FF: execute_command (execute_command.c:130)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 
+==11298== 1 errors in context 2 of 11:
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x4005770: execute_command (execute_command.c:90)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 
+==11298== 1 errors in context 3 of 11:
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x4005630: execute_command (execute_command.c:56)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 
+==11298== 2 errors in context 4 of 11:
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x40057D8: execute_command (execute_command.c:130)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 
+==11298== 2 errors in context 5 of 11:
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x400574D: execute_command (execute_command.c:90)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 
+==11298== 2 errors in context 6 of 11:
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x4005578: execute_command (execute_command.c:28)
+==11298==    by 0x40040B5: oshell_loop (utils.c:227)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== 
+==11298== 3 errors in context 7 of 11:
+==11298== Conditional jump or move depends on uninitialised value(s)
+==11298==    at 0x4005135: parse (parsing.c:58)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298==  Uninitialised value was created by a heap allocation
+==11298==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==11298==    by 0x4004FFF: parse (parsing.c:38)
+==11298==    by 0x40040AA: oshell_loop (utils.c:225)
+==11298==    by 0x4003CCB: main (main.c:27)
+==11298== 
+==11298== ERROR SUMMARY: 16 errors from 11 contexts (suppressed: 0 from 0)

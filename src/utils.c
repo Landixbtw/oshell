@@ -1,10 +1,6 @@
-#include <stdio.h>
-#include <unistd.h>
-#define _GNU_SOURCE
-
 #include "../include/Header.h"
 
-void show_usage()
+void show_usage(void)
 {
     fprintf(stderr, "oshell usage: \n"
         "\tthis is just a basic shell, I made for fun.\n"

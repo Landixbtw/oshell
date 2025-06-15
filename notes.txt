@@ -1,8 +1,9 @@
-open in build dir
+./build.sh -u && ./build/oshell
 
-cd .. && ./build.sh -u && cd build/ && valgrind --leak-check=full \
+# open in same as build.sh
+./build.sh -u valgrind --leak-check=full \
         --show-leak-kinds=all \
         --track-origins=yes \
         --verbose \
         --log-file=valgrind-out.txt \
-        ./oshell
+        ./build/oshell

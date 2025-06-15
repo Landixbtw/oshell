@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# Default build type
-BUILD_TYPE="Debug"
+# Default values
+BUILD_TYPE="debug"
 BUILD_DIR="build"
 SANITIZER=""
+CLEAN=0
 
 # Help message
 show_help() {
@@ -16,6 +17,9 @@ show_help() {
     echo "  -m, --msan          Build with Memory Sanitizer"
     echo "  -t, --tsan          Build with Thread Sanitizer"
     echo "  -u, --ubsan         Build with Undefined Behavior Sanitizer"
+    echo ""
+    echo "Note: MSAN only works with Clang"
+    echo "      TSAN can't be combined with ASAN"
 }
 
 # Process command line arguments
@@ -30,23 +34,23 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -r|--release)
-            BUILD_TYPE="Release"
+            BUILD_TYPE="release"
             shift
             ;;
         -a|--asan)
-            SANITIZER="ASAN"
+            SANITIZER="address"
             shift
             ;;
         -m|--msan)
-            SANITIZER="MSAN"
+            SANITIZER="memory"
             shift
             ;;
         -t|--tsan)
-            SANITIZER="TSAN"
+            SANITIZER="thread"
             shift
             ;;
         -u|--ubsan)
-            SANITIZER="UBSAN"
+            SANITIZER="undefined"
             shift
             ;;
         *)
@@ -58,33 +62,32 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Clean build directory if requested
-if [[ -n "$CLEAN" ]]; then
+if [[ $CLEAN -eq 1 ]]; then
     echo "Cleaning build directory..."
     rm -rf "$BUILD_DIR"
 fi
 
-# Create build directory if it doesn't exist
-mkdir -p "$BUILD_DIR"
-cd "$BUILD_DIR"
+# Meson setup command
+MESON_OPTS="-Dbuildtype=$BUILD_TYPE"
 
-# Base CMake command with English language
-CMAKE_CMD="LANG=C cmake"
-
-# Add sanitizer flag if specified
+# Add sanitizer if specified
 if [[ -n "$SANITIZER" ]]; then
-    CMAKE_CMD="$CMAKE_CMD -DENABLE_${SANITIZER}=ON"
+    MESON_OPTS="$MESON_OPTS -Db_sanitize=$SANITIZER"
 fi
 
-# Add build type
-CMAKE_CMD="$CMAKE_CMD -DCMAKE_BUILD_TYPE=$BUILD_TYPE .."
+# Setup build directory
+echo "Setting up build with: meson setup $BUILD_DIR $MESON_OPTS"
+LANG=C meson setup "$BUILD_DIR" $MESON_OPTS
 
-# Run CMake
-echo "Running: $CMAKE_CMD"
-eval "$CMAKE_CMD"
+# Check setup status
+if [ $? -ne 0 ]; then
+    echo "Meson setup failed!"
+    exit 1
+fi
 
 # Build the project
 echo "Building..."
-cmake --build .
+ninja -C "$BUILD_DIR"
 
 # Check build status
 if [ $? -eq 0 ]; then

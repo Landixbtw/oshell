@@ -74,22 +74,6 @@ int execute_command(char **args)
         return -1;
     }
 
-    // NOTE: echo $HOST, echo $OSTYPE return null on oshell, but return something with zsh
-
-    envChar = args[1][0];
-
-    // we start at the first second char, this should be the first letter after
-    // $ and we copy everything short of 1 and put it together into one String
-    strncpy(envVar, &args[1][1], sizeof(args[1] -1));
-
-    char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
-    // when we just use envChar, (a non null terminated char) strcmp wont now when the 
-    // strings ends, and just read garbage strcmp wont now when the 
-    // strings ends, and just read garbage
-    if(args[0] != NULL && args[1] != NULL && strcmp("$",envCharStr) == 0) {
-        fprintf(stderr, "%s\n", secure_getenv(envVar));
-        return 0;
-    }
 
     /*
      * input redirection -> < function
@@ -215,4 +199,26 @@ int execute_command(char **args)
             close(fd_in);
     }
     return 0;
+
+
+    // FIX: This is broken
+    // NOTE: echo $HOST, echo $OSTYPE return null on oshell, but return something with zsh
+
+    // WARN: !!!!!!
+    envChar = args[1][0];
+
+    // we start at the first second char, this should be the first letter after
+    // $ and we copy everything short of 1 and put it together into one String
+    strncpy(envVar, &args[1][1], sizeof(args[1] -1));
+
+    char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
+    // when we just use envChar, (a non null terminated char) strcmp wont now when the 
+    // strings ends, and just read garbage strcmp wont now when the 
+    // strings ends, and just read garbage
+    if(args[0] != NULL && args[1] != NULL && strcmp("$",envCharStr) == 0) {
+        fprintf(stderr, "%s\n", secure_getenv(envVar));
+        return 0;
+    }
 }
+
+

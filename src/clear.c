@@ -16,7 +16,6 @@ void clear(void)
     for (int i = 0; i < w.ws_row; i++) {
         fprintf(stderr, "\n");
     }
-
     fprintf(stderr, "\033[0;0H");
     return;
 }
