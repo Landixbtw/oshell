@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+#define GNU_SOURCE
 
 #include "../include/Header.h"
 
@@ -25,7 +25,7 @@ int execute_command(char **args)
 
     assert(command != NULL);
     // cd -> CD function - utils.c
-    if (command != NULL && args[1] != NULL && strcmp("cd", command) == 0)
+    if (args[1] != NULL && strcmp("cd", command) == 0)
     {
         int status = change_directory(args[1]);
         if (status != 0) {
@@ -33,7 +33,7 @@ int execute_command(char **args)
             return 1;
         }
         return 0;
-    } else if (command != NULL && args[1] == NULL && strcmp("cd", command) == 0) {
+    } else if (args[1] == NULL && strcmp("cd", command) == 0) {
         chdir(getenv("HOME"));
         return 0;
     }
@@ -46,7 +46,6 @@ int execute_command(char **args)
             return 1;
         }
         return 0;
-        // FIX: This does not work
     } else if (args[0] != NULL && args[1] == NULL && strcmp("kill", command) == 0) {
         fprintf(stderr,"Please give a process to kill.\n");
         return 1;
@@ -61,17 +60,6 @@ int execute_command(char **args)
     if (args[0] != NULL && strcmp("clear", command) == 0) {
         clear();
         return 0;
-    }
-
-    // env -> getenvvar
-    // if the first char after echo is a $ we want to pass it on to getenvvar()
-    // else just pass it to execute
-    char envChar; 
-    // init envVar
-    char *envVar = malloc(sizeof(args[1]));
-    if(envVar == NULL) {
-        fprintf(stderr, "execute_command(): *envVar: Error when trying to allocate 'sizeof(args[1])' memory. \n");
-        return -1;
     }
 
 
@@ -166,8 +154,10 @@ int execute_command(char **args)
         int res = execv(scmd, args);
         if (res == -1) {
             perror("execv() failed");
+            free(scmd);
             exit(EXIT_FAILURE);
         }
+        free(scmd);
         sleep(5);
         exit(1);
     }
@@ -181,7 +171,7 @@ int execute_command(char **args)
                 break;
                 // printf("child exited with status of %d\n", WEXITSTATUS(status));
             } else {
-                puts("child did not exit succesfully");
+                puts("child did not exit successfully");
             }
         }
    } while (pid == 0);
@@ -198,27 +188,33 @@ int execute_command(char **args)
         if (fd_in != -1)
             close(fd_in);
     }
-    return 0;
-
-
-    // FIX: This is broken
-    // NOTE: echo $HOST, echo $OSTYPE return null on oshell, but return something with zsh
-
-    // WARN: !!!!!!
-    envChar = args[1][0];
-
-    // we start at the first second char, this should be the first letter after
-    // $ and we copy everything short of 1 and put it together into one String
-    strncpy(envVar, &args[1][1], sizeof(args[1] -1));
-
-    char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
-    // when we just use envChar, (a non null terminated char) strcmp wont now when the 
-    // strings ends, and just read garbage strcmp wont now when the 
-    // strings ends, and just read garbage
-    if(args[0] != NULL && args[1] != NULL && strcmp("$",envCharStr) == 0) {
-        fprintf(stderr, "%s\n", secure_getenv(envVar));
-        return 0;
+    // env -> getenvvar
+    // if the first char after echo is a $ we want to pass it on to getenvvar()
+    // else just pass it to execute
+    // init envVar
+    char *envVar = malloc(sizeof(args[1]));
+    if(envVar == NULL) {
+        fprintf(stderr, "execute_command(): *envVar: Error when trying to allocate 'sizeof(args[1])' memory. \n");
+        return -1;
     }
+    // NOTE: echo $HOST, echo $OSTYPE return null on oshell, but return something with zsh
+    if(args[1]) {
+        char envChar = args[1][0];
+        // we start at the first second char, this should be the first letter after
+        // $ and we copy everything short of 1 and put it together into one String
+        strncpy(envVar, &args[1][1], sizeof(args[1] -1));
+
+        char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
+        // when we just use envChar, (a non null terminated char) strcmp wont now when the
+        // strings ends, and just read garbage strcmp wont now when the
+        // strings ends, and just read garbage
+        if(args[0] != NULL && args[1] != NULL && strcmp("$",envCharStr) == 0) {
+            secure_getenv(envVar);
+            free(envVar);
+            return 0;
+        }
+    }
+    return 0;
 }
 
 

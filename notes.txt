@@ -1,7 +1,7 @@
 ./build.sh -u && ./build/oshell
 
 # open in same as build.sh
-./build.sh -u valgrind --leak-check=full \
+./build.sh -u && valgrind --leak-check=full \
         --show-leak-kinds=all \
         --track-origins=yes \
         --verbose \
