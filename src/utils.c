@@ -52,7 +52,7 @@ int string_to_int(char *string) {
 }
 
 // this reads the input
-char *oshell_read_line()
+char *oshell_read_line(void)
 {
     char *line = NULL;
     size_t buffsize = 0;
@@ -62,9 +62,11 @@ char *oshell_read_line()
         if(feof(stdin))
         {
             // EOF
+            free(line);
             exit(EXIT_SUCCESS);
         } else {
             perror("oshell: readline");
+            free(line);
             exit(EXIT_FAILURE);
         }
     }
@@ -77,6 +79,7 @@ void oshell_loop(void)
     char **args = parse(user_input);
 
     execute_command(args);
+    free(user_input);
     free(args);
 }
 

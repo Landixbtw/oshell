@@ -85,6 +85,7 @@ int _pipe(char **args)
             // scmd = make_command(cmd1);
             // execv(scmd, cmd2);
     }
+    free(scmd);
     close(fildes[0]);
     close(fildes[1]);
 

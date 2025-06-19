@@ -1,196 +1,256 @@
-==6273== Memcheck, a memory error detector
-==6273== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
-==6273== Using Valgrind-3.25.1-4441567fbe-20250520 and LibVEX; rerun with -h for copyright info
-==6273== Command: ./build/oshell
-==6273== Parent PID: 6113
-==6273== 
---6273-- 
---6273-- Valgrind options:
---6273--    --leak-check=full
---6273--    --show-leak-kinds=all
---6273--    --track-origins=yes
---6273--    --verbose
---6273--    --log-file=valgrind-out.txt
---6273-- Contents of /proc/version:
---6273--   Linux version 6.15.2-arch1-1 (linux@archlinux) (gcc (GCC) 15.1.1 20250425, GNU ld (GNU Binutils) 2.44.0) #1 SMP PREEMPT_DYNAMIC Tue, 10 Jun 2025 21:32:33 +0000
---6273-- 
---6273-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed-fma
---6273-- Page sizes: currently 4096, max supported 4096
---6273-- Valgrind library directory: /usr/lib/valgrind
---6273-- Reading syms from /home/ole/Dokumente/Projekte/c/oshell/build/oshell
---6273-- Reading syms from /usr/lib/ld-linux-x86-64.so.2
-==6273== Downloading debug info for /usr/lib/ld-linux-x86-64.so.2...
---6273--   Considering /home/ole/.cache/debuginfod_client/880803fb40ebf69518d6a56628ce2be9c5f5c89b/debuginfo ..
---6273--   .. CRC is valid
-==6273== Successfully downloaded debug file for /usr/lib/ld-linux-x86-64.so.2
---6273-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
---6273--    object doesn't have a dynamic symbol table
---6273-- Scheduler: using generic scheduler lock implementation.
---6273-- Reading suppressions file: /usr/lib/valgrind/default.supp
-==6273== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-6273-by-ole-on-???
-==6273== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-6273-by-ole-on-???
-==6273== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-6273-by-ole-on-???
-==6273== 
-==6273== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==6273== don't want to do, unless you know exactly what you're doing,
-==6273== or are doing some strange experiment):
-==6273==   /usr/lib/valgrind/../../bin/vgdb --pid=6273 ...command...
-==6273== 
-==6273== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==6273==   /path/to/gdb ./build/oshell
-==6273== and then give GDB the following command
-==6273==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=6273
-==6273== --pid is optional if only one valgrind process is running
-==6273== 
-==6273== Downloading debug info for /usr/lib/valgrind/memcheck-amd64-linux...
---6273--   Considering /home/ole/.cache/debuginfod_client/d3be6428a75911b4e88b7f513aaf1d171beabc21/debuginfo ..
---6273--   .. CRC is valid
-==6273== Successfully downloaded debug file for /usr/lib/valgrind/memcheck-amd64-linux
---6273-- Warning: cross-CU LIMITATION: some inlined fn names
---6273-- might be shown as UnknownInlinedFun
---6273-- REDIR: 0x4032520 (ld-linux-x86-64.so.2:strlen) redirected to 0x5823f6d2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
---6273-- REDIR: 0x4030ee0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x5823f6ec (vgPlain_amd64_linux_REDIR_FOR_strcmp)
---6273-- REDIR: 0x4030cb0 (ld-linux-x86-64.so.2:index) redirected to 0x5823f725 (vgPlain_amd64_linux_REDIR_FOR_index)
---6273-- REDIR: 0x4030040 (ld-linux-x86-64.so.2:bcmp) redirected to 0x5823f707 (vgPlain_amd64_linux_REDIR_FOR_memcmp)
---6273-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
---6273-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
-==6273== WARNING: new redirection conflicts with existing -- ignoring it
---6273--     old: 0x04030ee0 (strcmp              ) R-> (0000.0) 0x5823f6ec vgPlain_amd64_linux_REDIR_FOR_strcmp
-==6273== Downloading debug info for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so...
---6273--   Considering /home/ole/.cache/debuginfod_client/403753d6c7387bebdec4dfaaa93f7790525577d9/debuginfo ..
---6273--   .. CRC is valid
-==6273== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
---6273--     new: 0x04030ee0 (strcmp              ) R-> (2016.0) 0x0485b2f0 strcmp
-==6273== WARNING: new redirection conflicts with existing -- ignoring it
---6273--     old: 0x04032520 (strlen              ) R-> (0000.0) 0x5823f6d2 vgPlain_amd64_linux_REDIR_FOR_strlen
---6273--     new: 0x04032520 (strlen              ) R-> (2007.0) 0x04859e80 strlen
---6273-- REDIR: 0x4030310 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x485fa80 (mempcpy)
---6273-- Reading syms from /usr/lib/libubsan.so.1.0.0
---6273-- Reading syms from /usr/lib/libc.so.6
-==6273== Downloading debug info for /usr/lib/libc.so.6...
---6273--   Considering /home/ole/.cache/debuginfod_client/468e3585c794491a48ea75fceb9e4d6b1464fc35/debuginfo ..
---6273--   .. CRC is valid
-==6273== Successfully downloaded debug file for /usr/lib/libc.so.6
---6273-- Reading syms from /usr/lib/libstdc++.so.6.0.34
---6273-- Reading syms from /usr/lib/libm.so.6
---6273-- Reading syms from /usr/lib/libgcc_s.so.1
---6273-- REDIR: 0x40326c0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x485aa50 (strncmp)
-==6273== Downloading debug info for /usr/lib/valgrind/vgpreload_core-amd64-linux.so...
---6273--   Considering /home/ole/.cache/debuginfod_client/0c51105d9993ab51719a1f2cded9603486a0d0b6/debuginfo ..
---6273--   .. CRC is valid
-==6273== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_core-amd64-linux.so
---6273-- REDIR: 0x4f62140 (libc.so.6:strncasecmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5f3d0 (libc.so.6:mempcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f75890 (libc.so.6:wcpncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5f740 (libc.so.6:stpcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4fd9320 (libc.so.6:__memmove_chk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f83e20 (libc.so.6:wmemcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f60390 (libc.so.6:strcat) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5ea00 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f77740 (libc.so.6:wcsncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4fd9210 (libc.so.6:__memcpy_chk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
-==6273== WARNING: new redirection conflicts with existing -- ignoring it
---6273--     old: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2024.0) 0x0485f460 __memmove_chk
---6273--     new: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2030.0) 0x0485fb90 __memcpy_chk
---6273-- REDIR: 0x4f76e80 (libc.so.6:wcslen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5f560 (libc.so.6:memset) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f777b0 (libc.so.6:wcsnlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f62440 (libc.so.6:strnlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f624c0 (libc.so.6:strpbrk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f60500 (libc.so.6:strcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5f4e0 (libc.so.6:memrchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f75ca0 (libc.so.6:wcschr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f60400 (libc.so.6:index) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f624f0 (libc.so.6:rindex) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f75d40 (libc.so.6:wcscmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5f7b0 (libc.so.6:stpncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f83da0 (libc.so.6:wmemchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f622e0 (libc.so.6:strncmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5f810 (libc.so.6:strcasecmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f615e0 (libc.so.6:strcspn) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f76c60 (libc.so.6:wcscpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f621e0 (libc.so.6:strncasecmp_l) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f60480 (libc.so.6:strchrnul) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5e910 (libc.so.6:bcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f61570 (libc.so.6:strcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5f8b0 (libc.so.6:strcasecmp_l) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f620c0 (libc.so.6:strlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f62380 (libc.so.6:strncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f5f2c0 (libc.so.6:memmove) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
-==6273== Preferring higher priority redirection:
---6273--     old: 0x0501ff80 (__memcpy_avx_unalign) R-> (2018.0) 0x0485c9a0 __memcpy_avx_unaligned_erms
---6273--     new: 0x0501ff80 (__memcpy_avx_unalign) R-> (2018.1) 0x0485e730 memmove
---6273-- REDIR: 0x4f5e890 (libc.so.6:memchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x4f626f0 (libc.so.6:strspn) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
-==6273== WARNING: new redirection conflicts with existing -- ignoring it
---6273--     old: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2024.0) 0x0485f460 __memmove_chk
---6273--     new: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2030.0) 0x0485fb90 __memcpy_chk
---6273-- REDIR: 0x4f62ff0 (libc.so.6:strstr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
---6273-- REDIR: 0x5024bb0 (libc.so.6:__strrchr_avx2) redirected to 0x48595e0 (rindex)
---6273-- REDIR: 0x5022d00 (libc.so.6:__strlen_avx2) redirected to 0x4859d60 (strlen)
---6273-- REDIR: 0x501f820 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x485dd20 (bcmp)
---6273-- REDIR: 0x5023de0 (libc.so.6:__strncmp_avx2) redirected to 0x485a820 (strncmp)
---6273-- REDIR: 0x4f5a610 (libc.so.6:malloc) redirected to 0x4850730 (malloc)
---6273-- REDIR: 0x5022360 (libc.so.6:__strchrnul_avx2) redirected to 0x485f510 (strchrnul)
---6273-- REDIR: 0x501ff80 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x485e730 (memmove)
-==6273== 
-==6273== Process terminating with default action of signal 2 (SIGINT)
-==6273==    at 0x4F46006: __internal_syscall_cancel (cancellation.c:64)
-==6273==    by 0x4F46023: __syscall_cancel (cancellation.c:75)
-==6273==    by 0x4FC05DD: read (read.c:26)
-==6273==    by 0x4F40C3B: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:518)
-==6273==    by 0x4F34D51: getdelim (iogetdelim.c:77)
-==6273==    by 0x400402A: getline (stdio.h:120)
-==6273==    by 0x400402A: oshell_read_line (utils.c:60)
-==6273==    by 0x400402A: oshell_loop (utils.c:76)
-==6273==    by 0x4003C5B: main (main.c:27)
-==6273== 
-==6273== HEAP SUMMARY:
-==6273==     in use at exit: 75,000 bytes in 4 blocks
-==6273==   total heap usage: 4 allocs, 0 frees, 75,000 bytes allocated
-==6273== 
-==6273== Searching for pointers to 4 not-freed blocks
-==6273== Checked 6,047,184 bytes
-==6273== 
-==6273== 120 bytes in 1 blocks are still reachable in loss record 1 of 4
-==6273==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
-==6273==    by 0x4F34D25: getdelim (iogetdelim.c:65)
-==6273==    by 0x400402A: getline (stdio.h:120)
-==6273==    by 0x400402A: oshell_read_line (utils.c:60)
-==6273==    by 0x400402A: oshell_loop (utils.c:76)
-==6273==    by 0x4003C5B: main (main.c:27)
-==6273== 
-==6273== 128 bytes in 1 blocks are definitely lost in loss record 2 of 4
-==6273==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
-==6273==    by 0x4003C81: main (main.c:16)
-==6273== 
-==6273== 1,024 bytes in 1 blocks are still reachable in loss record 3 of 4
-==6273==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
-==6273==    by 0x4F330BC: _IO_file_doallocate (filedoalloc.c:101)
-==6273==    by 0x4F43105: _IO_doallocbuf (genops.c:373)
-==6273==    by 0x4F43105: _IO_doallocbuf (genops.c:368)
-==6273==    by 0x4F40CCE: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:487)
-==6273==    by 0x4F34D51: getdelim (iogetdelim.c:77)
-==6273==    by 0x400402A: getline (stdio.h:120)
-==6273==    by 0x400402A: oshell_read_line (utils.c:60)
-==6273==    by 0x400402A: oshell_loop (utils.c:76)
-==6273==    by 0x4003C5B: main (main.c:27)
-==6273== 
-==6273== 73,728 bytes in 1 blocks are still reachable in loss record 4 of 4
-==6273==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
-==6273==    by 0x5151E7F: pool (eh_alloc.cc:235)
-==6273==    by 0x5151E7F: __static_initialization_and_destruction_0 (eh_alloc.cc:373)
-==6273==    by 0x5151E7F: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:456)
-==6273==    by 0x40102F6: call_init (dl-init.c:74)
-==6273==    by 0x40102F6: call_init (dl-init.c:26)
-==6273==    by 0x40103CC: _dl_init (dl-init.c:121)
-==6273==    by 0x402861F: ??? (in /usr/lib/ld-linux-x86-64.so.2)
-==6273== 
-==6273== LEAK SUMMARY:
-==6273==    definitely lost: 128 bytes in 1 blocks
-==6273==    indirectly lost: 0 bytes in 0 blocks
-==6273==      possibly lost: 0 bytes in 0 blocks
-==6273==    still reachable: 74,872 bytes in 3 blocks
-==6273==         suppressed: 0 bytes in 0 blocks
-==6273== 
-==6273== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==8279== Memcheck, a memory error detector
+==8279== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==8279== Using Valgrind-3.25.1-4441567fbe-20250520 and LibVEX; rerun with -h for copyright info
+==8279== Command: ./build/oshell
+==8279== Parent PID: 5569
+==8279== 
+--8279-- 
+--8279-- Valgrind options:
+--8279--    --leak-check=full
+--8279--    --show-leak-kinds=all
+--8279--    --track-origins=yes
+--8279--    --verbose
+--8279--    --log-file=valgrind-out.txt
+--8279-- Contents of /proc/version:
+--8279--   Linux version 6.15.2-arch1-1 (linux@archlinux) (gcc (GCC) 15.1.1 20250425, GNU ld (GNU Binutils) 2.44.0) #1 SMP PREEMPT_DYNAMIC Tue, 10 Jun 2025 21:32:33 +0000
+--8279-- 
+--8279-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed-fma
+--8279-- Page sizes: currently 4096, max supported 4096
+--8279-- Valgrind library directory: /usr/lib/valgrind
+--8279-- Reading syms from /home/ole/Dokumente/Projekte/c/oshell/build/oshell
+--8279-- Reading syms from /usr/lib/ld-linux-x86-64.so.2
+==8279== Downloading debug info for /usr/lib/ld-linux-x86-64.so.2...
+--8279--   Considering /home/ole/.cache/debuginfod_client/880803fb40ebf69518d6a56628ce2be9c5f5c89b/debuginfo ..
+--8279--   .. CRC is valid
+==8279== Successfully downloaded debug file for /usr/lib/ld-linux-x86-64.so.2
+--8279-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--8279--    object doesn't have a dynamic symbol table
+--8279-- Scheduler: using generic scheduler lock implementation.
+--8279-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==8279== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-8279-by-ole-on-???
+==8279== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-8279-by-ole-on-???
+==8279== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-8279-by-ole-on-???
+==8279== 
+==8279== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==8279== don't want to do, unless you know exactly what you're doing,
+==8279== or are doing some strange experiment):
+==8279==   /usr/lib/valgrind/../../bin/vgdb --pid=8279 ...command...
+==8279== 
+==8279== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==8279==   /path/to/gdb ./build/oshell
+==8279== and then give GDB the following command
+==8279==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=8279
+==8279== --pid is optional if only one valgrind process is running
+==8279== 
+==8279== Downloading debug info for /usr/lib/valgrind/memcheck-amd64-linux...
+--8279--   Considering /home/ole/.cache/debuginfod_client/d3be6428a75911b4e88b7f513aaf1d171beabc21/debuginfo ..
+--8279--   .. CRC is valid
+==8279== Successfully downloaded debug file for /usr/lib/valgrind/memcheck-amd64-linux
+--8279-- Warning: cross-CU LIMITATION: some inlined fn names
+--8279-- might be shown as UnknownInlinedFun
+--8279-- REDIR: 0x4032520 (ld-linux-x86-64.so.2:strlen) redirected to 0x5823f6d2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--8279-- REDIR: 0x4030ee0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x5823f6ec (vgPlain_amd64_linux_REDIR_FOR_strcmp)
+--8279-- REDIR: 0x4030cb0 (ld-linux-x86-64.so.2:index) redirected to 0x5823f725 (vgPlain_amd64_linux_REDIR_FOR_index)
+--8279-- REDIR: 0x4030040 (ld-linux-x86-64.so.2:bcmp) redirected to 0x5823f707 (vgPlain_amd64_linux_REDIR_FOR_memcmp)
+--8279-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--8279-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+==8279== WARNING: new redirection conflicts with existing -- ignoring it
+--8279--     old: 0x04030ee0 (strcmp              ) R-> (0000.0) 0x5823f6ec vgPlain_amd64_linux_REDIR_FOR_strcmp
+==8279== Downloading debug info for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so...
+--8279--   Considering /home/ole/.cache/debuginfod_client/403753d6c7387bebdec4dfaaa93f7790525577d9/debuginfo ..
+--8279--   .. CRC is valid
+==8279== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--8279--     new: 0x04030ee0 (strcmp              ) R-> (2016.0) 0x0485b2f0 strcmp
+==8279== WARNING: new redirection conflicts with existing -- ignoring it
+--8279--     old: 0x04032520 (strlen              ) R-> (0000.0) 0x5823f6d2 vgPlain_amd64_linux_REDIR_FOR_strlen
+--8279--     new: 0x04032520 (strlen              ) R-> (2007.0) 0x04859e80 strlen
+--8279-- REDIR: 0x4030310 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x485fa80 (mempcpy)
+--8279-- Reading syms from /usr/lib/libubsan.so.1.0.0
+--8279-- Reading syms from /usr/lib/libc.so.6
+==8279== Downloading debug info for /usr/lib/libc.so.6...
+--8279--   Considering /home/ole/.cache/debuginfod_client/468e3585c794491a48ea75fceb9e4d6b1464fc35/debuginfo ..
+--8279--   .. CRC is valid
+==8279== Successfully downloaded debug file for /usr/lib/libc.so.6
+--8279-- Reading syms from /usr/lib/libstdc++.so.6.0.34
+--8279-- Reading syms from /usr/lib/libm.so.6
+--8279-- Reading syms from /usr/lib/libgcc_s.so.1
+--8279-- REDIR: 0x40326c0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x485aa50 (strncmp)
+==8279== Downloading debug info for /usr/lib/valgrind/vgpreload_core-amd64-linux.so...
+--8279--   Considering /home/ole/.cache/debuginfod_client/0c51105d9993ab51719a1f2cded9603486a0d0b6/debuginfo ..
+--8279--   .. CRC is valid
+==8279== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--8279-- REDIR: 0x4f62140 (libc.so.6:strncasecmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5f3d0 (libc.so.6:mempcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f75890 (libc.so.6:wcpncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5f740 (libc.so.6:stpcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4fd9320 (libc.so.6:__memmove_chk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f83e20 (libc.so.6:wmemcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f60390 (libc.so.6:strcat) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5ea00 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f77740 (libc.so.6:wcsncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4fd9210 (libc.so.6:__memcpy_chk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+==8279== WARNING: new redirection conflicts with existing -- ignoring it
+--8279--     old: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2024.0) 0x0485f460 __memmove_chk
+--8279--     new: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2030.0) 0x0485fb90 __memcpy_chk
+--8279-- REDIR: 0x4f76e80 (libc.so.6:wcslen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5f560 (libc.so.6:memset) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f777b0 (libc.so.6:wcsnlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f62440 (libc.so.6:strnlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f624c0 (libc.so.6:strpbrk) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f60500 (libc.so.6:strcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5f4e0 (libc.so.6:memrchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f75ca0 (libc.so.6:wcschr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f60400 (libc.so.6:index) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f624f0 (libc.so.6:rindex) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f75d40 (libc.so.6:wcscmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5f7b0 (libc.so.6:stpncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f83da0 (libc.so.6:wmemchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f622e0 (libc.so.6:strncmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5f810 (libc.so.6:strcasecmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f615e0 (libc.so.6:strcspn) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f76c60 (libc.so.6:wcscpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f621e0 (libc.so.6:strncasecmp_l) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f60480 (libc.so.6:strchrnul) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5e910 (libc.so.6:bcmp) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f61570 (libc.so.6:strcpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5f8b0 (libc.so.6:strcasecmp_l) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f620c0 (libc.so.6:strlen) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f62380 (libc.so.6:strncpy) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f5f2c0 (libc.so.6:memmove) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+==8279== Preferring higher priority redirection:
+--8279--     old: 0x0501ff80 (__memcpy_avx_unalign) R-> (2018.0) 0x0485c9a0 __memcpy_avx_unaligned_erms
+--8279--     new: 0x0501ff80 (__memcpy_avx_unalign) R-> (2018.1) 0x0485e730 memmove
+--8279-- REDIR: 0x4f5e890 (libc.so.6:memchr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x4f626f0 (libc.so.6:strspn) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+==8279== WARNING: new redirection conflicts with existing -- ignoring it
+--8279--     old: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2024.0) 0x0485f460 __memmove_chk
+--8279--     new: 0x0501ff50 (__memcpy_chk_avx_una) R-> (2030.0) 0x0485fb90 __memcpy_chk
+--8279-- REDIR: 0x4f62ff0 (libc.so.6:strstr) redirected to 0x48471a0 (_vgnU_ifunc_wrapper)
+--8279-- REDIR: 0x5024bb0 (libc.so.6:__strrchr_avx2) redirected to 0x48595e0 (rindex)
+--8279-- REDIR: 0x5022d00 (libc.so.6:__strlen_avx2) redirected to 0x4859d60 (strlen)
+--8279-- REDIR: 0x501f820 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x485dd20 (bcmp)
+--8279-- REDIR: 0x5023de0 (libc.so.6:__strncmp_avx2) redirected to 0x485a820 (strncmp)
+--8279-- REDIR: 0x4f5a610 (libc.so.6:malloc) redirected to 0x4850730 (malloc)
+--8279-- REDIR: 0x5022360 (libc.so.6:__strchrnul_avx2) redirected to 0x485f510 (strchrnul)
+--8279-- REDIR: 0x501ff80 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x485e730 (memmove)
+--8279-- REDIR: 0x501f580 (libc.so.6:__memchr_avx2) redirected to 0x485b3b0 (memchr)
+--8279-- REDIR: 0x50424b0 (libc.so.6:__strspn_sse42) redirected to 0x485ff00 (strspn)
+--8279-- REDIR: 0x503f780 (libc.so.6:__strcspn_sse42) redirected to 0x485fe00 (strcspn)
+==8279== Conditional jump or move depends on uninitialised value(s)
+==8279==    at 0x4004755: parse (parsing.c:58)
+==8279==    by 0x4003EF5: oshell_loop (utils.c:79)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279==  Uninitialised value was created by a heap allocation
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x400461F: parse (parsing.c:38)
+==8279==    by 0x4003EF5: oshell_loop (utils.c:79)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+--8279-- REDIR: 0x5022550 (libc.so.6:__strcmp_avx2) redirected to 0x485b180 (strcmp)
+--8279-- REDIR: 0x5022120 (libc.so.6:__strchr_avx2) redirected to 0x4859860 (index)
+--8279-- REDIR: 0x4f5ad60 (libc.so.6:free) redirected to 0x4853880 (free)
+--8279-- REDIR: 0x5020c90 (libc.so.6:__stpcpy_avx2) redirected to 0x485de60 (stpcpy)
+--8279-- REDIR: 0x501ff40 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x485f640 (mempcpy)
+==8279== 
+==8279== HEAP SUMMARY:
+==8279==     in use at exit: 17,065,645 bytes in 2,688 blocks
+==8279==   total heap usage: 3,221 allocs, 533 frees, 17,730,411 bytes allocated
+==8279== 
+==8279== Searching for pointers to 2,688 not-freed blocks
+==8279== Checked 6,185,496 bytes
+==8279== 
+==8279== 80 bytes in 1 blocks are still reachable in loss record 1 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x400461F: parse (parsing.c:38)
+==8279==    by 0x4003EF5: oshell_loop (utils.c:79)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== 120 bytes in 1 blocks are still reachable in loss record 2 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x4F34D25: getdelim (iogetdelim.c:65)
+==8279==    by 0x4003E79: getline (stdio.h:120)
+==8279==    by 0x4003E79: oshell_read_line (utils.c:60)
+==8279==    by 0x4003EEA: oshell_loop (utils.c:78)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== 512 bytes in 4 blocks are definitely lost in loss record 3 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x4003B71: main (main.c:16)
+==8279== 
+==8279== 6,562 bytes in 646 blocks are definitely lost in loss record 4 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x400618C: kill_process (kill_process.c:96)
+==8279==    by 0x40052D1: execute_command (execute_command.c:43)
+==8279==    by 0x4003F00: oshell_loop (utils.c:81)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== 7,584 bytes in 508 blocks are definitely lost in loss record 5 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x4006247: kill_process (kill_process.c:111)
+==8279==    by 0x40052D1: execute_command (execute_command.c:43)
+==8279==    by 0x4003F00: oshell_loop (utils.c:81)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== 9,219 bytes in 508 blocks are definitely lost in loss record 6 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x40062E2: kill_process (kill_process.c:141)
+==8279==    by 0x40052D1: execute_command (execute_command.c:43)
+==8279==    by 0x4003F00: oshell_loop (utils.c:81)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== 32,816 bytes in 1 blocks are possibly lost in loss record 7 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x4F97575: __alloc_dir (opendir.c:115)
+==8279==    by 0x4F975FF: opendir_tail (opendir.c:63)
+==8279==    by 0x40061DF: kill_process (kill_process.c:102)
+==8279==    by 0x40052D1: execute_command (execute_command.c:43)
+==8279==    by 0x4003F00: oshell_loop (utils.c:81)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== 32,816 bytes in 1 blocks are definitely lost in loss record 8 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x4F97575: __alloc_dir (opendir.c:115)
+==8279==    by 0x4F975FF: opendir_tail (opendir.c:63)
+==8279==    by 0x4005F8A: kill_process (kill_process.c:52)
+==8279==    by 0x40052D1: execute_command (execute_command.c:43)
+==8279==    by 0x4003F00: oshell_loop (utils.c:81)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== 239,776 bytes in 508 blocks are still reachable in loss record 9 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x4F33CC8: __fopen_internal (iofopen.c:65)
+==8279==    by 0x400629B: kill_process (kill_process.c:120)
+==8279==    by 0x40052D1: execute_command (execute_command.c:43)
+==8279==    by 0x4003F00: oshell_loop (utils.c:81)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== 16,736,160 bytes in 510 blocks are definitely lost in loss record 10 of 10
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x4F97575: __alloc_dir (opendir.c:115)
+==8279==    by 0x4F975FF: opendir_tail (opendir.c:63)
+==8279==    by 0x40061DF: kill_process (kill_process.c:102)
+==8279==    by 0x40052D1: execute_command (execute_command.c:43)
+==8279==    by 0x4003F00: oshell_loop (utils.c:81)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== LEAK SUMMARY:
+==8279==    definitely lost: 16,792,853 bytes in 2,177 blocks
+==8279==    indirectly lost: 0 bytes in 0 blocks
+==8279==      possibly lost: 32,816 bytes in 1 blocks
+==8279==    still reachable: 239,976 bytes in 510 blocks
+==8279==         suppressed: 0 bytes in 0 blocks
+==8279== 
+==8279== ERROR SUMMARY: 11 errors from 8 contexts (suppressed: 0 from 0)
+==8279== 
+==8279== 4 errors in context 1 of 8:
+==8279== Conditional jump or move depends on uninitialised value(s)
+==8279==    at 0x4004755: parse (parsing.c:58)
+==8279==    by 0x4003EF5: oshell_loop (utils.c:79)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279==  Uninitialised value was created by a heap allocation
+==8279==    at 0x48507A8: malloc (vg_replace_malloc.c:446)
+==8279==    by 0x400461F: parse (parsing.c:38)
+==8279==    by 0x4003EF5: oshell_loop (utils.c:79)
+==8279==    by 0x4003B4B: main (main.c:27)
+==8279== 
+==8279== ERROR SUMMARY: 11 errors from 8 contexts (suppressed: 0 from 0)

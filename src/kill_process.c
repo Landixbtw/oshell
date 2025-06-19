@@ -8,15 +8,15 @@
 
 ✅ 1. **Premature loop termination**: You have `break;` statements in both the success and failure cases that cause the function to exit the loop after checking only 1-2 processes instead of continuing through all `/proc/PID/` directories.
 
-2. **File size calculation problem**: You're using `ftell(fp)` immediately after opening the file, but the file pointer is at position 0, so `ftell()` returns 0. This means you're allocating almost no buffer space.
+✅ 2. **File size calculation problem**: You're using `ftell(fp)` immediately after opening the file, but the file pointer is at position 0, so `ftell()` returns 0. This means you're allocating almost no buffer space.
 
-3. **Buffer reading issues**: The `fread()` approach with `sizeof(buffer)` as parameters is problematic when `buffer` is a pointer.
+✅ 3. **Buffer reading issues**: The `fread()` approach with `sizeof(buffer)` as parameters is problematic when `buffer` is a pointer.
 
 4. **Newline handling**: The `/proc/PID/comm` files contain a trailing newline character that needs to be stripped for accurate string comparison.
 
 5. **Logic error**: The `else if((strcmp(buffer, process_name_or_id) < 0) || (strcmp(buffer, process_name_or_id) > 0))` condition will always be true for non-matching strings, causing an immediate break.
 
-6. **Memory leaks**: `buffer` and `commFilePath` aren't freed in all code paths.
+6. **Memory leaks**: `buffer` and `comm_file_path` aren't freed in all code paths.
 
 ## Secondary Issues:
 
@@ -51,13 +51,22 @@ int kill_process(char *process_name_or_id)
         char *proc_dir_name = "/proc/";
         DIR *dir = opendir(proc_dir_name);
         if(dir == NULL) {
-            perror("oshell: failed to open '/proc/'");
+            //perror("oshell: failed to open '/proc/'");
             exit(EXIT_FAILURE);
         }
         // if(dir == EACCES || ENOMEM) {
         //     perror("oshell: ");
         //     exit(EXIT_FAILURE);
         // }
+
+        char   *buffer;
+        char *comm_file_path;
+        char *full_proc_path;
+
+        FILE            *fp;
+
+        bool process_found = false;
+        bool cleanup = true;
 
         /*
          * We need to open every /proc/pid/comm file  (opendir() and readdir()) and check if the content matches
@@ -79,20 +88,18 @@ int kill_process(char *process_name_or_id)
                 if(!is_numeric(dirent->d_name)) continue;
 
                 // read_proc_dir(proc_dir_name);
-                FILE            *fp;
-                size_t          ret;
-
+                //
                 // string length for proc_dir_name + dirent->d_name
-                size_t fullProcPathLength = strlen(proc_dir_name) + strlen(dirent->d_name) + 1;
+                size_t full_proc_pathLength = strlen(proc_dir_name) + strlen(dirent->d_name) + 1;
                 // invalid write size of 1 for snprintf
                 // core dumped
-                char *fullProcPath = malloc(fullProcPathLength);
-                if(fullProcPath == NULL) {
-                    perror("oshell: not able to allocate enough Memory for variable: 'fullProcPath'");
+                full_proc_path = malloc(full_proc_pathLength);
+                if(full_proc_path == NULL) {
+                    //perror("oshell: not able to allocate enough Memory for variable: 'full_proc_path'");
                     exit(EXIT_FAILURE);
                 }
-                snprintf(fullProcPath, fullProcPathLength ,"%s%s", proc_dir_name, dirent->d_name);
-                if((opendir(fullProcPath)) != NULL ) {
+                snprintf(full_proc_path, full_proc_pathLength ,"%s%s", proc_dir_name, dirent->d_name);
+                if((opendir(full_proc_path)) != NULL ) {
 
                     // this saves the dir name of the comm file we are about to visit
                     // we can "save" the dir name and convert + cast it to a pid so
@@ -100,63 +107,78 @@ int kill_process(char *process_name_or_id)
                     // and can kill the process via kill()
                     pid = (pid_t)atoi(dirent->d_name);
 
-                    size_t commFilePathLength = strlen(proc_dir_name) + strlen(dirent->d_name) + strlen("/comm") + 1;
-                    char *commFilePath = malloc(commFilePathLength);
-                    if(commFilePath == NULL) {
-                        perror("oshell: not able to allocate enough Memory for variable: 'commFilePath'");
+                    size_t comm_file_pathLength = strlen(proc_dir_name) + strlen(dirent->d_name) + strlen("/comm") + 1;
+                    comm_file_path = malloc(comm_file_pathLength);
+                    if(comm_file_path == NULL) {
+                        //perror("oshell: not able to allocate enough Memory for variable: 'comm_file_path'");
+                        free(full_proc_path);
+                        free(comm_file_path);
                         exit(EXIT_FAILURE);
                     }
-                    snprintf(commFilePath, commFilePathLength,"%s%s/comm", proc_dir_name, dirent->d_name);
+                    snprintf(comm_file_path, comm_file_pathLength,"%s%s/comm", proc_dir_name, dirent->d_name);
 
-                    //fprintf(stderr, "\nfilepath for comm file: [%s]\n", commFilePath);
-
-                    fp = fopen(commFilePath, "r");
-                    if(!fp) {
-                        perror("oshell: kill_process(): fopen()");
+                    fp = fopen(comm_file_path, "r");
+                    if(fp == NULL) {
+                        //perror("oshell: kill_process(): fopen()");
+                        free(comm_file_path);
+                        free(full_proc_path);
+                        // no fclose here, because if fp is NULL we cant close a file 
+                        // that is NULL
                         return EXIT_FAILURE;
-                    } else {
-                        //fprintf(stderr, "opened file %s \n", commFilePath);
                     }
+
+                    // there is something with the /proc/*/comm files that causes issues with
+                    // using ftell. so this is seems to be a way to do it.
+
+                    long filesize = 0;
+                    while (getc(fp) != EOF)
+                        filesize++;
+                    fseek(fp, 0, SEEK_SET);
+
                     // https://stackoverflow.com/questions/4850241/how-many-bits-or-bytes-are-there-in-a-character
-                    size_t          BUFFER_SIZE = sizeof(char);
-                    // filesize is not correct cause cursor is at pos 0
-                    long file_size = ftell(fp);
+                    size_t          BUFFER_SIZE = ((sizeof(char) * filesize) +1);
 
-                    char   *buffer = malloc((BUFFER_SIZE * file_size) + 1);
+                    buffer = malloc(BUFFER_SIZE);
 
-                    // using sizeof(buffer) instead of BUFFER_SIZE for the 3rd
-                    // argument solve a weird edgecase, where the y for alacritty was cut off
-
-                    // use fgets instead of fread?
-                    //ret = fread(buffer, sizeof(buffer), sizeof(buffer), fp);
-                    fgets(buffer, sizeof(buffer), fp);
-                    //fprintf(stderr, "file content: %s\n\n", buffer);
+                    fgets(buffer, BUFFER_SIZE, fp);
 
                     if(ferror(fp)) {
-                        // fprintf(stderr, "oshell: kill_process(): fread() failed: %zu\n", ret);
-                        perror("kill_process(): fgets failed ");
-                        fclose(fp);
+                        //perror("kill_process(): fgets failed ");
                         free(buffer);
+                        free(comm_file_path);
+                        free(full_proc_path);
+                        fclose(fp);
                         return -2;
                     }
 
-                    // if one has ie \n this should be replaced with \0, but if some word ends with alpha char, then we have
-                    // problem, might be the case?
-                    if(strncmp(strip_non_alpha(buffer), strip_non_alpha(process_name_or_id), 5) == 0) {
-                        fprintf(stderr, "match found: %s / %s\n", process_name_or_id, buffer);
+                    // TODO: When trying to use kill a second time we get error:
+                    // kill_by_name() Error: Too many open files
+                    // why could that be?
+
+                    if(strncmp(buffer, process_name_or_id, 5) == 0) {
+                        // fprintf(stderr, "match found: %s / %s\n", process_name_or_id, buffer);
                         kill(pid, 15);
                         fprintf(stderr,"killed %i\n", pid);
-                        // TODO: Where/how to free when failure?
+                        process_found = true;
+                        cleanup = false;
                         free(buffer);
-                        free(commFilePath);
-                        free(fullProcPath);
+                        free(comm_file_path);
+                        free(full_proc_path);
                         fclose(fp);
                         break;
-                    } else if((strcmp(buffer, process_name_or_id) < 0) || (strcmp(buffer, process_name_or_id) > 0)) {
-                        fprintf(stderr, "Couldn't find the process with the name %s\n", process_name_or_id);
-                    }
+                    } 
                 }
             }
+        }
+        if(!process_found) {
+            fprintf(stderr, "Could not find process '%s'\n", process_name_or_id);
+        } 
+        if (cleanup) {
+            fprintf(stderr, "cleaning up...\n");
+            free(buffer);
+            free(comm_file_path);
+            free(full_proc_path);
+            fclose(fp);
         }
         closedir(dir);
         fprintf(stderr, "Total entries found: %d\n", count);
