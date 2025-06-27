@@ -1,4 +1,5 @@
 #include "../include/Header.h"
+#include <stdio.h>
 
 void show_usage(void)
 {
@@ -112,9 +113,14 @@ int is_numeric(const char *str) {
 //Then, you can create a new string with only the characters between these two positions.
 
 char *strip_non_alpha(char *input_string) {
-    fprintf(stderr, "string: %s \n" , input_string);
     for(int i = strlen(input_string) - 1; i >= 0; i--) {
-            //fprintf(stderr ,"Character: %c, ASCII: %d\n", input_string[i], input_string[i]);
+            // fprintf(stderr ,"Character: %c, ASCII: %d\n", input_string[i], input_string[i]);
+            // if(input_string[i] == '\n') {
+            //     fprintf(stderr, "char is '\\n'");
+            // } 
+            // if(input_string[i] == '\0') {
+            //     fprintf(stderr, "char is '\\0'");
+            // }
             if(!isalpha(input_string[i])) {
                 // remove i from string
                 input_string[i] = '\0';
@@ -122,13 +128,3 @@ char *strip_non_alpha(char *input_string) {
     }
     return input_string;
 }
-
-char *add_NULL_terminator(char *string) {
-    for(int i = strlen(string) - 1; i >= 0; i--) {
-        if(isalpha(string[i])) {
-            string[i + 1] = '\0';
-        }
-    } 
-    return string;
-}
-

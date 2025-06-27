@@ -1,5 +1,7 @@
 #include "../include/Header.h"
+#include <dirent.h>
 #include <stdio.h>
+
 
 /*
 *Sure! Here are the main issues I identified in your original code:
@@ -12,11 +14,13 @@
 
 ✅ 3. **Buffer reading issues**: The `fread()` approach with `sizeof(buffer)` as parameters is problematic when `buffer` is a pointer.
 
-4. **Newline handling**: The `/proc/PID/comm` files contain a trailing newline character that needs to be stripped for accurate string comparison.
+(should be)
+✅ 4. **Newline handling**: The `/proc/PID/comm` files contain a trailing newline character that needs to be stripped for accurate string comparison.
 
-5. **Logic error**: The `else if((strcmp(buffer, process_name_or_id) < 0) || (strcmp(buffer, process_name_or_id) > 0))` condition will always be true for non-matching strings, causing an immediate break.
+✅ 5. **Logic error**: The `else if((strcmp(buffer, process_name_or_id) < 0) || (strcmp(buffer, process_name_or_id) > 0))` condition will always be true for non-matching strings, causing an immediate break.
 
-6. **Memory leaks**: `buffer` and `comm_file_path` aren't freed in all code paths.
+(should also be)
+✅ 6. **Memory leaks**: `buffer` and `comm_file_path` aren't freed in all code paths.
 
 ## Secondary Issues:
 
@@ -41,9 +45,6 @@ int kill_process(char *process_name_or_id)
     // need to get the pid from the name
     // pass the pid to the kill function, with signal for kill (is 9)?
 
-    // c23 has typeof, c11 does not how can we check if process_name_or_id
-    // is int or char*
-
     // if string_to_int returns 1 this mean there were no numbers found
     if(string_to_int(process_name_or_id) == -1) {
         struct dirent *dirent;
@@ -51,6 +52,7 @@ int kill_process(char *process_name_or_id)
         char *proc_dir_name = "/proc/";
         DIR *dir = opendir(proc_dir_name);
         if(dir == NULL) {
+            // no cleanup necessary here because nothing to clean if first thing null
             //perror("oshell: failed to open '/proc/'");
             exit(EXIT_FAILURE);
         }
@@ -59,14 +61,13 @@ int kill_process(char *process_name_or_id)
         //     exit(EXIT_FAILURE);
         // }
 
-        char   *buffer;
-        char *comm_file_path;
-        char *full_proc_path;
+        char   *buffer = NULL;
+        char *comm_file_path = NULL;
+        char *full_proc_path = NULL;
 
-        FILE            *fp;
+        FILE            *fp = NULL;
 
         bool process_found = false;
-        bool cleanup = true;
 
         /*
          * We need to open every /proc/pid/comm file  (opendir() and readdir()) and check if the content matches
@@ -87,14 +88,13 @@ int kill_process(char *process_name_or_id)
 
                 if(!is_numeric(dirent->d_name)) continue;
 
-                // read_proc_dir(proc_dir_name);
-                //
                 // string length for proc_dir_name + dirent->d_name
                 size_t full_proc_pathLength = strlen(proc_dir_name) + strlen(dirent->d_name) + 1;
                 // invalid write size of 1 for snprintf
                 // core dumped
                 full_proc_path = malloc(full_proc_pathLength);
                 if(full_proc_path == NULL) {
+                    goto cleanup;
                     //perror("oshell: not able to allocate enough Memory for variable: 'full_proc_path'");
                     exit(EXIT_FAILURE);
                 }
@@ -111,19 +111,17 @@ int kill_process(char *process_name_or_id)
                     comm_file_path = malloc(comm_file_pathLength);
                     if(comm_file_path == NULL) {
                         //perror("oshell: not able to allocate enough Memory for variable: 'comm_file_path'");
-                        free(full_proc_path);
-                        free(comm_file_path);
+                        goto cleanup;
                         exit(EXIT_FAILURE);
                     }
                     snprintf(comm_file_path, comm_file_pathLength,"%s%s/comm", proc_dir_name, dirent->d_name);
 
+                    // ---- CLOSE FILE FROM HERE ----
+
                     fp = fopen(comm_file_path, "r");
                     if(fp == NULL) {
-                        //perror("oshell: kill_process(): fopen()");
-                        free(comm_file_path);
-                        free(full_proc_path);
-                        // no fclose here, because if fp is NULL we cant close a file 
-                        // that is NULL
+                        // perror("oshell: kill_process(): fopen()");
+                        goto cleanup;
                         return EXIT_FAILURE;
                     }
 
@@ -135,36 +133,42 @@ int kill_process(char *process_name_or_id)
                         filesize++;
                     fseek(fp, 0, SEEK_SET);
 
-                    // https://stackoverflow.com/questions/4850241/how-many-bits-or-bytes-are-there-in-a-character
                     size_t          BUFFER_SIZE = ((sizeof(char) * filesize) +1);
 
                     buffer = malloc(BUFFER_SIZE);
+                    if(buffer == NULL) {
+                        goto cleanup;
+                        return -2;
+                    }
 
                     fgets(buffer, BUFFER_SIZE, fp);
 
                     if(ferror(fp)) {
                         //perror("kill_process(): fgets failed ");
-                        free(buffer);
-                        free(comm_file_path);
-                        free(full_proc_path);
-                        fclose(fp);
+                        goto cleanup;
                         return -2;
                     }
 
-                    // TODO: When trying to use kill a second time we get error:
-                    // kill_by_name() Error: Too many open files
-                    // why could that be?
-
-                    if(strncmp(buffer, process_name_or_id, 5) == 0) {
-                        // fprintf(stderr, "match found: %s / %s\n", process_name_or_id, buffer);
+                    if(strcmp(strip_non_alpha(buffer), strip_non_alpha(process_name_or_id)) == 0) {
+                        fprintf(stderr, "match found: %s / %s\n", process_name_or_id, buffer);
+                        for(unsigned int i = 0; i < strlen(process_name_or_id); i++) {
+                            // if(process_name_or_id[i] == '\0') {
+                            //     fprintf(stderr, "process char is '\\0'");
+                            // }
+                            // if(process_name_or_id[i] == '\n') {
+                            //     fprintf(stderr, "process char is '\\n'");
+                            // }
+                            // if(buffer[i] == '\0') {
+                            //     fprintf(stderr, "process char is '\\0'");
+                            // }
+                            // if(buffer[i] == '\n') {
+                            //     fprintf(stderr, "process char is '\\n'");
+                            // }
+                        }
                         kill(pid, 15);
                         fprintf(stderr,"killed %i\n", pid);
                         process_found = true;
-                        cleanup = false;
-                        free(buffer);
-                        free(comm_file_path);
-                        free(full_proc_path);
-                        fclose(fp);
+                        goto cleanup;
                         break;
                     } 
                 }
@@ -173,15 +177,15 @@ int kill_process(char *process_name_or_id)
         if(!process_found) {
             fprintf(stderr, "Could not find process '%s'\n", process_name_or_id);
         } 
-        if (cleanup) {
-            fprintf(stderr, "cleaning up...\n");
-            free(buffer);
-            free(comm_file_path);
-            free(full_proc_path);
-            fclose(fp);
-        }
-        closedir(dir);
-        fprintf(stderr, "Total entries found: %d\n", count);
+    cleanup: 
+        if(buffer) free(buffer);
+        if(comm_file_path) free(comm_file_path);
+        if(full_proc_path) free(full_proc_path);
+        if(fp) fclose(fp);
+        // the directory was not closed in every secenario
+        if(dir) closedir(dir);
+
+        // fprintf(stderr, "Total entries found: %d\n", count);
         return 0;
     } else {
         pid_t pid = string_to_int(process_name_or_id);
