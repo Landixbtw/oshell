@@ -50,4 +50,5 @@ char *strip_non_alpha(char *input_string);
 char *add_NULL_terminator(char *string);
 int string_to_int(char *string);
 
+int input_redirection(char **args);
 #endif

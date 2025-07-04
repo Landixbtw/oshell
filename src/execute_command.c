@@ -102,6 +102,7 @@ int execute_command(char **args)
         do_input_redirection = 1;
     }
 
+
     /*
      *  output redirection
      *  This redirects the output from a command not to the console stream
@@ -194,10 +195,10 @@ int execute_command(char **args)
     // init envVar
     char *envVar = malloc(sizeof(args[1]));
     if(envVar == NULL) {
-        fprintf(stderr, "execute_command(): *envVar: Error when trying to allocate 'sizeof(args[1])' memory. \n");
+        fprintf(stderr, "execute_command(): *envVar: Error when trying to allocate 'sizeof(%s)' memory. \n", args[1]);
         return -1;
     }
-    // NOTE: echo $HOST, echo $OSTYPE return null on oshell, but return something with zsh
+    // NOTE: echo $HOST, echo $OSTYPE just parrot back, on oshell, but return something valid with zsh
     if(args[1]) {
         char envChar = args[1][0];
         // we start at the first second char, this should be the first letter after
