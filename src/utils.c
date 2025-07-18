@@ -114,17 +114,17 @@ int is_numeric(const char *str) {
 
 char *strip_non_alpha(char *input_string) {
     for(int i = strlen(input_string) - 1; i >= 0; i--) {
-            // fprintf(stderr ,"Character: %c, ASCII: %d\n", input_string[i], input_string[i]);
-            // if(input_string[i] == '\n') {
-            //     fprintf(stderr, "char is '\\n'");
-            // } 
-            // if(input_string[i] == '\0') {
-            //     fprintf(stderr, "char is '\\0'");
-            // }
-            if(!isalpha(input_string[i])) {
-                // remove i from string
-                input_string[i] = '\0';
-            }
+        // fprintf(stderr ,"Character: %c, ASCII: %d\n", input_string[i], input_string[i]);
+        // if(input_string[i] == '\n') {
+        //     fprintf(stderr, "char is '\\n'");
+        // } 
+        // if(input_string[i] == '\0') {
+        //     fprintf(stderr, "char is '\\0'");
+        // }
+        if(!isalpha(input_string[i])) {
+            // remove i from string
+            input_string[i] = '\0';
+        }
     }
     return input_string;
 }

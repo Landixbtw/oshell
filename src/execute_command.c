@@ -160,7 +160,7 @@ int execute_command(char **args)
         }
         free(scmd);
         sleep(5);
-        exit(1);
+        return(1);
     }
     else do {
         if ((pid = waitpid(pid, &status, WNOHANG)) == -1)
