@@ -1,10 +1,10 @@
 #!/bin/bash
-
 # Default values
 BUILD_TYPE="debug"
-BUILD_DIR="build"
+BUILD_DIR="buildDir"
 SANITIZER=""
 CLEAN=0
+RUN_GO_TESTS=0
 
 # Help message
 show_help() {
@@ -17,6 +17,7 @@ show_help() {
     echo "  -m, --msan          Build with Memory Sanitizer"
     echo "  -t, --tsan          Build with Thread Sanitizer"
     echo "  -u, --ubsan         Build with Undefined Behavior Sanitizer"
+    echo "  --run-go-tests       Build and run Go integration tests"
     echo ""
     echo "Note: MSAN only works with Clang"
     echo "      TSAN can't be combined with ASAN"
@@ -51,6 +52,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -u|--ubsan)
             SANITIZER="undefined"
+            shift
+            ;;
+        --run-go-tests)
+            RUN_GO_TESTS=1
             shift
             ;;
         *)
@@ -93,6 +98,40 @@ ninja -C "$BUILD_DIR"
 if [ $? -eq 0 ]; then
     echo "Build successful!"
     echo "Binary location: $BUILD_DIR/oshell"
+    
+    # Run Go tests if requested
+    if [[ $RUN_GO_TESTS -eq 1 ]]; then
+        echo ""
+        echo "Running Go integration tests..."
+        
+        # Check if integration_tests directory exists
+        if [[ -d "integration_tests" ]]; then
+            cd integration_tests
+            
+            # Check if go.mod exists
+            if [[ -f "go.mod" ]]; then
+                go test -v ./...
+                GO_TEST_STATUS=$?
+                cd ..
+                
+                # Check test status
+                if [ $GO_TEST_STATUS -eq 0 ]; then
+                    echo "All Go integration tests passed!"
+                else
+                    echo "Some Go integration tests failed!"
+                    exit 1
+                fi
+            else
+                echo "Error: go.mod not found in integration_tests directory"
+                echo "Run 'cd integration_tests && go mod init shell-tests' to initialize"
+                exit 1
+            fi
+        else
+            echo "Error: integration_tests directory not found"
+            echo "Create the directory and add your Go test files"
+            exit 1
+        fi
+    fi
 else
     echo "Build failed!"
     exit 1

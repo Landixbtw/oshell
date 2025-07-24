@@ -3,10 +3,6 @@
 
 int main(void){
     for(;;) {
-        // TODO: infront of the wd should be user@machine e.g ole@tux
-        //
-        // TODO: This gets redirected to a file if the user does output
-        // redirection and then the console has no prompt
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
         // we print all the "constant" stuff, to stderr, because if you use
@@ -20,8 +16,12 @@ int main(void){
             exit(EXIT_FAILURE);
         }
 
-        fprintf(stderr ,"%s@%s\n", user, hostname);
-        fprintf(stderr, " %s > ", cwd);
+        // for example
+        // ole@tux
+        // /home / ole / Dokumente / Projekte / c / oshell
+        
+        // fprintf(stderr, "%s@%s\n", user, hostname);
+        // fprintf(stderr, " %s > ", cwd);
         fflush(stderr);
 
         oshell_loop();

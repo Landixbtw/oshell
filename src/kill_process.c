@@ -96,7 +96,6 @@ int kill_process(char *process_name_or_id)
                 if(full_proc_path == NULL) {
                     goto cleanup;
                     //perror("oshell: not able to allocate enough Memory for variable: 'full_proc_path'");
-                    exit(EXIT_FAILURE);
                 }
                 snprintf(full_proc_path, full_proc_pathLength ,"%s%s", proc_dir_name, dirent->d_name);
                 if((opendir(full_proc_path)) != NULL ) {
@@ -112,7 +111,6 @@ int kill_process(char *process_name_or_id)
                     if(comm_file_path == NULL) {
                         //perror("oshell: not able to allocate enough Memory for variable: 'comm_file_path'");
                         goto cleanup;
-                        exit(EXIT_FAILURE);
                     }
                     snprintf(comm_file_path, comm_file_pathLength,"%s%s/comm", proc_dir_name, dirent->d_name);
 
@@ -122,7 +120,6 @@ int kill_process(char *process_name_or_id)
                     if(fp == NULL) {
                         // perror("oshell: kill_process(): fopen()");
                         goto cleanup;
-                        return EXIT_FAILURE;
                     }
 
                     // there is something with the /proc/*/comm files that causes issues with
@@ -133,12 +130,11 @@ int kill_process(char *process_name_or_id)
                         filesize++;
                     fseek(fp, 0, SEEK_SET);
 
-                    size_t          BUFFER_SIZE = ((sizeof(char) * filesize) +1);
+                    const size_t          BUFFER_SIZE = ((sizeof(char) * filesize) +1);
 
                     buffer = malloc(BUFFER_SIZE);
                     if(buffer == NULL) {
                         goto cleanup;
-                        return -2;
                     }
 
                     fgets(buffer, BUFFER_SIZE, fp);
@@ -150,27 +146,17 @@ int kill_process(char *process_name_or_id)
                     }
 
                     if(strcmp(strip_non_alpha(buffer), strip_non_alpha(process_name_or_id)) == 0) {
-                        fprintf(stderr, "match found: %s / %s\n", process_name_or_id, buffer);
+                        // fprintf(stderr, "match found: %s / %s\n", process_name_or_id, buffer);
                         for(unsigned int i = 0; i < strlen(process_name_or_id); i++) {
-                            // if(process_name_or_id[i] == '\0') {
-                            //     fprintf(stderr, "process char is '\\0'");
-                            // }
-                            // if(process_name_or_id[i] == '\n') {
-                            //     fprintf(stderr, "process char is '\\n'");
-                            // }
-                            // if(buffer[i] == '\0') {
-                            //     fprintf(stderr, "process char is '\\0'");
-                            // }
-                            // if(buffer[i] == '\n') {
-                            //     fprintf(stderr, "process char is '\\n'");
-                            // }
                         }
-                        kill(pid, 15);
-                        fprintf(stderr,"killed %i\n", pid);
-                        process_found = true;
+                        if(kill(pid, 9) == 0) {
+                            // fprintf(stderr,"killed %i\n", pid);
+                            fprintf(stdout, "killed process %s\n", process_name_or_id);
+                            fflush(stderr);
+                            process_found = true;
+                        }
                         goto cleanup;
-                        break;
-                    } 
+                    }
                 }
             }
         }
@@ -187,11 +173,9 @@ int kill_process(char *process_name_or_id)
 
         // fprintf(stderr, "Total entries found: %d\n", count);
         return 0;
-    } else {
-        pid_t pid = string_to_int(process_name_or_id);
-        kill(pid, 15);
-        fprintf(stderr,"killed %i\n", pid);
-        return 0;
     }
-    return -1;
+    const pid_t pid = string_to_int(process_name_or_id);
+    kill(pid, 9);
+    fprintf(stderr,"killed %i\n", pid);
+    return 0;
 }

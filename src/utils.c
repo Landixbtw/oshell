@@ -42,8 +42,7 @@ int string_to_int(char *string) {
     }
     
     /* Check for invalid input (no conversion performed) */
-    if (endptr == str) {
-        return -1;
+    if (endptr == str) { return -1;
     }
     
     /* TODO: Consider checking for partial conversions (endptr != '\0') */
@@ -93,8 +92,8 @@ char *make_command(char **args) {
         perror("oshell: not able to allocate enough Memory for scmd");
         exit(EXIT_FAILURE);
     }
+
     snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
-    fprintf(stderr, "%s\n", scmd);
     return scmd;
 }
 

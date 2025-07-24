@@ -1,4 +1,4 @@
-./build.sh -u && ./build/oshell
+./build.sh -u && ./buildDir/oshell
 
 # open in same as build.sh
 ./build.sh -u && valgrind --leak-check=full \
@@ -6,4 +6,17 @@
         --track-origins=yes \
         --verbose \
         --log-file=valgrind-out.txt \
-        ./build/oshell
+        ./buildDir/oshell
+
+
+# Build with tests
+./build.sh --tests
+
+# Build and run tests
+./build.sh --run-tests
+
+# Build release with tests and AddressSanitizer
+./build.sh -r --tests -a
+
+# Clean build, run tests
+./build.sh -c --run-tests

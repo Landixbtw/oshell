@@ -33,7 +33,8 @@ int execute_command(char **args)
             return 1;
         }
         return 0;
-    } else if (args[1] == NULL && strcmp("cd", command) == 0) {
+    }
+    if (args[1] == NULL && strcmp("cd", command) == 0) {
         chdir(getenv("HOME"));
         return 0;
     }
@@ -46,7 +47,8 @@ int execute_command(char **args)
             return 1;
         }
         return 0;
-    } else if (args[0] != NULL && args[1] == NULL && strcmp("kill", command) == 0) {
+    }
+    if (args[0] != NULL && args[1] == NULL && strcmp("kill", command) == 0) {
         fprintf(stderr,"Please give a process to kill.\n");
         return 1;
     }
@@ -151,7 +153,7 @@ int execute_command(char **args)
         perror("oshell: fork() error");
     else if (pid == 0) {
         //child
-        fprintf(stderr, "Command: %s %s %s \n", scmd, args[1], args[2]);
+        //fprintf(stderr, "Command: %s %s %s \n", scmd, args[1], args[2]);
         int res = execv(scmd, args);
         if (res == -1) {
             perror("execv() failed");

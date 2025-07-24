@@ -17,5 +17,4 @@ void clear(void)
         fprintf(stderr, "\n");
     }
     fprintf(stderr, "\033[0;0H");
-    return;
 }

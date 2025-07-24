@@ -67,8 +67,8 @@ int _pipe(char **args)
                 perror("oshell: _pipe() dup2");
                 exit(EXIT_FAILURE);
             }
-	    fprintf(stderr, "cmd1: %s\n", cmd1[0]);
-	    fprintf(stderr, "cmd2: %s\n", cmd2[0]);
+	    //fprintf(stderr, "cmd1: %s\n", cmd1[0]);
+	    //fprintf(stderr, "cmd2: %s\n", cmd2[0]);
             scmd = make_command(cmd1);
 	    // FIX: command one and two are added to scmd, usr/bin/lsgrep
             fprintf(stderr, "scmd: %s", scmd);

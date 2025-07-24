@@ -26,9 +26,9 @@ char **parse(char *input)
 
     int i = 0;
 
-    for (int i = 0; i < strlen(input); i++) 
+    for (int j = 0; j < strlen(input); j++)
     {
-        if (isblank(input[i]))
+        if (isblank(input[j]))
         {
             num_tokens++;
         }
@@ -50,9 +50,11 @@ char **parse(char *input)
     }while (token != NULL);
 
     // go till char is NULL
-    for(int j = 0; j < i; j++) {
-        fprintf(stderr,"args[%i]: %s \n", j, args[j]);
-    }
+
+    //for(int j = 0; j < i; j++) {
+    //    fprintf(stderr,"args[%i]: %s \n", j, args[j]);
+    //}
+
     // NOTE: ==32488== Conditional jump or move depends on uninitialised value(s)
     // ==32488==  Uninitialised value was created by a heap allocation
     while(args[i] != NULL) // FIX: Invalid read size of 8 
@@ -64,7 +66,7 @@ char **parse(char *input)
     i--;
 
     char *mod_str = args[i];
-    size_t len = strlen(mod_str);
+    const size_t len = strlen(mod_str);
     // this should never be NULL
     assert(mod_str != NULL);
 
