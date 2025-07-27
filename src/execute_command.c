@@ -11,6 +11,9 @@ int execute_command(char **args)
 {
     char *command = strtok(args[0], " ");
 
+    // if the command is NULL meaning just enter, we just return
+    if (command == NULL) return 0;
+
     // Handle built-in args[0]
     if (strcmp(args[0], "exit") == 0)
     {
@@ -23,7 +26,7 @@ int execute_command(char **args)
         return 0;
     }
 
-    assert(command != NULL);
+    // assert(command != NULL);
     // cd -> CD function - utils.c
     if (args[1] != NULL && strcmp("cd", command) == 0)
     {
@@ -145,6 +148,37 @@ int execute_command(char **args)
         do_redirection = 1;
     }
 
+
+ // env -> getenvvar
+    // if the first char after echo is a $ we want to pass it on to getenvvar()
+    // else just pass it to execute
+    // init envVar
+    char *envVar = malloc(sizeof(args[1]));
+    if(envVar == NULL) {
+        fprintf(stderr, "execute_command(): *envVar: Error when trying to allocate 'sizeof(%s)' memory. \n", args[1]);
+        return -1;
+    }
+
+    // NOTE: echo $HOST, echo $OSTYPE just parrot back, on oshell, but return something valid with zsh
+    if(args[1]) {
+        char envChar = args[1][0];
+        // we start at the first second char, this should be the first letter after
+        // $ and we copy everything short of 1 and put it together into one String
+        strncpy(envVar, &args[1][1], sizeof(args[1] -1));
+
+        char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
+        // when we just use envChar, (a non null terminated char) strcmp wont now when the
+        // strings ends, and just read garbage strcmp wont now when the
+        // strings ends, and just read garbage
+        if(args[0] != NULL && args[1] != NULL && strcmp("$",envCharStr) == 0) {
+            // fprintf(stderr, "passing %s to secure_getenv\n", envVar);
+            fprintf(stderr, "%s", secure_getenv(envVar));
+            free(envVar);
+            return 0;
+        }
+    }
+
+
     pid_t pid = 0;
     int status = 0;
 
@@ -190,32 +224,6 @@ int execute_command(char **args)
         close(saved_stdin);
         if (fd_in != -1)
             close(fd_in);
-    }
-    // env -> getenvvar
-    // if the first char after echo is a $ we want to pass it on to getenvvar()
-    // else just pass it to execute
-    // init envVar
-    char *envVar = malloc(sizeof(args[1]));
-    if(envVar == NULL) {
-        fprintf(stderr, "execute_command(): *envVar: Error when trying to allocate 'sizeof(%s)' memory. \n", args[1]);
-        return -1;
-    }
-    // NOTE: echo $HOST, echo $OSTYPE just parrot back, on oshell, but return something valid with zsh
-    if(args[1]) {
-        char envChar = args[1][0];
-        // we start at the first second char, this should be the first letter after
-        // $ and we copy everything short of 1 and put it together into one String
-        strncpy(envVar, &args[1][1], sizeof(args[1] -1));
-
-        char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
-        // when we just use envChar, (a non null terminated char) strcmp wont now when the
-        // strings ends, and just read garbage strcmp wont now when the
-        // strings ends, and just read garbage
-        if(args[0] != NULL && args[1] != NULL && strcmp("$",envCharStr) == 0) {
-            secure_getenv(envVar);
-            free(envVar);
-            return 0;
-        }
     }
     return 0;
 }

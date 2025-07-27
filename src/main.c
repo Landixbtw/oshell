@@ -19,10 +19,10 @@ int main(void){
         // for example
         // ole@tux
         // /home / ole / Dokumente / Projekte / c / oshell
-        
+
         // fprintf(stderr, "%s@%s\n", user, hostname);
         // fprintf(stderr, " %s > ", cwd);
-        fflush(stderr);
+        // fflush(stderr);
 
         oshell_loop();
     }

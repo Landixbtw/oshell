@@ -1,3 +1,6 @@
 oshell
 build/
 ./idea
+tests/string.txt
+tests/ls.txt
+tests/originalLs.txt

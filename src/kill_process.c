@@ -151,7 +151,7 @@ int kill_process(char *process_name_or_id)
                         }
                         if(kill(pid, 9) == 0) {
                             // fprintf(stderr,"killed %i\n", pid);
-                            fprintf(stdout, "killed process %s\n", process_name_or_id);
+                            fprintf(stderr, "killed %s", process_name_or_id);
                             fflush(stderr);
                             process_found = true;
                         }
@@ -177,5 +177,6 @@ int kill_process(char *process_name_or_id)
     const pid_t pid = string_to_int(process_name_or_id);
     kill(pid, 9);
     fprintf(stderr,"killed %i\n", pid);
+    fflush(stderr);
     return 0;
 }

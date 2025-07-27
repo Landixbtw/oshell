@@ -11,8 +11,14 @@ Key features
 - Error handling -- meh kinda most minimal, not extensive
 - redirect output with xx > output.txt ✅
 
+### Todo
+#### CRITICAL
+- pressing enter with nothing on the console, crashes, because assert command != NULL, 
+    + if command == NULL, make \\n or something
+
 ## Environment Variables
 - echo $USER should yield the user (ie. ole), with getenv()
+
 
 
 MVP

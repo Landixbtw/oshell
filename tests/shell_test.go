@@ -1,35 +1,37 @@
 package shelltest
 
 import (
-	"os/exec"
-	"testing"
 	"bufio"
+	"fmt"
+	"os"
+	"os/exec"
 	"strings"
+	"testing"
 )
 
 /*
-    t.Error("Something went wrong")     // Mark test as failed, continue
-    t.Fatal("Critical failure")        // Mark test as failed, stop immediately
-    t.Log("Debug info")                // Print info (only shown if test fails or -v flag)
-    t.Skip("Skipping this test")       // Skip this test
-    
-    // Check conditions
-    if result != expected {
-        t.Errorf("Expected %v, got %v", expected, result)
-    }
-*/
+   t.Error("Something went wrong")     // Mark test as failed, continue
+   t.Fatal("Critical failure")        // Mark test as failed, stop immediately
+   t.Log("Debug info")                // Print info (only shown if test fails or -v flag)
+   t.Skip("Skipping this test")       // Skip this test
 
+   // Check conditions
+   if result != expected {
+       t.Errorf("Expected %v, got %v", expected, result)
+   }
+*/
 
 /*
 Inbuilt
 1. help ✔️
 2. cd dir, cd (home) ✅
 3. env ie echo $HOST ✅
-4. kill
-	5. input redirection
+4. kill (byname) ✅
+4.5 kill byPID ✅
+5. input redirection ✅
 	6. output redirection
 	7. piping
-	
+
 */
 
 // NOTE: for testing, there does not need to be a main function, go is smart enough
@@ -43,12 +45,16 @@ func RunShellCommand(shellPath, command string) ([]string, error) {
         return nil, err
     }
  
-	cmd.Stderr = cmd.Stdout
-    stdout, err := cmd.StdoutPipe()
+	stdout, err := cmd.StdoutPipe()
     if err != nil {
         return nil, err
     }
-    
+ 
+	
+	// this makes sure that stdout and stderr, both point to the same location so 
+	// they are basically merged together, here we make stderr point to stdout
+	cmd.Stderr = cmd.Stdout
+
     err = cmd.Start()
     if err != nil {
         return nil, err
@@ -56,7 +62,7 @@ func RunShellCommand(shellPath, command string) ([]string, error) {
     
     // Send command
     stdin.Write([]byte(command + "\n"))
-    stdin.Write([]byte("exit\n"))
+    // stdin.Write([]byte("exit\n"))
     stdin.Close()
     
     // Read output
@@ -85,13 +91,13 @@ func ContainsOutput(output []string, expected string) bool {
 func TestEchoCommand(t *testing.T) {
 	t.Log("...Testing echo command...")
 
-    output, err := RunShellCommand("../buildDir/oshell", "echo hello")
+    output, err := RunShellCommand("../buildDir/oshell", "echo hello\n")
     if err != nil {
         t.Fatalf("Shell command failed: %v", err)
     }
     
     if ContainsOutput(output, "hello") {
-		t.Log("echo test passed ✅")
+		t.Log("echo test passed ✔️")
     } else {
         t.Errorf("Expected 'hello' in output, got: %v", output)
 	}
@@ -165,16 +171,17 @@ func TestENV(t *testing.T) {
 	
 // --------------------
 
+	// TODO: Output here is kinda correct, prints right path, but adds "Exiting shell"
 	t.Log("testing echo $PWD...")
-	outputPWD, err := RunShellCommand("../buildDir/oshell", "echo $PWD")
+	outputPWD, err := RunShellCommand("../buildDir/oshell", "echo $PWD ")
 	if err != nil {
         t.Fatalf("Shell command failed: %v", err)
 	}
 	
-	if ContainsOutput(outputPWD, "/home/ole/Dokumente/Projekte/c/oshell/buildDir") {
+	if ContainsOutput(outputPWD, "/home/ole/Dokumente/Projekte/c/oshell/tests") {
 		t.Log("echo $PWD test passed ✔️")
 	} else {
-        t.Errorf("Expected '/home/ole/Dokumente/Projekte/c/oshell/buildDir' in output, got: %v", outputPWD)
+        t.Errorf("Expected '/home/ole/Dokumente/Projekte/c/oshell/buildDir/tests' in output, got: %v", outputPWD)
 	}
 
 // --------------------
@@ -195,18 +202,131 @@ func TestENV(t *testing.T) {
 }
 
 
-// FIX: This tecnically fails, because the output does not match, but spotify is killed
 func TestKillByNAME(t *testing.T) {
 	t.Log("testing kill by name...")
-	t.Log("if this fails make sure spotify is open, since this test tries to kill spotify")
+	// t.Log("if this fails make sure spotify is open, since this test tries to kill spotify")
+	
+	var process string = "spotify"
+	cmd := exec.Command(process)
+
+	err := cmd.Start()
+	if err != nil {
+		t.Fatalf("Could not start process 'spotify'")
+	}
+
+
+
 	output, err := RunShellCommand("../buildDir/oshell", "kill spotify")
 	if err != nil {
         t.Fatalf("Shell command failed: %v", err)
 	}
 	
-	if ContainsOutput(output, "killed process spotify") {
+	if ContainsOutput(output, "killed spotify") {
 		t.Log("kill by name test passed ✔️")
 	} else {
-		t.Errorf("Expected 'kill process spotify' in output, got: %v", output)
+		t.Errorf("Expected 'killed spotify' in output, got: %v", output)
 	}
+	cmd.Wait()
+}
+
+
+// fuzz for killByPID? https://pkg.go.dev/testing#hdr-Fuzzing
+func TestKillByPID(t *testing.T) {
+	t.Log("...Testing kill by PID...")
+
+	// how can we "generate a random PID"
+
+	// we start process
+	var process string = "spotify"
+	cmd := exec.Command(process)
+
+	err := cmd.Start()
+	if err != nil {
+		t.Fatalf("Could not start process 'spotify'")
+	}
+
+	// get process ID 
+	pid := cmd.Process.Pid
+
+	var command string = fmt.Sprintf("kill %d", pid)
+	output, err := RunShellCommand("../buildDir/oshell", command)
+	if err != nil {
+		t.Fatalf("Shell command failed: %v", err)
+	}
+
+	var expectedOutput string = fmt.Sprint("killed " ,pid)
+	if ContainsOutput(output, expectedOutput) {
+		t.Log("kill by PID test passed ✔️")
+	} else {
+		t.Errorf("Expected '%s' in output, got : %v", expectedOutput, output)
+	}
+	cmd.Wait()
+}
+
+
+// input doesnt match output??
+func TestInputRedirection(t *testing.T) {
+	t.Log("...Testing input redirection...")
+
+	// we need a file to redirect from, and content in it
+
+	input := "oshell is a simple but cool project"
+	err := os.WriteFile("string.txt", []byte(input), 0666)
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	file, err := os.Open("string.txt")
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+	var command = fmt.Sprintf("cat < %s ", file.Name())
+	output, err := RunShellCommand("../buildDir/oshell", command)
+
+	if err != nil {
+		t.Fatalf("Shell command failed: %v", err)
+	} 
+	if ContainsOutput(output, "oshell is cool") {
+		t.Log("input redirection test passed ✔️")
+	} else {
+		t.Errorf("Expected '%v' in output, got: %v", input,output)
+	}
+
+    defer file.Close()
+}
+
+// b is empty
+func TestOutputRedirection (t *testing.T) {
+	t.Log("...Testing output redirection...")
+
+	lsFilename := "ls.txt"
+	os.Create(lsFilename)
+	cmd := exec.Command("bash", "-c", "ls > originalLs.txt")
+	err := cmd.Start()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+	// read from file, to get output to combine
+	fileContent, err:= os.ReadFile("originalLs.txt")
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	var command = fmt.Sprintf("ls > %s", lsFilename)
+	RunShellCommand("../buildDir/oshell", command)
+
+	lsFileContent, err := os.ReadFile(lsFilename)
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	if err != nil {
+		t.Fatalf("Shell command failed: %v", err)
+	} 
+	if ContainsOutput(strings.Split(string(lsFileContent), "\n"), string(fileContent)) {
+		t.Log("output redirection test passed ✔️")
+	} else {
+		t.Errorf("Expected \n'%s' output, got: \n%v", strings.Split(string(lsFileContent), "\n"), string(fileContent))
+	}
+	cmd.Wait()
 }

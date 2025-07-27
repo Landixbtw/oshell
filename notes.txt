@@ -8,15 +8,3 @@
         --log-file=valgrind-out.txt \
         ./buildDir/oshell
 
-
-# Build with tests
-./build.sh --tests
-
-# Build and run tests
-./build.sh --run-tests
-
-# Build release with tests and AddressSanitizer
-./build.sh -r --tests -a
-
-# Clean build, run tests
-./build.sh -c --run-tests
