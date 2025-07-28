@@ -29,7 +29,7 @@ Inbuilt
 4. kill (byname) ✅
 4.5 kill byPID ✅
 5. input redirection ✅
-	6. output redirection
+6. output redirection ✅
 	7. piping
 
 */
@@ -270,29 +270,22 @@ func TestInputRedirection(t *testing.T) {
 
 	// we need a file to redirect from, and content in it
 
-	input := "oshell is a simple but cool project"
+	input := "oshell is a simple but cool project "
 	err := os.WriteFile("string.txt", []byte(input), 0666)
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
 
-	file, err := os.Open("string.txt")
-	if err != nil {
-		t.Fatalf("%v", err)
-	}
-	var command = fmt.Sprintf("cat < %s ", file.Name())
-	output, err := RunShellCommand("../buildDir/oshell", command)
+	output, err := RunShellCommand("../buildDir/oshell", "cat < string.txt")
 
 	if err != nil {
 		t.Fatalf("Shell command failed: %v", err)
 	} 
-	if ContainsOutput(output, "oshell is cool") {
+	if ContainsOutput(output, input) {
 		t.Log("input redirection test passed ✔️")
 	} else {
 		t.Errorf("Expected '%v' in output, got: %v", input,output)
 	}
-
-    defer file.Close()
 }
 
 // b is empty
@@ -301,6 +294,7 @@ func TestOutputRedirection (t *testing.T) {
 
 	lsFilename := "ls.txt"
 	os.Create(lsFilename)
+	os.Create("originalLs.txt")
 	cmd := exec.Command("bash", "-c", "ls > originalLs.txt")
 	err := cmd.Start()
 	if err != nil {
@@ -329,4 +323,45 @@ func TestOutputRedirection (t *testing.T) {
 		t.Errorf("Expected \n'%s' output, got: \n%v", strings.Split(string(lsFileContent), "\n"), string(fileContent))
 	}
 	cmd.Wait()
+}
+
+
+// NOTE: this should be supported
+func TestHereAppend(t *testing.T) {
+	/*
+echo "line 1" >> test.log
+echo "line 2" >> test.log
+echo "line 3" >> test.log
+
+# Append command output
+date >> logfile.txt
+*/
+
+}
+
+// NOTE: not sure if this is supported
+func TestHereDocument(t *testing.T) {
+	/*
+# Here document with variable expansion
+name="Alice"
+cat << EOF
+Hello $name
+Welcome to the system
+EOF
+*/
+}
+
+func TestSinglePiping (t *testing.T) {
+/*
+echo "test123" | grep "test"     # Should output: test123
+echo "foo bar baz" | wc -w       # Should output: 3
+echo "3\n1\n2" | sort -n         # Should output: 1\n2\n3
+
+echo "" | cat                    # Empty input
+echo "no match" | grep "xyz"     # No output (grep returns nothing)
+yes | head -5                    # Infinite input stream
+cat nonexistent.txt | wc -l      # Error handling
+*/
+
+
 }
