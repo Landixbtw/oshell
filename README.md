@@ -1,5 +1,6 @@
 # oshell
 Todo
+make nice readme
 
 Key features
 
@@ -14,7 +15,8 @@ Key features
 ### Todo
 #### CRITICAL
 - pressing enter with nothing on the console, crashes, because assert command != NULL, 
-    + if command == NULL, make \\n or something
+    + if command == NULL, make \\n or something ✅
+
 
 ## Environment Variables
 - echo $USER should yield the user (ie. ole), with getenv()
