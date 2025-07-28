@@ -120,6 +120,8 @@ int execute_command(char **args)
     int do_redirection = 0;
     int fd = 0;
 
+    // NOTE: Need to find a better way to check if there is ie > >> this right now only works if >> is the second "command"
+
     // redirect stdout to the file
     if (args[0] != NULL && args[1] != NULL && args[2] != NULL &&
         (strcmp(">", args[1]) == 0 || strcmp(">>", args[1]) == 0)) {

@@ -337,6 +337,43 @@ echo "line 3" >> test.log
 date >> logfile.txt
 */
 
+	t.Log("...Testing ...")
+
+	appendHere := "appendHere.txt"
+	os.Create(appendHere)
+	
+
+	var command [4]string
+	expectedOutput := "line1\nline2\nline3\nline4\n"
+
+	// Build all commands
+	for i := 0; i < 4; i++ {
+		command[i] = fmt.Sprintf("line%d >> %s", i+1, appendHere) // note: i+1 for line1, line2, etc.
+	}
+
+	t.Log("First Command: ", command[0])
+	// Execute all commands
+	for i := 0; i < 4; i++ {
+	_, err := RunShellCommand("../buildDir/oshell", command[i])
+		if err != nil {
+			t.Fatalf("Shell command failed: %v", err)
+		}
+	}
+
+	// Now read the file to check final result
+	catOutput, err := RunShellCommand("../buildDir/oshell", fmt.Sprintf("cat %s", appendHere))
+	if err != nil {
+		t.Fatalf("Failed to read file: %v", err)
+	}
+
+	// Join the output lines and compare
+	actualOutput := strings.Split(strings.Join(catOutput, "\n"),"\n")
+
+	if ContainsOutput(actualOutput, expectedOutput) {
+		t.Log("output redirection test passed ✔️")
+	} else {
+		t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput, catOutput)
+	}
 }
 
 // NOTE: not sure if this is supported
