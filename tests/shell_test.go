@@ -10,6 +10,7 @@ import (
 )
 
 /*
+
    t.Error("Something went wrong")     // Mark test as failed, continue
    t.Fatal("Critical failure")        // Mark test as failed, stop immediately
    t.Log("Debug info")                // Print info (only shown if test fails or -v flag)
