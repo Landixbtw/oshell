@@ -30,7 +30,7 @@ Inbuilt
 4. kill (byname) ✅
 4.5 kill byPID ✅
 5. input redirection ✅
-	6. output redirection
+6. output redirection ✅
 	7. piping
 
 */
@@ -271,29 +271,22 @@ func TestInputRedirection(t *testing.T) {
 
 	// we need a file to redirect from, and content in it
 
-	input := "oshell is a simple but cool project"
+	input := "oshell is a simple but cool project "
 	err := os.WriteFile("string.txt", []byte(input), 0666)
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
 
-	file, err := os.Open("string.txt")
-	if err != nil {
-		t.Fatalf("%v", err)
-	}
-	var command = fmt.Sprintf("cat < %s ", file.Name())
-	output, err := RunShellCommand("../buildDir/oshell", command)
+	output, err := RunShellCommand("../buildDir/oshell", "cat < string.txt")
 
 	if err != nil {
 		t.Fatalf("Shell command failed: %v", err)
 	} 
-	if ContainsOutput(output, "oshell is cool") {
+	if ContainsOutput(output, input) {
 		t.Log("input redirection test passed ✔️")
 	} else {
 		t.Errorf("Expected '%v' in output, got: %v", input,output)
 	}
-
-    defer file.Close()
 }
 
 // b is empty
@@ -302,6 +295,7 @@ func TestOutputRedirection (t *testing.T) {
 
 	lsFilename := "ls.txt"
 	os.Create(lsFilename)
+	os.Create("originalLs.txt")
 	cmd := exec.Command("bash", "-c", "ls > originalLs.txt")
 	err := cmd.Start()
 	if err != nil {
@@ -330,4 +324,82 @@ func TestOutputRedirection (t *testing.T) {
 		t.Errorf("Expected \n'%s' output, got: \n%v", strings.Split(string(lsFileContent), "\n"), string(fileContent))
 	}
 	cmd.Wait()
+}
+
+
+// NOTE: this should be supported
+func TestHereAppend(t *testing.T) {
+	/*
+echo "line 1" >> test.log
+echo "line 2" >> test.log
+echo "line 3" >> test.log
+
+# Append command output
+date >> logfile.txt
+*/
+
+	t.Log("...Testing ...")
+
+	appendHere := "appendHere.txt"
+	os.Create(appendHere)
+	
+
+	var command [4]string
+	expectedOutput := "line1\nline2\nline3\nline4\n"
+
+	// Build all commands
+	for i := 0; i < 4; i++ {
+		command[i] = fmt.Sprintf("line%d >> %s", i+1, appendHere) // note: i+1 for line1, line2, etc.
+	}
+
+	t.Log("First Command: ", command[0])
+	// Execute all commands
+	for i := 0; i < 4; i++ {
+	_, err := RunShellCommand("../buildDir/oshell", command[i])
+		if err != nil {
+			t.Fatalf("Shell command failed: %v", err)
+		}
+	}
+
+	// Now read the file to check final result
+	catOutput, err := RunShellCommand("../buildDir/oshell", fmt.Sprintf("cat %s", appendHere))
+	if err != nil {
+		t.Fatalf("Failed to read file: %v", err)
+	}
+
+	// Join the output lines and compare
+	actualOutput := strings.Split(strings.Join(catOutput, "\n"),"\n")
+
+	if ContainsOutput(actualOutput, expectedOutput) {
+		t.Log("output redirection test passed ✔️")
+	} else {
+		t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput, catOutput)
+	}
+}
+
+// NOTE: not sure if this is supported
+func TestHereDocument(t *testing.T) {
+	/*
+# Here document with variable expansion
+name="Alice"
+cat << EOF
+Hello $name
+Welcome to the system
+EOF
+*/
+}
+
+func TestSinglePiping (t *testing.T) {
+/*
+echo "test123" | grep "test"     # Should output: test123
+echo "foo bar baz" | wc -w       # Should output: 3
+echo "3\n1\n2" | sort -n         # Should output: 1\n2\n3
+
+echo "" | cat                    # Empty input
+echo "no match" | grep "xyz"     # No output (grep returns nothing)
+yes | head -5                    # Infinite input stream
+cat nonexistent.txt | wc -l      # Error handling
+*/
+
+
 }

@@ -4,3 +4,4 @@ build/
 tests/string.txt
 tests/ls.txt
 tests/originalLs.txt
+tests/appendHere.txt
