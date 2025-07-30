@@ -15,8 +15,8 @@ int execute_command(char **args)
     // if the command is NULL meaning just enter, we just return
     if (command == NULL) return 0;
 
-    // Handle built-in args[0]
-    if (strcmp(args[0], "exit") == 0)
+    // Handle built-in args[0] --> isnt this just command?
+    if (strcmp(command, "exit") == 0)
     {
         fprintf(stderr,"Exiting Shell...\n");
         exit(EXIT_SUCCESS);
@@ -27,19 +27,19 @@ int execute_command(char **args)
         return 0;
     }
 
-    // assert(command != NULL);
     // cd -> CD function - utils.c
-    if (args[1] != NULL && strcmp("cd", command) == 0)
+    // FIX: ??????
+    if (strcmp("cd", command) == 0)
     {
-        int status = change_directory(args[1]);
-        if (status != 0) {
-            perror("oshell: change_directory() error");
-            return 1;
+        if(args[1] != NULL) {
+            int status = change_directory(args[1]);
+            if (status != 0) {
+                perror("oshell: change_directory() error");
+                return 1;
+            }
+        } else {
+            chdir(getenv("HOME"));
         }
-        return 0;
-    }
-    if (args[1] == NULL && strcmp("cd", command) == 0) {
-        chdir(getenv("HOME"));
         return 0;
     }
 
@@ -189,19 +189,19 @@ int execute_command(char **args)
     pid_t pid = 0;
     int status = 0;
 
-    char *scmd = make_command(args);
+    char *new_command = make_command(args);
     if ((pid = fork()) < 0)
         perror("oshell: fork() error");
     else if (pid == 0) {
         //child
-        //fprintf(stderr, "Command: %s %s %s \n", scmd, args[1], args[2]);
-        int res = execv(scmd, args);
+        //fprintf(stderr, "Command: %s %s %s \n", new_command, args[1], args[2]);
+        int res = execv(new_command, args);
         if (res == -1) {
             perror("execv() failed");
-            free(scmd);
+            free(new_command);
             exit(EXIT_FAILURE);
         }
-        free(scmd);
+        free(new_command);
         sleep(5);
         return(1);
     }

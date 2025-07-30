@@ -1,5 +1,7 @@
 #include "../include/Header.h"
+#include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 void show_usage(void)
 {
@@ -10,17 +12,51 @@ void show_usage(void)
     "\n");
 }
 
-int change_directory(const char *directory)
-{
-    fprintf(stderr, "changing to %s\n", directory);
-    if (chdir(directory) == -1) {
-        return 1;
-    } else {
-        char cwd[1024];
-        getcwd(cwd, sizeof(cwd));
-        fprintf(stderr,"%s", cwd);
+
+char* remove_char(char* str, char find) {
+    char *src = str, *dst = str;
+    while (*src) {
+        if (*src != find) {
+            *dst++ = *src;
+        }
+        src++;
     }
-    // set errno for error x
+    *dst = '\0';
+    return str;
+}
+
+// FIX: Sometimes, cd outputs 
+// oshell: change_directory() error: No such file or directory
+int change_directory(char *directory)
+{
+    // add /home/user/ if ~ is the first char
+    char* new_path = NULL;
+    char *user_path = getenv("HOME");
+    int new_path_length = strlen(directory) + strlen(user_path) + 1;
+
+
+    bool use_home_path = false;
+    if(strcmp(&directory[0], "~")) {
+        // first char is ~ replace dir with /home/user/dir
+        // NOTE: How do we take out directory[0] ? because /home/ole/~/Dokumente/ is not valid
+        remove_char(directory, '~');
+        fprintf(stderr, "%s%s",user_path, directory);
+        // FIX: Segfault here?
+        snprintf(new_path, new_path_length, "%s%s", user_path, directory);
+        // fprintf(stderr, "%s", new_path);
+        // use_home_path = true;
+    }
+    
+    int res = -1;
+    // if(use_home_path) {
+    //     res = chdir(new_path);
+    // } else {
+    //     res = chdir(directory);
+    // }
+
+    if (res == -1) {
+        return 1;
+    }
     return 0;
 }
 
@@ -85,16 +121,16 @@ void oshell_loop(void)
 
 // WARN: everything with make_command has to be freed
 char *make_command(char **args) {
-    size_t scmd_len = strlen("/usr/bin/") + strlen(args[0]) + 1;
+    size_t command_len = strlen("/usr/bin/") + strlen(args[0]) + 1;
     // this needs to be freed
-    char *scmd = malloc(scmd_len);
-    if(scmd == NULL) {
-        perror("oshell: not able to allocate enough Memory for scmd");
+    char *command = malloc(command_len);
+    if(command == NULL) {
+        perror("oshell: not able to allocate enough Memory for command");
         exit(EXIT_FAILURE);
     }
 
-    snprintf(scmd, scmd_len ,"/usr/bin/%s", args[0]);
-    return scmd;
+    snprintf(command, command_len ,"/usr/bin/%s", args[0]);
+    return command;
 }
 
 // claude.ai

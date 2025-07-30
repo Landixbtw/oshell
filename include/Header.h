@@ -39,9 +39,9 @@ int execute_command(char **args);
 void show_usage(void);
 
 void help(void);
-int change_directory(const char *directory);
+int change_directory(char *directory);
 int kill_process(char *process_name_or_id);
-void oshell_loop();
+void oshell_loop(void);
 void clear(void);
 int _pipe(char **args);
 char *make_command(char **args);

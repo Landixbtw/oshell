@@ -115,12 +115,24 @@ func TestCDHome(t *testing.T) {
         t.Fatalf("Shell command failed: %v", err)
 	}
 
-	if ContainsOutput(output, "/home/ole") {
+	cmd := exec.Command("cd")
+	err = cmd.Start()
+	if err != nil {
+		t.Fatalf("Shell command \"cd\" failed: %v", err)
+	}
+
+	expectedOutput, err := cmd.Output()
+	if err != nil {
+		t.Fatalf("%v",err)
+	}
+
+	if ContainsOutput(output, string(expectedOutput)) {
 		t.Log("cd test passed ✔️")
 	} else {
         t.Errorf("Expected '/home/ole' in output, got: %v", output)
 	}
-
+	
+	cmd.Wait()
 }
 
 func TestCDDir(t *testing.T) {
@@ -132,7 +144,18 @@ func TestCDDir(t *testing.T) {
         t.Fatalf("Shell command failed: %v", err)
 	}
 	
-	if ContainsOutput(output, "/home/ole/Dokumente/") {
+	cmd := exec.Command("cd ~/Dokumente/")
+	err = cmd.Start()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	expectedOutput, err := cmd.Output()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	if ContainsOutput(output, string(expectedOutput)) {
 		t.Log("cd dir test passed ✔️")
 	} else {
         t.Errorf("Expected '/home/ole/Dokumente/' in output, got: %v", output)
@@ -411,39 +434,43 @@ yes | head -5                    # Infinite input stream
 cat nonexistent.txt | wc -l      # Error handling
 */
 
-// FIX: 
 	const commAmount = 6
 	var command [commAmount]string
 	var expectedOutput [commAmount]string
 
-	command[0] = fmt.Sprintf("\"test123\" | grep \"test\" ") // expect test123
+	command[0] = "\"test123\" | grep \"test\" " // expect test123
 	expectedOutput[0] = "test123\n"
 
-	command[1] = fmt.Sprintf("\"foo bar baz\" | wc -w ") // expect 3
+	command[1] = "\"foo bar baz\" | wc -w " // expect 3
 	expectedOutput[1] = "3\n"
 
-	command[2] = fmt.Sprintf("\"3\n1\n2\" | sort -n") // expect 1\n2\n3
+	command[2] = "\"3\n1\n2\" | sort -n" // expect 1\n2\n3
 	expectedOutput[2] = "1\n2\n3\n"
 
-	command[3] = fmt.Sprintf("\"\" | cat") // expect ""
+	command[3] = "\"\" | cat" // expect ""
 	expectedOutput[3] = ""
 
-	command[4] = fmt.Sprintf("\"no match\" | grep \"xyz\" ") // expect no output ""
+	command[4] = "\"no match\" | grep \"xyz\" " // expect no output ""
 	expectedOutput[4] = ""
 
-	command[5] = fmt.Sprintf("cat nonexistent.txt | wc -l ") // expect error to stderr + 0 to stdout
+	command[5] = "cat nonexistent.txt | wc -l " // expect error to stderr + 0 to stdout
 	expectedOutput[5] = "0\n"  // wc -l will output 0 since it gets no input from failed cat
 	
 	var output [commAmount]string
 	// Execute all commands
 	for i := 0; i < commAmount; i++ {
 		// error here
-		output[i], err = RunShellCommand("../buildDir/oshell", command[i])
+		tmpOutput , err := RunShellCommand("../buildDir/oshell", command[i])
 		if err != nil {
 			t.Fatalf("Shell command failed: %v", err)
 		}
 
-		if ContainsOutput(output[i], expectedOutput[i]) {
+		output[i] = tmpOutput[0]
+		/*
+		we cant use output[i], since this would a string, and we need []string, so by doing [:] we slice the whole 
+		thing 
+		*/
+		if ContainsOutput(output[:], expectedOutput[i]) {
 			t.Log("output redirection test passed ✔️")
 		} else {
 			t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput[i], output[i])
