@@ -127,3 +127,13 @@ char *strip_non_alpha(char *input_string) {
     }
     return input_string;
 }
+
+
+int find_shell_operator (char *operator ,char **args) {
+    for (int i = 0; args[i] != NULL; i++) {
+        if (strcmp(args[i], operator) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}

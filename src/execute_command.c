@@ -9,6 +9,7 @@
 
 int execute_command(char **args)
 {
+    // args[0] should always be the main command
     char *command = strtok(args[0], " ");
 
     // if the command is NULL meaning just enter, we just return
@@ -57,7 +58,8 @@ int execute_command(char **args)
     }
 
     // pipe -> | function
-    if (args[0] != NULL && args[1] != NULL && args[2] != NULL && strcmp("|", args[1]) == 0) {
+    int pipe_pos = find_shell_operator("|", args);
+    if (pipe_pos > 0 && args[pipe_pos + 1] != NULL) {
         _pipe(args);
     }
 
@@ -79,8 +81,9 @@ int execute_command(char **args)
     int do_input_redirection = 0;
     int fd_in = 0;
 
-    // FIX: This exits the shell, return 0 
-    if (args[0] != NULL && args[1] != NULL && args[2] != NULL && strcmp("<", args[1]) == 0) {
+    int input_red_pos = find_shell_operator("<", args);
+
+    if (input_red_pos > 0 && args[input_red_pos + 1] != NULL) {
         char *filename = args[2];
         FILE        *file = fopen(filename, "r");
 
@@ -122,9 +125,10 @@ int execute_command(char **args)
 
     // NOTE: Need to find a better way to check if there is ie > >> this right now only works if >> is the second "command"
 
+    int output_red_pos = find_shell_operator(">", args);
+    int append_pos = find_shell_operator(">", args);
     // redirect stdout to the file
-    if (args[0] != NULL && args[1] != NULL && args[2] != NULL &&
-        (strcmp(">", args[1]) == 0 || strcmp(">>", args[1]) == 0)) {
+    if ((append_pos > 0 && args[append_pos + 1] != NULL) || (output_red_pos > 0 && args[output_red_pos + 1] != NULL)) {
         // > truncate (overwrite) ; >> append
 
         int flags = O_WRONLY | O_CREAT;
@@ -161,18 +165,19 @@ int execute_command(char **args)
         return -1;
     }
 
-    // NOTE: echo $HOST, echo $OSTYPE just parrot back, on oshell, but return something valid with zsh
-    if(args[1]) {
-        char envChar = args[1][0];
+    int dollar_pos = find_shell_operator("$", args);
+    if(dollar_pos >= 0 && args[dollar_pos + 1]) {
+        char envChar = args[dollar_pos][0];
         // we start at the first second char, this should be the first letter after
         // $ and we copy everything short of 1 and put it together into one String
-        strncpy(envVar, &args[1][1], sizeof(args[1] -1));
+        //
+        // NOTE: needs to be adjusted, to use dollar_pos
+        strncpy(envVar, & args[dollar_pos][1], sizeof(args[dollar_pos] -1));
 
         char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
         // when we just use envChar, (a non null terminated char) strcmp wont now when the
-        // strings ends, and just read garbage strcmp wont now when the
         // strings ends, and just read garbage
-        if(args[0] != NULL && args[1] != NULL && strcmp("$",envCharStr) == 0) {
+        if(strcmp("$",envCharStr) == 0) {
             // fprintf(stderr, "passing %s to secure_getenv\n", envVar);
             fprintf(stderr, "%s", secure_getenv(envVar));
             free(envVar);

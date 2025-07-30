@@ -352,7 +352,6 @@ date >> logfile.txt
 		command[i] = fmt.Sprintf("line%d >> %s", i+1, appendHere) // note: i+1 for line1, line2, etc.
 	}
 
-	t.Log("First Command: ", command[0])
 	// Execute all commands
 	for i := 0; i < 4; i++ {
 	_, err := RunShellCommand("../buildDir/oshell", command[i])
@@ -373,21 +372,32 @@ date >> logfile.txt
 	if ContainsOutput(actualOutput, expectedOutput) {
 		t.Log("output redirection test passed ✔️")
 	} else {
-		t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput, catOutput)
+		t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput, actualOutput)
 	}
 }
 
 // NOTE: not sure if this is supported
-func TestHereDocument(t *testing.T) {
-	/*
-# Here document with variable expansion
-name="Alice"
-cat << EOF
-Hello $name
-Welcome to the system
-EOF
-*/
-}
+// func TestHereDocument(t *testing.T) {
+// 	/*
+// # Here document with variable expansion
+// name="Alice"
+// cat << EOF
+// Hello $name
+// Welcome to the system
+// EOF
+// */
+//
+// 	output , err := RunShellCommand("../buildDir/oshell", fmt.Sprintf("cat %s", appendHere))
+// 	if err != nil {
+// 		t.Fatalf("Failed to read file: %v", err)
+// 	}
+//
+// 	if ContainsOutput(actualOutput, expectedOutput) {
+// 		t.Log("output redirection test passed ✔️")
+// 	} else {
+// 		t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput, )
+// 	}
+// }
 
 func TestSinglePiping (t *testing.T) {
 /*
@@ -401,5 +411,61 @@ yes | head -5                    # Infinite input stream
 cat nonexistent.txt | wc -l      # Error handling
 */
 
+// FIX: 
+	const commAmount = 6
+	var command [commAmount]string
+	var expectedOutput [commAmount]string
 
+	command[0] = fmt.Sprintf("\"test123\" | grep \"test\" ") // expect test123
+	expectedOutput[0] = "test123\n"
+
+	command[1] = fmt.Sprintf("\"foo bar baz\" | wc -w ") // expect 3
+	expectedOutput[1] = "3\n"
+
+	command[2] = fmt.Sprintf("\"3\n1\n2\" | sort -n") // expect 1\n2\n3
+	expectedOutput[2] = "1\n2\n3\n"
+
+	command[3] = fmt.Sprintf("\"\" | cat") // expect ""
+	expectedOutput[3] = ""
+
+	command[4] = fmt.Sprintf("\"no match\" | grep \"xyz\" ") // expect no output ""
+	expectedOutput[4] = ""
+
+	command[5] = fmt.Sprintf("cat nonexistent.txt | wc -l ") // expect error to stderr + 0 to stdout
+	expectedOutput[5] = "0\n"  // wc -l will output 0 since it gets no input from failed cat
+	
+	var output [commAmount]string
+	// Execute all commands
+	for i := 0; i < commAmount; i++ {
+		// error here
+		output[i], err = RunShellCommand("../buildDir/oshell", command[i])
+		if err != nil {
+			t.Fatalf("Shell command failed: %v", err)
+		}
+
+		if ContainsOutput(output[i], expectedOutput[i]) {
+			t.Log("output redirection test passed ✔️")
+		} else {
+			t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput[i], output[i])
+		}
+	}
 }
+
+// func TestMultiPiping (t *testing.T) {
+/*
+# Triple pipe - classic pipeline
+ls -la | grep txt | wc -l
+
+# 4-stage pipeline
+ps aux | grep -v grep | awk '{print $2}' | head -5
+
+# Network-style command (if available)
+netstat -tuln | grep LISTEN | awk '{print $4}' | sort
+
+# Pipes at wrong positions (should fail gracefully)
+| ls -la
+ls -la |
+ls | | wc
+ls |  | wc  # extra spaces
+*/
+// }
