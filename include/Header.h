@@ -53,6 +53,6 @@ int string_to_int(char *string);
 int input_redirection(char **args);
 
 
-int find_shell_operator (char *operator ,char **args);
+int find_shell_operator (char operator ,char **args);
 
 #endif

@@ -1,6 +1,7 @@
 #include "../include/Header.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 void show_usage(void)
@@ -32,7 +33,7 @@ int change_directory(char *directory)
     // add /home/user/ if ~ is the first char
     char* new_path = NULL;
     char *user_path = getenv("HOME");
-    int new_path_length = strlen(directory) + strlen(user_path) + 1;
+    int new_path_length = strlen(user_path) + strlen(directory) + 1;
 
 
     bool use_home_path = false;
@@ -40,23 +41,25 @@ int change_directory(char *directory)
         // first char is ~ replace dir with /home/user/dir
         // NOTE: How do we take out directory[0] ? because /home/ole/~/Dokumente/ is not valid
         remove_char(directory, '~');
-        fprintf(stderr, "%s%s",user_path, directory);
-        // FIX: Segfault here?
+        // fprintf(stderr, "%s%s",user_path, directory);
+        new_path = malloc(new_path_length);
         snprintf(new_path, new_path_length, "%s%s", user_path, directory);
-        // fprintf(stderr, "%s", new_path);
-        // use_home_path = true;
+        fprintf(stderr, "%s\n", new_path);
+        use_home_path = true;
     }
     
-    int res = -1;
-    // if(use_home_path) {
-    //     res = chdir(new_path);
-    // } else {
-    //     res = chdir(directory);
-    // }
+    int res = 0;
+    if(use_home_path) {
+        res = chdir(new_path);
+    } else {
+        res = chdir(directory);
+    }
 
     if (res == -1) {
+        free(new_path);
         return 1;
     }
+    free(new_path);
     return 0;
 }
 
@@ -165,9 +168,9 @@ char *strip_non_alpha(char *input_string) {
 }
 
 
-int find_shell_operator (char *operator ,char **args) {
+int find_shell_operator (char operator ,char **args) {
     for (int i = 0; args[i] != NULL; i++) {
-        if (strcmp(args[i], operator) == 0) {
+        if (args[i][0] == operator) {
             return i;
         }
     }

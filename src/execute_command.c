@@ -28,7 +28,6 @@ int execute_command(char **args)
     }
 
     // cd -> CD function - utils.c
-    // FIX: ??????
     if (strcmp("cd", command) == 0)
     {
         if(args[1] != NULL) {
@@ -58,7 +57,7 @@ int execute_command(char **args)
     }
 
     // pipe -> | function
-    int pipe_pos = find_shell_operator("|", args);
+    int pipe_pos = find_shell_operator('|', args);
     if (pipe_pos > 0 && args[pipe_pos + 1] != NULL) {
         _pipe(args);
     }
@@ -81,7 +80,7 @@ int execute_command(char **args)
     int do_input_redirection = 0;
     int fd_in = 0;
 
-    int input_red_pos = find_shell_operator("<", args);
+    int input_red_pos = find_shell_operator('<', args);
 
     if (input_red_pos > 0 && args[input_red_pos + 1] != NULL) {
         char *filename = args[2];
@@ -125,8 +124,8 @@ int execute_command(char **args)
 
     // NOTE: Need to find a better way to check if there is ie > >> this right now only works if >> is the second "command"
 
-    int output_red_pos = find_shell_operator(">", args);
-    int append_pos = find_shell_operator(">", args);
+    int output_red_pos = find_shell_operator('<', args);
+    int append_pos = find_shell_operator('>', args);
     // redirect stdout to the file
     if ((append_pos > 0 && args[append_pos + 1] != NULL) || (output_red_pos > 0 && args[output_red_pos + 1] != NULL)) {
         // > truncate (overwrite) ; >> append
@@ -165,14 +164,14 @@ int execute_command(char **args)
         return -1;
     }
 
-    int dollar_pos = find_shell_operator("$", args);
-    if(dollar_pos >= 0 && args[dollar_pos + 1]) {
+    int dollar_pos = find_shell_operator('$', args);
+    if(dollar_pos >= 0 && args[dollar_pos][1]) {
         char envChar = args[dollar_pos][0];
         // we start at the first second char, this should be the first letter after
         // $ and we copy everything short of 1 and put it together into one String
         //
         // NOTE: needs to be adjusted, to use dollar_pos
-        strncpy(envVar, & args[dollar_pos][1], sizeof(args[dollar_pos] -1));
+        strncpy(envVar, &args[dollar_pos][1], sizeof(args[dollar_pos] -1));
 
         char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
         // when we just use envChar, (a non null terminated char) strcmp wont now when the

@@ -7,6 +7,8 @@ import (
 	"os/exec"
 	"strings"
 	"testing"
+	"time"
+	"syscall"
 )
 
 /*
@@ -115,8 +117,7 @@ func TestCDHome(t *testing.T) {
         t.Fatalf("Shell command failed: %v", err)
 	}
 
-	cmd := exec.Command("cd")
-	err = cmd.Start()
+	cmd := exec.Command("bash", "-c", "cd && pwd")
 	if err != nil {
 		t.Fatalf("Shell command \"cd\" failed: %v", err)
 	}
@@ -126,29 +127,24 @@ func TestCDHome(t *testing.T) {
 		t.Fatalf("%v",err)
 	}
 
-	if ContainsOutput(output, string(expectedOutput)) {
+	if ContainsOutput(output, strings.TrimSpace(string(expectedOutput))) {
 		t.Log("cd test passed ✔️")
 	} else {
-        t.Errorf("Expected '/home/ole' in output, got: %v", output)
+        t.Errorf("Expected '%v' in output, got: %v", strings.TrimSpace(string(expectedOutput)),output)
 	}
 	
-	cmd.Wait()
 }
 
 func TestCDDir(t *testing.T) {
 	t.Log("...Testing cd dir command...") 
 
-	RunShellCommand("../buildDir/oshell", "cd ~/Dokumente/")
+	RunShellCommand("../buildDir/oshell", "cd ~/Dokumente")
 	output, err := RunShellCommand("../buildDir/oshell", "pwd")
 	if err != nil {
         t.Fatalf("Shell command failed: %v", err)
 	}
 	
-	cmd := exec.Command("cd ~/Dokumente/")
-	err = cmd.Start()
-	if err != nil {
-		t.Fatalf("%v", err)
-	}
+	cmd := exec.Command("bash", "-c" ,"cd ~/Dokumente")
 
 	expectedOutput, err := cmd.Output()
 	if err != nil {
@@ -238,19 +234,22 @@ func TestKillByNAME(t *testing.T) {
 		t.Fatalf("Could not start process 'spotify'")
 	}
 
-
+	time.Sleep(100 * time.Millisecond)
 
 	output, err := RunShellCommand("../buildDir/oshell", "kill spotify")
 	if err != nil {
+		cmd.Process.Kill() // cleanup
         t.Fatalf("Shell command failed: %v", err)
 	}
 	
-	if ContainsOutput(output, "killed spotify") {
+
+    err = cmd.Process.Signal(syscall.Signal(0)) // Check if process still exists
+	if ContainsOutput(output, "killed spotify") && err == nil{
 		t.Log("kill by name test passed ✔️")
 	} else {
+		cmd.Process.Kill()
 		t.Errorf("Expected 'killed spotify' in output, got: %v", output)
 	}
-	cmd.Wait()
 }
 
 
@@ -269,22 +268,25 @@ func TestKillByPID(t *testing.T) {
 		t.Fatalf("Could not start process 'spotify'")
 	}
 
+	time.Sleep(100 * time.Millisecond)
 	// get process ID 
 	pid := cmd.Process.Pid
 
 	var command string = fmt.Sprintf("kill %d", pid)
 	output, err := RunShellCommand("../buildDir/oshell", command)
 	if err != nil {
+		cmd.Process.Kill()
 		t.Fatalf("Shell command failed: %v", err)
 	}
 
+    err = cmd.Process.Signal(syscall.Signal(0)) // Check if process still exists
 	var expectedOutput string = fmt.Sprint("killed " ,pid)
-	if ContainsOutput(output, expectedOutput) {
+	if ContainsOutput(output, expectedOutput) && err == nil {
 		t.Log("kill by PID test passed ✔️")
 	} else {
+		cmd.Process.Kill()
 		t.Errorf("Expected '%s' in output, got : %v", expectedOutput, output)
 	}
-	cmd.Wait()
 }
 
 
@@ -320,7 +322,7 @@ func TestOutputRedirection (t *testing.T) {
 	os.Create(lsFilename)
 	os.Create("originalLs.txt")
 	cmd := exec.Command("bash", "-c", "ls > originalLs.txt")
-	err := cmd.Start()
+	err := cmd.Run()
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
@@ -346,7 +348,6 @@ func TestOutputRedirection (t *testing.T) {
 	} else {
 		t.Errorf("Expected \n'%s' output, got: \n%v", strings.Split(string(lsFileContent), "\n"), string(fileContent))
 	}
-	cmd.Wait()
 }
 
 
@@ -470,10 +471,10 @@ cat nonexistent.txt | wc -l      # Error handling
 		we cant use output[i], since this would a string, and we need []string, so by doing [:] we slice the whole 
 		thing 
 		*/
-		if ContainsOutput(output[:], expectedOutput[i]) {
+		if ContainsOutput(output[:], strings.TrimSpace(expectedOutput[i])) {
 			t.Log("output redirection test passed ✔️")
 		} else {
-			t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput[i], output[i])
+			t.Errorf("Expected:\n'%s'\nGot:\n'%s'", strings.TrimSpace(expectedOutput[i]), output[i])
 		}
 	}
 }
