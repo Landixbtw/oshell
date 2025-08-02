@@ -168,9 +168,14 @@ char *strip_non_alpha(char *input_string) {
 }
 
 
-int find_shell_operator (char operator ,char **args) {
+
+int find_shell_operator(char* operator, char **args) {
     for (int i = 0; args[i] != NULL; i++) {
-        if (args[i][0] == operator) {
+        if (strcmp(args[i], operator) == 0) {
+            return i;
+        }
+        // this is to check for $ since it does not stand alone
+        if (args[i][0] == operator[0]) {
             return i;
         }
     }

@@ -57,7 +57,7 @@ int execute_command(char **args)
     }
 
     // pipe -> | function
-    int pipe_pos = find_shell_operator('|', args);
+    int pipe_pos = find_shell_operator("|", args);
     if (pipe_pos > 0 && args[pipe_pos + 1] != NULL) {
         _pipe(args);
     }
@@ -80,9 +80,12 @@ int execute_command(char **args)
     int do_input_redirection = 0;
     int fd_in = 0;
 
-    int input_red_pos = find_shell_operator('<', args);
+    int input_red_pos = find_shell_operator("<", args);
 
     if (input_red_pos > 0 && args[input_red_pos + 1] != NULL) {
+        // FIX: this is not correct, we need to get the filename dynamically
+        // probably with regex
+        // ^[^~)('!*<>:;,?"*|/]+$ regex for 3 letter extension
         char *filename = args[2];
         FILE        *file = fopen(filename, "r");
 
@@ -124,21 +127,36 @@ int execute_command(char **args)
 
     // NOTE: Need to find a better way to check if there is ie > >> this right now only works if >> is the second "command"
 
-    int output_red_pos = find_shell_operator('<', args);
-    int append_pos = find_shell_operator('>', args);
+    int truncate_pos = find_shell_operator(">", args);
+    int append_pos = find_shell_operator(">>", args);
     // redirect stdout to the file
-    if ((append_pos > 0 && args[append_pos + 1] != NULL) || (output_red_pos > 0 && args[output_red_pos + 1] != NULL)) {
+    if ((append_pos > 0 && args[append_pos + 1] != NULL) || (truncate_pos > 0 && args[truncate_pos + 1] != NULL)) {
         // > truncate (overwrite) ; >> append
+        
+        if (args[truncate_pos + 1] == NULL || args[append_pos + 1] == NULL)  {
+            fprintf(stderr, "Error: missing filename after >\n");
+            return -1;
+        }
+
+        if (args[truncate_pos + 2] != NULL || args[append_pos + 2] != NULL) {
+            fprintf(stderr, "Error: too many arguments after >\n");
+            return -1;
+        }
+
+        // find good way for filename
+        char *filename = args[redirect_pos + 1];
+
 
         int flags = O_WRONLY | O_CREAT;
         if (strcmp(">>", args[1]) == 0)
             // inplace bitwise OR (x |= y ; x = x | y)
             // add flag O_APPEND to flags
             // &= ~xyz (remove xyz)
-            flags |= O_APPEND;
+            flags = O_APPEND | O_WRONLY | O_CREAT; // create if needed, append if exists
         else
-            flags |= O_TRUNC;
+            flags = O_TRUNC | O_WRONLY | O_CREAT; // create if needed, truncate if exists
 
+        // QUESTION: does flag create the file if not exists
         fd = open(args[2], flags , 0644);
         assert(fd != -1);
 
@@ -164,7 +182,7 @@ int execute_command(char **args)
         return -1;
     }
 
-    int dollar_pos = find_shell_operator('$', args);
+    int dollar_pos = find_shell_operator("$", args);
     if(dollar_pos >= 0 && args[dollar_pos][1]) {
         char envChar = args[dollar_pos][0];
         // we start at the first second char, this should be the first letter after

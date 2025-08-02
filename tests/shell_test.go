@@ -342,11 +342,17 @@ func TestOutputRedirection (t *testing.T) {
 
 	if err != nil {
 		t.Fatalf("Shell command failed: %v", err)
-	} 
-	if ContainsOutput(strings.Split(string(lsFileContent), "\n"), string(fileContent)) {
+	}
+
+
+	// Trims the whitespaces, and then replaces, the linebreaks with one space 
+	expectedStr := strings.ReplaceAll(strings.TrimSpace(string(fileContent)), "\n", " ")
+	gotStr := strings.ReplaceAll(strings.TrimSpace(string(lsFileContent)), "\n", " ")
+
+	if ContainsOutput(strings.Split(expectedStr, "\n"), gotStr) {
 		t.Log("output redirection test passed ✔️")
 	} else {
-		t.Errorf("Expected \n'%s' output, got: \n%v", strings.Split(string(lsFileContent), "\n"), string(fileContent))
+		t.Errorf("Expected \n'%v' output, got: \n'%v'", strings.Split(expectedStr, "\n"), gotStr)
 	}
 }
 
@@ -367,17 +373,18 @@ date >> logfile.txt
 	appendHere := "appendHere.txt"
 	os.Create(appendHere)
 	
+	// FIX: this output is empty
 
 	var command [4]string
 	expectedOutput := "line1\nline2\nline3\nline4\n"
 
 	// Build all commands
-	for i := 0; i < 4; i++ {
+	for i := range command {
 		command[i] = fmt.Sprintf("line%d >> %s", i+1, appendHere) // note: i+1 for line1, line2, etc.
 	}
 
 	// Execute all commands
-	for i := 0; i < 4; i++ {
+	for i := range command {
 	_, err := RunShellCommand("../buildDir/oshell", command[i])
 		if err != nil {
 			t.Fatalf("Shell command failed: %v", err)
@@ -459,7 +466,7 @@ cat nonexistent.txt | wc -l      # Error handling
 	
 	var output [commAmount]string
 	// Execute all commands
-	for i := 0; i < commAmount; i++ {
+	for i := range output {
 		// error here
 		tmpOutput , err := RunShellCommand("../buildDir/oshell", command[i])
 		if err != nil {
