@@ -122,7 +122,7 @@ int execute_command(char **args)
 
     // we save the original stdout
     int saved_stdout = dup(STDOUT_FILENO);
-    int do_redirection = 0;
+    int do_output_redirection = 0;
     int fd = 0;
 
     // NOTE: Need to find a better way to check if there is ie > >> this right now only works if >> is the second "command"
@@ -134,30 +134,41 @@ int execute_command(char **args)
         // > truncate (overwrite) ; >> append
         
         if (args[truncate_pos + 1] == NULL || args[append_pos + 1] == NULL)  {
-            fprintf(stderr, "Error: missing filename after >\n");
+            fprintf(stderr, "Error: missing filename after > / >> \n");
             return -1;
         }
 
         if (args[truncate_pos + 2] != NULL || args[append_pos + 2] != NULL) {
-            fprintf(stderr, "Error: too many arguments after >\n");
+            fprintf(stderr, "Error: too many arguments after > / >> \n");
             return -1;
         }
 
-        // find good way for filename
-        char *filename = args[redirect_pos + 1];
+        char *filename = NULL;
+        // if (append_pos != -1) { append_pos } else truncate_pos
+        int pos = (append_pos != -1) ? append_pos : truncate_pos;
+        if (pos != -1) {
+            filename = args[pos + 1];
+        }
+        
+        /*
+         * NOTE: This all seems to be correct, filename, operator,
+         * * line1 >> test.txt 
+         * test.txt 
+         * execv() failed: No such file or directory
+         * the file is created
+         * */
 
-
-        int flags = O_WRONLY | O_CREAT;
-        if (strcmp(">>", args[1]) == 0)
+        int flags;
+        if (strcmp(">>", (args[append_pos])) == 0) {
             // inplace bitwise OR (x |= y ; x = x | y)
             // add flag O_APPEND to flags
             // &= ~xyz (remove xyz)
             flags = O_APPEND | O_WRONLY | O_CREAT; // create if needed, append if exists
-        else
+        } else {
             flags = O_TRUNC | O_WRONLY | O_CREAT; // create if needed, truncate if exists
+        }
 
-        // QUESTION: does flag create the file if not exists
-        fd = open(args[2], flags , 0644);
+        fd = open(filename, flags, 0644);
         assert(fd != -1);
 
         if (dup2(fd, STDOUT_FILENO) == -1) {
@@ -166,11 +177,25 @@ int execute_command(char **args)
             return 1;
         }
 
-        args[1] = NULL;
-        args[2] = NULL;
-        do_redirection = 1;
+        // this is to remove the operator and filename from the command
+        args[pos] = NULL;
+        args[pos + 1] = NULL;
+
+        do_output_redirection = 1;
     }
 
+
+    if (do_output_redirection) {
+        dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdout);
+        if (fd != -1)
+            close(fd);
+    } else if (do_input_redirection) {
+        dup2(saved_stdin, STDIN_FILENO);
+        close(saved_stdin);
+        if (fd_in != -1)
+            close(fd_in);
+    }
 
  // env -> getenvvar
     // if the first char after echo is a $ we want to pass it on to getenvvar()
@@ -236,19 +261,6 @@ int execute_command(char **args)
             }
         }
    } while (pid == 0);
-
-    if (do_redirection) {
-        fflush(stdout);
-        dup2(saved_stdout, STDOUT_FILENO);
-        close(saved_stdout);
-        if (fd != -1)
-            close(fd);
-    } else if (do_input_redirection) {
-        dup2(saved_stdin, STDIN_FILENO);
-        close(saved_stdin);
-        if (fd_in != -1)
-            close(fd_in);
-    }
     return 0;
 }
 

@@ -32,12 +32,12 @@ int change_directory(char *directory)
 {
     // add /home/user/ if ~ is the first char
     char* new_path = NULL;
-    char *user_path = getenv("HOME");
-    int new_path_length = strlen(user_path) + strlen(directory) + 1;
-
 
     bool use_home_path = false;
-    if(strcmp(&directory[0], "~")) {
+    if(strcmp(&directory[0], "~") == 0) {
+        fprintf(stderr, "~ detected");
+        char *user_path = getenv("HOME");
+        int new_path_length = strlen(user_path) + strlen(directory) + 1;
         // first char is ~ replace dir with /home/user/dir
         // NOTE: How do we take out directory[0] ? because /home/ole/~/Dokumente/ is not valid
         remove_char(directory, '~');
@@ -57,7 +57,7 @@ int change_directory(char *directory)
 
     if (res == -1) {
         free(new_path);
-        return 1;
+        return -1;
     }
     free(new_path);
     return 0;

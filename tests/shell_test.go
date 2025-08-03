@@ -90,6 +90,8 @@ func ContainsOutput(output []string, expected string) bool {
     return false
 }
 
+// TODO: Maybe add a funtion that rebuilds the bin, if changes where made?
+
 // test functions have to start with Test
 func TestEchoCommand(t *testing.T) {
 	t.Log("...Testing echo command...")
@@ -290,18 +292,18 @@ func TestKillByPID(t *testing.T) {
 }
 
 
-// input doesnt match output??
 func TestInputRedirection(t *testing.T) {
 	t.Log("...Testing input redirection...")
 
 	// we need a file to redirect from, and content in it
 
-	input := "oshell is a simple but cool project "
+	input := "oshell is a simple but cool project"
 	err := os.WriteFile("string.txt", []byte(input), 0666)
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
 
+	// FIX: ???? I get the correct output if I manually put it into the shell, why not here
 	output, err := RunShellCommand("../buildDir/oshell", "cat < string.txt")
 
 	if err != nil {
@@ -368,7 +370,7 @@ echo "line 3" >> test.log
 date >> logfile.txt
 */
 
-	t.Log("...Testing ...")
+	t.Log("...Testing append...")
 
 	appendHere := "appendHere.txt"
 	os.Create(appendHere)
@@ -378,9 +380,11 @@ date >> logfile.txt
 	var command [4]string
 	expectedOutput := "line1\nline2\nline3\nline4\n"
 
+	t.Log("Command")
 	// Build all commands
 	for i := range command {
-		command[i] = fmt.Sprintf("line%d >> %s", i+1, appendHere) // note: i+1 for line1, line2, etc.
+		command[i] = fmt.Sprintf("echo \"line%d\" >> %s", i+1, appendHere) // note: i+1 for line1, line2, etc.
+		t.Log(command[i])
 	}
 
 	// Execute all commands
@@ -446,19 +450,19 @@ cat nonexistent.txt | wc -l      # Error handling
 	var command [commAmount]string
 	var expectedOutput [commAmount]string
 
-	command[0] = "\"test123\" | grep \"test\" " // expect test123
+	command[0] = "echo \"test123\" | grep \"test\" " // expect test123
 	expectedOutput[0] = "test123\n"
 
-	command[1] = "\"foo bar baz\" | wc -w " // expect 3
+	command[1] = "echo \"foo bar baz\" | wc -w " // expect 3
 	expectedOutput[1] = "3\n"
 
-	command[2] = "\"3\n1\n2\" | sort -n" // expect 1\n2\n3
+	command[2] = "echo \"3\n1\n2\" | sort -n" // expect 1\n2\n3
 	expectedOutput[2] = "1\n2\n3\n"
 
-	command[3] = "\"\" | cat" // expect ""
+	command[3] = "echo \"\" | cat" // expect ""
 	expectedOutput[3] = ""
 
-	command[4] = "\"no match\" | grep \"xyz\" " // expect no output ""
+	command[4] = "echo \"no match\" | grep \"xyz\" " // expect no output ""
 	expectedOutput[4] = ""
 
 	command[5] = "cat nonexistent.txt | wc -l " // expect error to stderr + 0 to stdout

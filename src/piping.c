@@ -29,26 +29,37 @@ int _pipe(char **args)
 
     // this splits the args into two command
     args[pipe_pos] = NULL;
+    
     char **cmd1 = args;
-    char **cmd2 = &args[pipe_pos + 1 ];
+    // cmd2 needs to be pipe_pos + 1 until == NULL
+    char **cmd2 = malloc(sizeof(args));
+
+    for(int i = 0; i < sizeof(args); i++) {
+        if(args[pipe_pos + i] != NULL) {
+            cmd2[i] = args[pipe_pos + i];
+        }
+    }
+
 
     int fildes[2];
     const int BSIZE = 100;
     char buf[BSIZE];
     ssize_t nbytes = 0;
 
-
-    // NOTE: assert only for debugging, since it disapears in the "release" build
     if (pipe(fildes) == -1) {
-        perror("ohsell: _pipe");
+        perror("ohshell: _pipe");
         return -1;
     }
 
     fcntl(fildes[0], F_SETFD, FD_CLOEXEC); // read end 
     fcntl(fildes[1], F_SETFD, FD_CLOEXEC); // write end 
 
-    char *scmd = "";
+    char *finished_command = "";
 
+    /*
+     * NOTE: We want to connect the stdout of cmd1 with the stdin of ie cmd2[1] grep
+     * */
+    
     switch (fork()) {
         case -1: // handle error
             perror("oshell: _pipe()");
@@ -60,32 +71,23 @@ int _pipe(char **args)
             close(fildes[1]); // write end is unused
             nbytes = read(fildes[0], buf, BSIZE); // get data from the pipe
             // assert(nbytes <= 0);
-            if (read(fildes[0], args[0], sizeof(args[0])) > 0)
+            if (read(fildes[0], cmd1, sizeof(cmd1)) > 0)
                 // 'buf' reads, the first command ie ls (ls | grep xxx)
-                puts("oshell: _pipe(): EOF or error detected.");
+                // puts("oshell: _pipe(): EOF or error detected.");
+                perror("oshell: _pipe() read child");
             if(dup2(fildes[0], STDOUT_FILENO) == -1) {
-                perror("oshell: _pipe() dup2");
+                perror("oshell: _pipe() dup2 child");
                 exit(EXIT_FAILURE);
             }
-	    //fprintf(stderr, "cmd1: %s\n", cmd1[0]);
-	    //fprintf(stderr, "cmd2: %s\n", cmd2[0]);
-            scmd = make_command(cmd1);
-	    // FIX: command one and two are added to scmd, usr/bin/lsgrep
-            fprintf(stderr, "scmd: %s", scmd);
-            // how can "|" be added as arg ? rn command is lsgrep not ls | grep xxx
-            execv(scmd, cmd2);
         default: // parent writes to pipe
             close(fildes[0]); // read end is unused
             // 'input' would write the second command ie grep xxx
             write(fildes[1], args[2], sizeof(args[2]));
             if(dup2(fildes[1], STDIN_FILENO) == -1) {
-                perror("oshell: _pipe() dup2");
+                perror("oshell: _pipe() dup2 parent");
                 exit(EXIT_FAILURE);
             }
-            // scmd = make_command(cmd1);
-            // execv(scmd, cmd2);
     }
-    free(scmd);
     close(fildes[0]);
     close(fildes[1]);
 
