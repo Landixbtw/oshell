@@ -102,7 +102,6 @@ char *oshell_read_line(void)
         {
             // EOF
             free(line);
-            exit(EXIT_SUCCESS);
         } else {
             perror("oshell: readline");
             free(line);

@@ -23,7 +23,7 @@ int _pipe(char **args)
     }
 
     if (args[pipe_pos] == NULL) {
-        fprintf(stderr, "No pipe symbol found.\n");
+        // fprintf(stderr, "No pipe symbol found.\n");
         return -1;
     }
 
@@ -47,7 +47,6 @@ int _pipe(char **args)
     ssize_t nbytes = 0;
 
     if (pipe(fildes) == -1) {
-        perror("ohshell: _pipe");
         return -1;
     }
 
@@ -58,36 +57,56 @@ int _pipe(char **args)
 
     /*
      * NOTE: We want to connect the stdout of cmd1 with the stdin of ie cmd2[1] grep
+     * so this would be default, fildes[1] to fildes[0] ?
      * */
     
+    // NOTE: This seems to kinda work, we get output, but errors aswell
+    // oshell: readline: Bad file descriptor
+    // oshell: _pipe() read child: Success
+    // cmd1: oshell: _pipe() write parent: Bad file descriptor
+    // oshell: _pipe() dup2 parent: Bad file descriptor
+    
+    // 1. fd is already closed
+    // 2. wrong value?
+
     switch (fork()) {
         case -1: // handle error
-            perror("oshell: _pipe()");
             close(fildes[0]);
             close(fildes[1]);
             break;
 
         case 0: // child reads from pipe
             close(fildes[1]); // write end is unused
+            // read from fd into buf
             nbytes = read(fildes[0], buf, BSIZE); // get data from the pipe
-            // assert(nbytes <= 0);
-            if (read(fildes[0], cmd1, sizeof(cmd1)) > 0)
-                // 'buf' reads, the first command ie ls (ls | grep xxx)
-                // puts("oshell: _pipe(): EOF or error detected.");
-                perror("oshell: _pipe() read child");
+            // buf, is empty cause there is nothing to read from, so we first have to exec, 
+            // cmd1?
+
+            // if (read(fildes[0], cmd1, sizeof(cmd1)) <= 0) {
+            //     for(int i = 0; i < sizeof(cmd1); i++) {
+            //         if(cmd1[i] != NULL) {
+            //             fprintf(stderr, "cmd1: %s\n", cmd1[i]);
+            //         }
+            //     }
+            //
+            // }
             if(dup2(fildes[0], STDOUT_FILENO) == -1) {
-                perror("oshell: _pipe() dup2 child");
                 exit(EXIT_FAILURE);
             }
         default: // parent writes to pipe
             close(fildes[0]); // read end is unused
             // 'input' would write the second command ie grep xxx
-            write(fildes[1], args[2], sizeof(args[2]));
+            if (write(fildes[1], cmd2, sizeof(args[2])) <= 0) {
+                for(int i = 0; i < sizeof(cmd2); i++) {
+                    if(cmd2[i] != NULL)
+                        fprintf(stderr, "cmd2: %s\n", cmd2[i]);
+                }
+            }
             if(dup2(fildes[1], STDIN_FILENO) == -1) {
-                perror("oshell: _pipe() dup2 parent");
                 exit(EXIT_FAILURE);
             }
     }
+
     close(fildes[0]);
     close(fildes[1]);
 

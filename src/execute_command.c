@@ -59,7 +59,9 @@ int execute_command(char **args)
     // pipe -> | function
     int pipe_pos = find_shell_operator("|", args);
     if (pipe_pos > 0 && args[pipe_pos + 1] != NULL) {
-        _pipe(args);
+        if(_pipe(args) != 0) {
+            perror("oshell: _pipe()");
+        }
     }
 
     // clear -> clear function
