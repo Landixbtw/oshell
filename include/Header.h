@@ -1,4 +1,4 @@
-#pragma once
+// TODO: UNTANGLE THIS WHOLE MESS
 
 #ifndef HEADER_H_
 #define HEADER_H_
@@ -43,7 +43,7 @@ int change_directory(char *directory);
 int kill_process(char *process_name_or_id);
 void oshell_loop(void);
 void clear(void);
-int _pipe(char **args);
+int pipe_redirection(char **args);
 char *make_command(char **args);
 int is_numeric(const char *str);
 char *strip_non_alpha(char *input_string);
