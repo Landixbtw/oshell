@@ -14,7 +14,7 @@ Key features
 
 ### Todo
 
-- echo passes the "" to the file, it should not - remove the "" when parsing
+- echo passes the "" to the file, it should not - remove the "" when parsing ✅ (added simple function from claude.ai)
 
 #### CRITICAL
 - pressing enter with nothing on the console, crashes, because assert command != NULL, 
