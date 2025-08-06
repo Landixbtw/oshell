@@ -13,10 +13,12 @@ Key features
 - redirect output with xx > output.txt ✅
 
 ### Todo
+
+- echo passes the "" to the file, it should not - remove the "" when parsing
+
 #### CRITICAL
 - pressing enter with nothing on the console, crashes, because assert command != NULL, 
     + if command == NULL, make \\n or something ✅
-
 
 ## Environment Variables
 - echo $USER should yield the user (ie. ole), with getenv()

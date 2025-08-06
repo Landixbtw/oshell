@@ -375,16 +375,12 @@ date >> logfile.txt
 	appendHere := "appendHere.txt"
 	os.Create(appendHere)
 	
-	// FIX: this output is empty
-
 	var command [4]string
 	expectedOutput := "line1\nline2\nline3\nline4\n"
 
-	t.Log("Command")
 	// Build all commands
 	for i := range command {
 		command[i] = fmt.Sprintf("echo \"line%d\" >> %s", i+1, appendHere) // note: i+1 for line1, line2, etc.
-		t.Log(command[i])
 	}
 
 	// Execute all commands
@@ -401,13 +397,17 @@ date >> logfile.txt
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
+	/*
+        '[line1 line2 line3 line4 execv() failed: No such file or directory free(): double free detected in tcache 2]'
+	*/
+
 	// Join the output lines and compare
 	actualOutput := strings.Split(strings.Join(catOutput, "\n"),"\n")
 
 	if ContainsOutput(actualOutput, expectedOutput) {
 		t.Log("output redirection test passed ✔️")
 	} else {
-		t.Errorf("Expected:\n'%s'\nGot:\n'%s'", expectedOutput, actualOutput)
+		t.Errorf("Expected:\n'%v'\nGot:\n'%v'", expectedOutput, actualOutput)
 	}
 }
 

@@ -1,5 +1,3 @@
-#define GNU_SOURCE
-
 #include "../include/Header.h"
 
 /*
@@ -85,13 +83,13 @@ int execute_command(char **args)
     int input_red_pos = find_shell_operator("<", args);
 
     if (input_red_pos > 0 && args[input_red_pos + 1] != NULL) {
-        // FIX: this is not correct, we need to get the filename dynamically
-        // probably with regex
-        // ^[^~)('!*<>:;,?"*|/]+$ regex for 3 letter extension
-        char *filename = args[2];
+        // < does not check if the file in the argument is a valid file, it will redirect anything
+        char        *filename = args[2];
         FILE        *file = fopen(filename, "r");
 
-        assert(file != NULL);
+        if(file == NULL) {
+            fprintf(stderr, "Error: %s is not a valid file.", filename);
+        }
 
         if (feof(file) || ferror(file)) {
             perror("oshell: fread() failed");
@@ -100,16 +98,18 @@ int execute_command(char **args)
 
         // open filebased pipeline channel for file 'filename' in read only
         fd_in = open(filename, O_RDONLY);
-        assert(fd_in != 0); // 0 = stdin | 1 = stdout | 2 = stderr
+        if(fd_in == 1) { // 0 = stdin | 1 = stdout | 2 = stderr
+            perror("oshell: open() failed");
+        }
 
         close(STDIN_FILENO); // we close stdin
         // we duplicate fd, into stdin
         if (dup2(fd_in, STDIN_FILENO) == -1) {
             perror("oshell: dup2 error");
             close(fd_in);
-            return 1;
+            return -1;
         }
-        args[1] = NULL; // remove '<' from the command
+        args[input_red_pos] = NULL; // remove '<' from the command
 
         do_input_redirection = 1;
     }
@@ -127,7 +127,7 @@ int execute_command(char **args)
     int do_output_redirection = 0;
     int fd = 0;
 
-    // NOTE: Need to find a better way to check if there is ie > >> this right now only works if >> is the second "command"
+    // TODO: we want to remove the "" from the argv for echo ie
 
     int truncate_pos = find_shell_operator(">", args);
     int append_pos = find_shell_operator(">>", args);
@@ -171,7 +171,7 @@ int execute_command(char **args)
         }
 
         fd = open(filename, flags, 0644);
-        assert(fd != -1);
+        if(fd != 0) perror("oshell: open() failed");
 
         if (dup2(fd, STDOUT_FILENO) == -1) {
             perror("oshell: dup2 error");
@@ -186,18 +186,6 @@ int execute_command(char **args)
         do_output_redirection = 1;
     }
 
-
-    if (do_output_redirection) {
-        dup2(saved_stdout, STDOUT_FILENO);
-        close(saved_stdout);
-        if (fd != -1)
-            close(fd);
-    } else if (do_input_redirection) {
-        dup2(saved_stdin, STDIN_FILENO);
-        close(saved_stdin);
-        if (fd_in != -1)
-            close(fd_in);
-    }
 
  // env -> getenvvar
     // if the first char after echo is a $ we want to pass it on to getenvvar()
@@ -263,6 +251,20 @@ int execute_command(char **args)
             }
         }
    } while (pid == 0);
+
+    // this needs to be here, after the commands have been execute ie < > >> otherwise it will just try and pass an empty stdin stdout
+    if (do_output_redirection) {
+        dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdout);
+        if (fd != -1)
+            close(fd);
+    } else if (do_input_redirection) {
+        dup2(saved_stdin, STDIN_FILENO);
+        close(saved_stdin);
+        if (fd_in != -1)
+            close(fd_in);
+    }
+
     return 0;
 }
 
