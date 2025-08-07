@@ -13,6 +13,7 @@
  * */
 
 #include "../include/Header.h"
+#include <unistd.h>
 
 int pipe_redirection(char **args)
 {
@@ -118,6 +119,12 @@ int pipe_redirection(char **args)
      * "This is the last command, only redirect STDIN"
      * */
 
+    // save the stdin/stdout, to later restore 
+    int saved_stdout = dup(STDOUT_FILENO);
+    int saved_stdin = dup(STDIN_FILENO);
+
+
+    // TODO: We need to know what number of command we have, this does not seem to work
     for(int i = 0; i < n; i++) {
         if (fork() == 0) {
             // child: setup the redirections
@@ -140,6 +147,11 @@ int pipe_redirection(char **args)
                 free(path);
                 free(argv);
                 exit(EXIT_FAILURE);
+            }
+// NOTE: This never gets printed
+            fprintf(stderr, "%s", path);
+            for(int i = 0; args[i] != NULL; i++) {
+                fprintf(stderr, "%s", args[i]);
             }
         }
         // parent continues to next iteration
@@ -177,6 +189,13 @@ int pipe_redirection(char **args)
 
     close(fd[0]);
     close(fd[1]);
+
+    // restore stdin/stdout
+    dup2(saved_stdin, STDIN_FILENO);
+    dup2(saved_stdout, STDOUT_FILENO);
+
+    if(close(saved_stdin) != 0) perror("oshell: piping()");
+    if(close(saved_stdout) != 0) perror("oshell: piping()");
 
     return 0;
 }
