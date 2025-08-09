@@ -14,8 +14,11 @@ int execute_command(char **args)
     if (command == NULL) return 0;
 
     // TODO: Handle case for DEL key
+    // maybe with getchar() but this would have to happend outside this function.
+    // any idea on how to do it inside?
+    // AFAIK del doesnt send something like ENTER when pressed, so there is no NULL command or anything passed
+    // add special value to DEL otuside this function, pass it and then handle the delete?
 
-    // Handle built-in args[0] --> isnt this just command?
     if (strcmp(command, "exit") == 0)
     {
         fprintf(stderr,"Exiting Shell...\n");
