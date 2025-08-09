@@ -44,21 +44,24 @@ char **remove_quotes(char **arg) {
     // since we are passing an array, we need to loop through words and letters,
     int pos;
     char quote;
+    bool in_quote = false;
     for(int i = 0; arg[i] != NULL; i++) {
         for(int j = 0; j < strlen(arg[i]); j++) {
             int len = strlen(arg[i]);
             if (len >= 2) {
                 // find first quote double or single
-                if (strcmp(arg[i], "\"") || strcmp(arg[i], "'")) {
+                if ((arg[i][j] == '"' || arg[i][j] == '\'') && !in_quote) {
                     // character is double or single quote, find matching quote
                     quote = *arg[i];
-                    pos = i;
+                    pos = j;
+                    in_quote = true;
                     // we only want to enter this statement once, after we found one quote, we want to save it and never
                     // enter again
                 }
                 // then we want to compare every char until we find a matching one
-                if (*arg[i] == quote) {
-                    // we found the matching quote, we want to memmove x to the left, and set arg[i] to '\0' or ""? 
+                if (arg[i][j] == quote) {
+                    // we found the matching quote, we want to memmove x to the left, and set arg[i] to '\0' or ""?
+                    memmove(&arg[i][j], &arg[i][j+1], len - j);
                 }
             }
         }
@@ -71,8 +74,6 @@ char **parse(char *input)
     // counts number of token the input has i.e the number of words
     // every time a ' ' is detected the counter goes +1
     size_t num_tokens = 0;
-
-    int i = 0;
 
     for (int j = 0; j < strlen(input); j++)
     {
@@ -91,8 +92,6 @@ char **parse(char *input)
         exit(EXIT_FAILURE);
     }
 
-    // NOTE: we want to parse during tokenization
-    remove_quotes(args);
 
 // the "" are not removed 
 // echo "foo bar baz" | wc -w
@@ -100,6 +99,7 @@ char **parse(char *input)
     // split the input string everytime there is a space 
     char *token = strtok(input, " ");
 
+    int i = 0;
     do {
         // increments post storing the token is args
         args[i] = token;
@@ -126,9 +126,10 @@ char **parse(char *input)
     }
 
 
-   for(int j = 0; args[j] != NULL; j++) {
-       fprintf(stderr,"args[%i]: %s \n", j, args[j]);
-    }
+    args = remove_quotes(args);
+   // for(int j = 0; args[j] != NULL; j++) {
+   //     fprintf(stderr,"args[%i]: %s \n", j, args[j]);
+   //  }
 
     // NOTE: args should be freed outside of this function
     return args;

@@ -13,6 +13,8 @@ int execute_command(char **args)
     // if the command is NULL meaning just enter, we just return
     if (command == NULL) return 0;
 
+    // TODO: Handle case for DEL key
+
     // Handle built-in args[0] --> isnt this just command?
     if (strcmp(command, "exit") == 0)
     {
@@ -97,10 +99,9 @@ int execute_command(char **args)
         }
 
         // open filebased pipeline channel for file 'filename' in read only
+        // 0 = stdin | 1 = stdout | 2 = stderr
+
         fd_in = open(filename, O_RDONLY);
-        if(fd_in == 1) { // 0 = stdin | 1 = stdout | 2 = stderr
-            perror("oshell: open() failed");
-        }
 
         close(STDIN_FILENO); // we close stdin
         // we duplicate fd, into stdin
@@ -171,7 +172,7 @@ int execute_command(char **args)
         }
 
         fd = open(filename, flags, 0644);
-        if(fd != 0) perror("oshell: open() failed");
+        if(fd == -1) perror("oshell: open() failed");
 
         if (dup2(fd, STDOUT_FILENO) == -1) {
             perror("oshell: dup2 error");
