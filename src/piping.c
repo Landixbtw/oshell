@@ -13,10 +13,10 @@
  * */
 
 #include "../include/Header.h"
-#include <unistd.h>
 
 int pipe_redirection(char **args)
 {
+
     /*
      * To support more then one, pipe for "advanced" commands, there needs to be a way to track the amount of pipes we have
      * for later redirection, tracking of the multiple pipe positions, and the spliting of the commands
@@ -30,53 +30,80 @@ int pipe_redirection(char **args)
     if(pipes_amount == 0) return -1; // no pipes found, however
 
 
-    int pipe_pos = -1;
+
+    int pipe_pos[pipes_amount];
+    int pipe_index = 0;
     for (int i = 0; args[i] != NULL; i++) {
         if (strcmp(args[i], "|") == 0) {
-            pipe_pos = i;
-            break;
+            pipe_pos[pipe_index++] = i;
         }
     }
 
+    /*
+     * So a char ***foobar is a pointer to an array of pointers that point to pointers to char.
+     * It's essentially a pointer to an array of argv arrays.
+     *
+     * commands (char***)
+     *      │
+     *      └──→ [0] ──→ argv for "echo hello"     ──→ [0]──→"echo"
+     *           [1] ──→ argv for "wc -w"          ──→ [1]──→"hello"
+     *                                                 [2]──→ NULL
+     *
+     *                                                 [0]──→"wc" 
+     *                                                 [1]──→"-w"
+     *                                                 [2]──→ NULL
+     *
+     * Memory layout:
+     * commands ──→ ┌─────────┐
+     *              │ ptr[0]  │──→ ┌─────────┐
+     *              ├─────────┤    │"echo"   │
+     *              │ ptr[1]  │    │"hello"  │
+     *              └─────────┘    │ NULL    │
+     *                   │         └─────────┘
+     *                   └──────→ ┌─────────┐
+     *                            │"wc"     │
+     *                            │"-w"     │
+     *                            │ NULL    │
+     *                            └─────────┘
+     *
+     * Usage: execv(path, commands[0]) for first command
+     *        execv(path, commands[1]) for second command
+     */
 
-    // this splits the args at the first pipe
-    args[pipe_pos] = NULL;
 
-    char **cmd1 = args;
-    // cmd2 needs to be pipe_pos + 1 until == NULL
+    char ***commands = malloc((pipes_amount + 1) * sizeof(char**));
+    char **paths = malloc((pipes_amount + 1) * sizeof(char*));
 
-    // Count remaining args after pipe
-    int cmd2_count = 0;
-    for(int i = pipe_pos + 1; args[i] != NULL; i++) {
-        cmd2_count++;
-    }
 
-    char **cmd2 = malloc((cmd2_count + 1) * sizeof(char*));
+    int start = 0;
+    for (int cmd_idx = 0; cmd_idx <= pipes_amount; cmd_idx++) {
+    int end = (cmd_idx < pipes_amount) ? pipe_pos[cmd_idx] : /* find end of args */;
+    
+    // Create command array from start to end
+    commands[cmd_idx] = /* extract args[start] to args[end-1] */;
+    
+    // Create path for this command
+    size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][0]) + 1;
+    snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][0]);
+    
+    start = end + 1; // Skip the pipe
+}
 
-    for(int i = 0; i < cmd2_count; i++) {
-        cmd2[i] = args[pipe_pos + 1 + i];
-    }
-    cmd2[cmd2_count] = NULL;
-
-    char *outputCmd1 = malloc(1024);
-    char *outputCmd2 = malloc(1024);
-
-    int fd[2];
-
-    int res;
 
     /*
      * pipe() returns two file descriptors, fd[0] is open for reading, fd[1] is open for writing
      * ouput of fd[1] is input for fd[0].
+     *
+     * Since pipes are a point-to-point connection, one for every command, so we need n-1 pipes if n is the amount of commands we have
      * */
-    res = pipe(fd);
-    if (res != 0) {
-        return res;
-    }
 
-    size_t path_length = strlen("/usr/bin/") + strlen(cmd1[0]) + 1;
-    char *path = malloc(path_length);
-    snprintf(path, path_length, "/usr/bin/%s", cmd1[0]);
+    int fd[pipes_amount][2];
+
+    for(int i = 0; i < pipes_amount; i++) {
+        if (pipe(fd[i]) == -1) {
+            perror("oshell: fd ");
+        }
+    }
 
     char **argv;
 
@@ -106,7 +133,6 @@ int pipe_redirection(char **args)
      * */
 
     // number of commands
-    // TODO: This needs to be dynamically
     int n = pipes_amount + 1;
 
 // echo "foo bar baz" | wc -w
@@ -125,20 +151,42 @@ int pipe_redirection(char **args)
 
 
     // TODO: We need to know what number of command we have, this does not seem to work
+    // stdout does not get redirected to stdin of second command
+    
     for(int i = 0; i < n; i++) {
         if (fork() == 0) {
             // child: setup the redirections
             if(i == 0) { // first command, only redirect stdout
-                if(dup2(fd[1], STDOUT_FILENO) == -1) {
+                fprintf(stderr, "Child %d starting\n", i);
+                if(dup2(fd[i][1], STDOUT_FILENO) == -1) {
                     return -1;
                 }
-            } else if (i == n) { // last command only redirect stdin
-                if(dup2(fd[0], STDIN_FILENO) == -1) {
+                fflush(stdout);
+                for(int j = 0; j < pipes_amount; j++) {
+                    close(fd[j][0]);
+                    close(fd[j][1]);
+                }
+
+            } else if (i == n - 1) { // last command only redirect stdin
+                fprintf(stderr, "Child %d starting\n", i);
+                if(dup2(fd[i-1][0], STDIN_FILENO) == -1) {
+                    close(fd[i-1][0]);
                     return -1;
+                }
+                fflush(stdout);
+                for(int j = 0; j < pipes_amount; j++) {
+                    close(fd[j][0]);
+                    close(fd[j][1]);
                 }
             } else { // not first nor last, redirect stdin and stdout
-                if(dup2(fd[0], STDIN_FILENO) == -1 || dup2(fd[1], STDOUT_FILENO) == -1) {
+                     // cmd0 ---> pipe[0] ---> cmd1 ---> pipe[1] ---> cmd2
+                fprintf(stderr, "Child %d starting\n", i);
+                if(dup2(fd[i-1][0], STDIN_FILENO) == -1 || dup2(fd[i][1], STDOUT_FILENO) == -1) {
                     return -1;
+                }
+                for(int j = 0; j < pipes_amount; j++) {
+                    close(fd[j][0]);
+                    close(fd[j][1]);
                 }
             }
 
@@ -146,9 +194,12 @@ int pipe_redirection(char **args)
                 perror("execv() failed");
                 free(path);
                 free(argv);
+                close(fd[i][0]);
+                close(fd[i][1]);
                 exit(EXIT_FAILURE);
             }
-// NOTE: This never gets printed
+
+            // NOTE: This never gets printed
             fprintf(stderr, "%s", path);
             for(int i = 0; args[i] != NULL; i++) {
                 fprintf(stderr, "%s", args[i]);
@@ -157,38 +208,10 @@ int pipe_redirection(char **args)
         // parent continues to next iteration
     }
 
-    // switch (fork()) {
-    //     case -1: // handle error
-    //         close(fd[0]);
-    //         close(fd[1]);
-    //         break;
-    //     case 0: // child reads from pipe
-    //         close(fd[1]); // write end is unused
-    //         // read from fd into buf
-    //         // buf, is empty cause there is nothing to read from, so we first have to exec,
-    //         // cmd1?
-    //         if (read(fd[0], outputCmd1, sizeof(cmd1)) <= 0) {
-    //
-    //         }
-    //         if(dup2(fd[0], STDOUT_FILENO) == -1) {
-    //             exit(EXIT_FAILURE);
-    //         }
-    //     default: // parent writes to pipe
-    //         close(fd[0]); // read end is unused
-    //         // 'input' would write the second command ie grep xxx
-    //         if (write(fd[1], cmd2, sizeof(args[2])) <= 0) {
-    //             for(int i = 0; i < sizeof(cmd2); i++) {
-    //                 if(cmd2[i] != NULL)
-    //                     fprintf(stderr, "cmd2: %s\n", cmd2[i]);
-    //             }
-    //         }
-    //         if(dup2(fd[1], STDIN_FILENO) == -1) {
-    //             exit(EXIT_FAILURE);
-    //         }
-    // }
-
-    close(fd[0]);
-    close(fd[1]);
+    for(int i = 0; i < pipes_amount; i++) {
+        close(fd[i][0]);
+        close(fd[i][1]);
+    }
 
     // restore stdin/stdout
     dup2(saved_stdin, STDIN_FILENO);

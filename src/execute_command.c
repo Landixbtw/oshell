@@ -5,6 +5,35 @@
  * char ** is a pointer to a pointer
  * */
 
+// claude.ai
+int command_exists(const char *command) {
+    // For absolute/relative paths
+    if (strchr(command, '/')) {
+        return access(command, X_OK) == 0;
+    }
+    
+    // Search PATH
+    char *path_env = getenv("PATH");
+    if (!path_env) return 0;
+    
+    char *path = strdup(path_env);
+    char *dir = strtok(path, ":");
+    
+    while (dir) {
+        char full_path[PATH_MAX];
+        snprintf(full_path, sizeof(full_path), "%s/%s", dir, command);
+        
+        if (access(full_path, X_OK) == 0) {
+            free(path);
+            return 1;  // Found it
+        }
+        dir = strtok(NULL, ":");
+    }
+    
+    free(path);
+    return 0;  // Not found
+}
+
 int execute_command(char **args)
 {
     // args[0] should always be the main command
@@ -18,6 +47,13 @@ int execute_command(char **args)
     // any idea on how to do it inside?
     // AFAIK del doesnt send something like ENTER when pressed, so there is no NULL command or anything passed
     // add special value to DEL otuside this function, pass it and then handle the delete?
+
+    // WARN: Might not need to handle this? today it works
+
+    // if(strcmp(command, "127") == 0) {
+    //     // DELETE KEY HAS BEEN PRESSED
+    //     fprintf(stderr, "DELETE KEY HAS BEEN PRESSED");
+    // }
 
     if (strcmp(command, "exit") == 0)
     {
@@ -131,8 +167,6 @@ int execute_command(char **args)
     int do_output_redirection = 0;
     int fd = 0;
 
-    // TODO: we want to remove the "" from the argv for echo ie
-
     int truncate_pos = find_shell_operator(">", args);
     int append_pos = find_shell_operator(">>", args);
     // redirect stdout to the file
@@ -206,8 +240,6 @@ int execute_command(char **args)
         char envChar = args[dollar_pos][0];
         // we start at the first second char, this should be the first letter after
         // $ and we copy everything short of 1 and put it together into one String
-        //
-        // NOTE: needs to be adjusted, to use dollar_pos
         strncpy(envVar, &args[dollar_pos][1], sizeof(args[dollar_pos] -1));
 
         char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
@@ -225,7 +257,22 @@ int execute_command(char **args)
     pid_t pid = 0;
     int status = 0;
 
+    /*
+     * For the shell to work, proper we want to identify what is a command, and what is giberish
+     * if the user enters a, that should return an error with "oshell: command not found: [command user entered]"
+     * because otherwise it will try to execute the command a and this will obv not work if a is not a valid command for the 
+     * shell or in /usr/bin
+     *
+     * BRAINSTROM
+     *
+     * Looping through everything in /usr/bin is just dumb this will take way too long no? For me its about 3800 entries so thats not happening
+     *
+     * just rule out anything that is shorter then strlen(x)? 
+     * */
+
+
     char *new_command = make_command(args);
+    if(!command_exists(new_command)) return -1;
     if ((pid = fork()) < 0)
         perror("oshell: fork() error");
     else if (pid == 0) {
@@ -233,7 +280,7 @@ int execute_command(char **args)
         //fprintf(stderr, "Command: %s %s %s \n", new_command, args[1], args[2]);
         int res = execv(new_command, args);
         if (res == -1) {
-            perror("execv() failed");
+            // perror("execv() failed");
             free(new_command);
             exit(EXIT_FAILURE);
         }
