@@ -52,7 +52,6 @@ int pipe_redirection(char **args)
      *                                                 [0]──→"wc" 
      *                                                 [1]──→"-w"
      *                                                 [2]──→ NULL
-     *
      * Memory layout:
      * commands ──→ ┌─────────┐
      *              │ ptr[0]  │──→ ┌─────────┐
@@ -70,24 +69,42 @@ int pipe_redirection(char **args)
      *        execv(path, commands[1]) for second command
      */
 
-
+    
     char ***commands = malloc((pipes_amount + 1) * sizeof(char**));
     char **paths = malloc((pipes_amount + 1) * sizeof(char*));
 
+    fprintf(stderr, "after ***Commands");
+    fflush(stderr);
 
     int start = 0;
-    for (int cmd_idx = 0; cmd_idx <= pipes_amount; cmd_idx++) {
-    int end = (cmd_idx < pipes_amount) ? pipe_pos[cmd_idx] : /* find end of args */;
-    
+    int end = 0;
+    int cmd_idx = 0;
+    for (; cmd_idx <= pipes_amount; cmd_idx++) {
+        if(cmd_idx < pipes_amount) {
+            end = pipe_pos[cmd_idx];
+        } else {
+            int i = 0;
+            do {
+                i++;
+            }while (args[i] != NULL);
+            end = i;
+        }
+    }
+    fprintf(stderr, "after loop\n");
+    fflush(stderr);
+
     // Create command array from start to end
-    commands[cmd_idx] = /* extract args[start] to args[end-1] */;
+    // commands[cmd_idx] = /* extract args[start] to args[end-1] */;
     
+    for(int i = 0; i < end-1; i++) {
+        commands[cmd_idx] = &args[i];
+    }
+
     // Create path for this command
     size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][0]) + 1;
     snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][0]);
     
     start = end + 1; // Skip the pipe
-}
 
 
     /*
@@ -105,10 +122,10 @@ int pipe_redirection(char **args)
         }
     }
 
-    char **argv;
+    char **argv = NULL;
 
     int k = 0;
-    while (cmd1[k + 1] != NULL) {
+    while (commands[k + 1] != NULL) {
         k++;
     }
 
@@ -116,7 +133,7 @@ int pipe_redirection(char **args)
 
     // k gives number of arguments
     for(int j = 0; j < k; j++) {
-        argv[j] = cmd1[j + 1];
+        argv[j] = *commands[j + 1];
     }
 
     argv[k] = NULL;
@@ -190,17 +207,18 @@ int pipe_redirection(char **args)
                 }
             }
 
-            if (execv(path, argv) == -1) {
+            if (execv(*paths, argv) == -1) {
                 perror("execv() failed");
-                free(path);
+                free(paths);
                 free(argv);
+                free(commands);
                 close(fd[i][0]);
                 close(fd[i][1]);
                 exit(EXIT_FAILURE);
             }
 
             // NOTE: This never gets printed
-            fprintf(stderr, "%s", path);
+            fprintf(stderr, "%s", paths[0]);
             for(int i = 0; args[i] != NULL; i++) {
                 fprintf(stderr, "%s", args[i]);
             }
@@ -219,6 +237,10 @@ int pipe_redirection(char **args)
 
     if(close(saved_stdin) != 0) perror("oshell: piping()");
     if(close(saved_stdout) != 0) perror("oshell: piping()");
+
+    free(paths);
+    free(argv);
+    free(commands);
 
     return 0;
 }

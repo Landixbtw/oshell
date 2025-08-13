@@ -73,6 +73,38 @@ int read_key() {
     return ch;
 }
 
+
+// THIS NEEDS SOME WORK DONE: 
+// https://claude.ai/chat/a101c9ec-78e7-43c6-853d-803d368245a7
+char **parser(char *input) {
+/*
+ * for each character in input:
+    if character is quote:
+        toggle "inside_quotes" state
+    else if character is space AND not inside_quotes:
+        end current token, start new one
+    else:
+        add character to current token
+ * */
+    char **token;
+    int t = 0;
+
+    bool in_quotes = false;
+    for(int i = 0; i < strlen(args); i++) {
+        if(args[i] == '"' || args[i] == '\'') {
+            in_quotes = true;
+        } else if (args[i] == ' ' && !in_quotes) {
+            // end current token, start new one 
+            t++;
+        } else {
+            // add char to token
+            token[t] = &args[i];
+        }
+    }
+    return token;
+}
+
+
 // return has to be freed
 char **parse(char *input)
 {
@@ -85,50 +117,39 @@ char **parse(char *input)
 
 
 
-    // counts number of token the input has i.e the number of words
-    // every time a ' ' is detected the counter goes +1
-    size_t num_tokens = 0;
-
-    for (int j = 0; j < strlen(input); j++)
-    {
-        if (isblank(input[j]))
-        {
-            num_tokens++;
-        }
-    }
-
+    int capacity = 10;
+    int count = 0;
+    char **args = malloc(sizeof(char *) * capacity);
 
     // pointer to a pointer -- represents an array of strings 
-    char **args = malloc(sizeof(char *) * strlen(input) + 1);
     // args should never be NULL
     if(args == NULL) {
         perror("oshell: CRITICAL ERROR **args is NULL");
         exit(EXIT_FAILURE);
     }
 
-
-// the "" are not removed 
-// echo "foo bar baz" | wc -w
-
-    // split the input string everytime there is a space 
-    char *token = strtok(input, " ");
+    if (count >= capacity - 1) {  
+        capacity *= 2;
+        args = realloc(args, sizeof(char *) * capacity);
+        if(args == NULL) {
+            perror("oshell: parsing() realloc failed ");
+        }
+    }
 
     int i = 0;
-    do {
-        // increments post storing the token is args
-        args[i] = token;
-        i++;
-        token = strtok(NULL, " ");
-    }while (token != NULL);
+    
+    args = parser(input);
 
-
-    while(args[i] != NULL) 
+    while(args[i] != NULL) // SUMMARY: AddressSanitizer: heap-buffer-overflow ../src/parsing.c:HERE in parse
     {
         i++;
     }
 
     // go one back after the NULL to be at the last char
-    i--;
+    if(i > 0) i--;
+    else {
+        perror("?");
+    }
 
     char *mod_str = args[i];
     const size_t len = strlen(mod_str);

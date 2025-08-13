@@ -6,3 +6,4 @@ tests/ls.txt
 tests/originalLs.txt
 tests/appendHere.txt
 valgrind-out.txt
+valgrind-out.txt.*

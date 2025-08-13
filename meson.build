@@ -3,7 +3,7 @@ project('oshell', 'c',
   default_options: [
     'c_std=c11',
     'warning_level=3',
-    'optimization=3',
+    # 'optimization=3', # this conflicts with buildtype=debug
     'buildtype=debug'
   ]
 )
