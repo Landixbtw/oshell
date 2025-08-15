@@ -73,9 +73,6 @@ int pipe_redirection(char **args)
     char ***commands = malloc((pipes_amount + 1) * sizeof(char**));
     char **paths = malloc((pipes_amount + 1) * sizeof(char*));
 
-    fprintf(stderr, "after ***Commands");
-    fflush(stderr);
-
     int start = 0;
     int end = 0;
     int cmd_idx = 0;
@@ -90,8 +87,6 @@ int pipe_redirection(char **args)
             end = i;
         }
     }
-    fprintf(stderr, "after loop\n");
-    fflush(stderr);
 
     // Create command array from start to end
     // commands[cmd_idx] = /* extract args[start] to args[end-1] */;

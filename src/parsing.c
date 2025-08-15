@@ -50,6 +50,7 @@ char **remove_quotes(char **arg) {
                 if (arg[i][j] == quote) {
                     // we found the matching quote, we want to memmove x to the left, and set arg[i] to '\0' or ""?
                     memmove(&arg[i][j], &arg[i][j+1], len - j);
+                    arg[i][len - 1] = '\0';
                 }
             }
         }
@@ -59,7 +60,7 @@ char **remove_quotes(char **arg) {
 
 // this function captures raw key input, for most promenantly DEL
 // returns -1 on no key captured, or error
-int read_key() {
+int read_key(void) {
     char ch = -1;
     
     if(read(STDIN_FILENO, &ch, 1) != 1) return -1;
@@ -74,35 +75,34 @@ int read_key() {
 }
 
 
-// THIS NEEDS SOME WORK DONE: 
-// https://claude.ai/chat/a101c9ec-78e7-43c6-853d-803d368245a7
-char **parser(char *input) {
-/*
- * for each character in input:
-    if character is quote:
-        toggle "inside_quotes" state
-    else if character is space AND not inside_quotes:
-        end current token, start new one
-    else:
-        add character to current token
- * */
-    char **token;
-    int t = 0;
 
-    bool in_quotes = false;
-    for(int i = 0; i < strlen(args); i++) {
-        if(args[i] == '"' || args[i] == '\'') {
-            in_quotes = true;
-        } else if (args[i] == ' ' && !in_quotes) {
-            // end current token, start new one 
-            t++;
-        } else {
-            // add char to token
-            token[t] = &args[i];
+
+// TODO: UNDERSTAND THIS
+char **tokenize(char *input, int capacity) {
+    char **tokens = malloc(sizeof(char *) * capacity);
+    if (!tokens) return NULL;
+
+    int t = 0;
+    int start = 0;
+    int len = strlen(input);
+
+    for (int i = 0; i <= len; i++) { 
+        if (input[i] == ' ' || input[i] == '\0') {
+            if (i > start) {
+                input[i] = '\0';
+                tokens[t++] = &input[start]; 
+                if (t >= capacity - 1) { 
+                    capacity *= 2;
+                    tokens = realloc(tokens, sizeof(char *) * capacity);
+                }
+            }
+            start = i + 1; // next token starts after space
         }
     }
-    return token;
+    tokens[t] = NULL; // null-terminate the array
+    return tokens;
 }
+
 
 
 // return has to be freed
@@ -114,8 +114,6 @@ char **parse(char *input)
     // if(read_key() == KEY_DEL) {
     //     KEY_DEL_EVENT[0] = "127";
     // }
-
-
 
     int capacity = 10;
     int count = 0;
@@ -137,8 +135,8 @@ char **parse(char *input)
     }
 
     int i = 0;
-    
-    args = parser(input);
+
+    args = tokenize(input, capacity);
 
     while(args[i] != NULL) // SUMMARY: AddressSanitizer: heap-buffer-overflow ../src/parsing.c:HERE in parse
     {
@@ -151,13 +149,13 @@ char **parse(char *input)
         perror("?");
     }
 
+    if(args[i] == NULL) { exit(-1);}
     char *mod_str = args[i];
-    const size_t len = strlen(mod_str);
 
     if(mod_str == NULL) perror("oshell: parsing()");
     // replace \n with \0
-    if (len > 0 && mod_str[len - 1] == '\n') {
-        mod_str[len - 1] = '\0';
+    if (strlen(mod_str) > 0 && mod_str[strlen(mod_str) - 1] == '\n') {
+        mod_str[strlen(mod_str) - 1] = '\0';
     }
 
     /*

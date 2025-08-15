@@ -361,15 +361,6 @@ func TestOutputRedirection (t *testing.T) {
 
 // NOTE: this should be supported
 func TestHereAppend(t *testing.T) {
-	/*
-echo "line 1" >> test.log
-echo "line 2" >> test.log
-echo "line 3" >> test.log
-
-# Append command output
-date >> logfile.txt
-*/
-
 	t.Log("...Testing append...")
 
 	appendHere := "appendHere.txt"
@@ -380,7 +371,7 @@ date >> logfile.txt
 
 	// Build all commands
 	for i := range command {
-		command[i] = fmt.Sprintf("echo \"line%d\" >> %s", i+1, appendHere) // note: i+1 for line1, line2, etc.
+		command[i] = fmt.Sprintf("echo \"line%d\" >> %s", i+1, appendHere) 
 	}
 
 	// Execute all commands
@@ -397,8 +388,9 @@ date >> logfile.txt
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
-	/*
+	/* FIX:
         '[line1 line2 line3 line4 execv() failed: No such file or directory free(): double free detected in tcache 2]'
+		This only occurs in the tests? manual cat appendHere.txt works just fine
 	*/
 
 	// Join the output lines and compare

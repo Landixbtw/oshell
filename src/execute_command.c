@@ -189,14 +189,6 @@ int execute_command(char **args)
         if (pos != -1) {
             filename = args[pos + 1];
         }
-        
-        /*
-         * NOTE: This all seems to be correct, filename, operator,
-         * * line1 >> test.txt 
-         * test.txt 
-         * execv() failed: No such file or directory
-         * the file is created
-         * */
 
         int flags;
         if (strcmp(">>", (args[append_pos])) == 0) {
@@ -268,6 +260,8 @@ int execute_command(char **args)
      * Looping through everything in /usr/bin is just dumb this will take way too long no? For me its about 3800 entries so thats not happening
      *
      * just rule out anything that is shorter then strlen(x)? 
+     *
+     * --> command_exists with access()
      * */
 
 
