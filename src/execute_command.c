@@ -274,13 +274,17 @@ int execute_command(char **args)
         //fprintf(stderr, "Command: %s %s %s \n", new_command, args[1], args[2]);
         int res = execv(new_command, args);
         if (res == -1) {
-            // perror("execv() failed");
+            fprintf(stderr, "freeing new_command at %p in function X\n", (void*)new_command);
             free(new_command);
+            new_command = NULL;
             exit(EXIT_FAILURE);
+        } else {
+            fprintf(stderr, "freeing new_command at %p in function X\n", (void*)new_command);
+            free(new_command);
+            new_command = NULL;
+            sleep(5);
+            return(1);
         }
-        free(new_command);
-        sleep(5);
-        return(1);
     }
     else do {
         if ((pid = waitpid(pid, &status, WNOHANG)) == -1)

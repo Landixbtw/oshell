@@ -35,7 +35,6 @@ int change_directory(char *directory)
 
     bool use_home_path = false;
     if(strcmp(&directory[0], "~") == 0) {
-        fprintf(stderr, "~ detected");
         char *user_path = getenv("HOME");
         int new_path_length = strlen(user_path) + strlen(directory) + 1;
         // first char is ~ replace dir with /home/user/dir

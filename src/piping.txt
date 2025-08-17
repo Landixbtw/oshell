@@ -12,17 +12,12 @@
  *
  * */
 
-#include "../include/piping.h"
+#include "../include/Header.h"
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-
-
-int pipe_redirection(char **args) 
+int pipe_redirection(char **args)
 {
-/*
+
+    /*
      * To support more then one, pipe for "advanced" commands, there needs to be a way to track the amount of pipes we have
      * for later redirection, tracking of the multiple pipe positions, and the spliting of the commands
      * */
@@ -32,10 +27,10 @@ int pipe_redirection(char **args)
         if(strcmp("|", args[i]) == 0) pipes_amount++;
     }
 
-
     if(pipes_amount == 0) return -1; // no pipes found, however
 
-    
+
+
     int pipe_pos[pipes_amount];
     int pipe_index = 0;
     for (int i = 0; args[i] != NULL; i++) {
@@ -43,9 +38,6 @@ int pipe_redirection(char **args)
             pipe_pos[pipe_index++] = i;
         }
     }
-
-    char ***commands = malloc((pipes_amount + 1) * sizeof(char**));
-    char **paths = malloc((pipes_amount + 1) * sizeof(char*));
 
     /*
      * So a char ***foobar is a pointer to an array of pointers that point to pointers to char.
@@ -77,10 +69,10 @@ int pipe_redirection(char **args)
      *        execv(path, commands[1]) for second command
      */
 
-    int MAX_ARGS;
-    for(int i = 0; args[i] != NULL; i++) {
-        MAX_ARGS++;
-    }
+    
+    char ***commands = malloc((pipes_amount + 1) * sizeof(char**));
+    char **paths = malloc((pipes_amount + 1) * sizeof(char*));
+
 
     int start = 0;
     int end = 0;
@@ -88,41 +80,30 @@ int pipe_redirection(char **args)
     for (; cmd_idx <= pipes_amount; cmd_idx++) {
         if(cmd_idx < pipes_amount) {
             end = pipe_pos[cmd_idx];
-            // create the commands from [cmd_idx][i] = args[i]
-            for(int i = 0; i < end; i++) {
-                /*
-                 * Since commands[cmd_idx][i] is not initialized and only
-                 * command[cmd_idx] we need to allocate for each string in the array
-                 * */
-                commands[i] = malloc(MAX_ARGS * sizeof(char*));
-                commands[cmd_idx][i] = args[i];
-            }
-            commands[cmd_idx][end] = NULL;
         } else {
-            int j = 0;
+            int i = 0;
             do {
-                j++;
-            }while (args[j] != NULL);
-            start = end + 1; // Skip the pipe
-            end = j;
-            for(int i = start; i < end; i++) {
-                commands[i] = malloc(MAX_ARGS * sizeof(char*));
-                commands[cmd_idx][i] = args[i];
-            }
-            commands[cmd_idx][end] = NULL;
+                i++;
+            }while (args[i] != NULL);
+            end = i;
         }
     }
 
-
-    // FIX: This does not work
-    // Create path for this command
-    for(int i = 0; commands[cmd_idx][i] != NULL; i++) {
-        fprintf(stderr, "%s", commands[cmd_idx][i]);
-        // size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][start]) + 1;
-    //     paths[cmd_idx] = malloc(path_length);
-    //     if (!paths[cmd_idx]) { perror("oshell: piping()"); exit(-1);}
-    //     snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][start]);
+    // Create command array from start to end
+    // commands[cmd_idx] = /* extract args[start] to args[end-1] */;
+    
+    for(int i = 0; i < end-1; i++) {
+        commands[i][cmd_idx++] = args[i];
+        commands[i][cmd_idx] = NULL;
     }
+
+    // Create path for this command
+    size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][0]) + 1;
+    paths[cmd_idx] = malloc(path_length);
+    if (!paths[cmd_idx]) { perror("oshell: piping()"); exit(-1);}
+    snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][0]);
+    
+    start = end + 1; // Skip the pipe
 
 
     /*
@@ -140,6 +121,40 @@ int pipe_redirection(char **args)
         }
     }
 
+    char **argv = NULL;
+
+    int k = 0;
+    while (commands[k + 1] != NULL) {
+        k++;
+    }
+
+    argv = malloc((k + 1) * sizeof(char*));
+
+    // k gives number of arguments
+    for(int j = 0; j < k; j++) {
+        argv[j] = *commands[j + 1];
+    }
+
+    argv[k] = NULL;
+
+
+    // for N commands we N processes and N-1 pipes
+
+    /*
+     * Create pipe (empty)
+     * Fork for echo
+     * Fork for grep
+     * In echo's process: redirect STDOUT to pipe's write end
+     * In grep's process: redirect STDIN to pipe's read end
+     * NOW both processes call execv()
+     * */
+
+    // number of commands
+    int n = pipes_amount + 1;
+
+// echo "foo bar baz" | wc -w
+// 3
+
     /*
      * We need to track, what gets redirected where
      * "This is the first command, only redirect STDOUT"
@@ -155,8 +170,7 @@ int pipe_redirection(char **args)
     // TODO: We need to know what number of command we have, this does not seem to work
     // stdout does not get redirected to stdin of second command
     
-
-    for(int i = 0; i < cmd_idx; i++) {
+    for(int i = 0; i < n; i++) {
         if (fork() == 0) {
             // child: setup the redirections
             if(i == 0) { // first command, only redirect stdout
@@ -169,7 +183,7 @@ int pipe_redirection(char **args)
                     close(fd[j][1]);
                 }
 
-            } else if (i == cmd_idx - 1) { // last command only redirect stdin
+            } else if (i == n - 1) { // last command only redirect stdin
                 if(dup2(fd[i-1][0], STDIN_FILENO) == -1) {
                     close(fd[i-1][0]);
                     return -1;
@@ -190,15 +204,14 @@ int pipe_redirection(char **args)
                 }
             }
 
-            // this should +1 since we dont want 0 because 0 is the command in paths ie echo 
-            if (execv(*paths, commands[cmd_idx]) == -1) {
+            // WARN: piping fails "Bad adress"
+            if (execv(*paths, argv) == -1) {
                 perror("execv() failed");
                 free(paths);
+                free(argv);
                 free(commands);
-                for(int i = 0; i < pipes_amount; i++) {
-                    close(fd[i][0]);
-                    close(fd[i][1]);
-                }
+                close(fd[i][0]);
+                close(fd[i][1]);
                 exit(EXIT_FAILURE);
             }
 
@@ -211,7 +224,10 @@ int pipe_redirection(char **args)
         // parent continues to next iteration
     }
 
-    
+    for(int i = 0; i < pipes_amount; i++) {
+        close(fd[i][0]);
+        close(fd[i][1]);
+    }
 
     // restore stdin/stdout
     dup2(saved_stdin, STDIN_FILENO);
@@ -221,6 +237,7 @@ int pipe_redirection(char **args)
     if(close(saved_stdout) != 0) perror("oshell: piping()");
 
     free(paths);
+    free(argv);
     free(commands);
 
     return 0;
