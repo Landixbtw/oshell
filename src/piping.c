@@ -95,8 +95,11 @@ int pipe_redirection(char **args)
                  * command[cmd_idx] we need to allocate for each string in the array
                  * */
                 commands[i] = malloc(MAX_ARGS * sizeof(char*));
-                commands[cmd_idx][i] = args[i];
-            }
+                if(args[i] != NULL) {
+                    commands[cmd_idx][i] = args[i];
+                    fprintf(stderr, "commands[%i][%i] %s\n", cmd_idx, i,commands[cmd_idx][i]);
+                }
+                                }
             commands[cmd_idx][end] = NULL;
         } else {
             int j = 0;
@@ -107,21 +110,22 @@ int pipe_redirection(char **args)
             end = j;
             for(int i = start; i < end; i++) {
                 commands[i] = malloc(MAX_ARGS * sizeof(char*));
-                commands[cmd_idx][i] = args[i];
+                if(args[i] != NULL)
+                    commands[cmd_idx][i] = args[i];
             }
             commands[cmd_idx][end] = NULL;
         }
     }
 
 
-    // FIX: This does not work
-    // Create path for this command
+    // if cmd_idx 0 is NULL this will crash and burn
     for(int i = 0; commands[cmd_idx][i] != NULL; i++) {
+        fprintf(stderr, "commands\n");
         fprintf(stderr, "%s", commands[cmd_idx][i]);
-        // size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][start]) + 1;
-    //     paths[cmd_idx] = malloc(path_length);
-    //     if (!paths[cmd_idx]) { perror("oshell: piping()"); exit(-1);}
-    //     snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][start]);
+        size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][start]) + 1;
+        paths[cmd_idx] = malloc(path_length);
+        if (!paths[cmd_idx]) { perror("oshell: piping()"); exit(-1);}
+        snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][start]);
     }
 
 
@@ -191,6 +195,7 @@ int pipe_redirection(char **args)
             }
 
             // this should +1 since we dont want 0 because 0 is the command in paths ie echo 
+            if(commands[cmd_idx] == NULL) return -1;
             if (execv(*paths, commands[cmd_idx]) == -1) {
                 perror("execv() failed");
                 free(paths);

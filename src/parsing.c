@@ -32,6 +32,7 @@ char **remove_quotes(char **arg) {
     // since we are passing an array, we need to loop through words and letters,
     int pos;
     char quote;
+    char **new_args = malloc(ARRAY_SIZE(arg));
     bool in_quote = false;
     for(int i = 0; arg[i] != NULL; i++) {
         for(int j = 0; j < strlen(arg[i]); j++) {
@@ -42,10 +43,17 @@ char **remove_quotes(char **arg) {
                     // character is double or single quote, find matching quote
                     quote = *arg[i];
                     pos = j;
+
+                    // we want to keep adding until i++ is a single/double quote
+                    new_args[i] = arg[i];
                     in_quote = true;
                     // we only want to enter this statement once, after we found one quote, we want to save it and never
                     // enter again
                 }
+                if(!in_quote) {
+                    new_args[i] = arg[i];
+                }
+
                 // then we want to compare every char until we find a matching one
                 if (arg[i][j] == quote) {
                     // we found the matching quote, we want to memmove x to the left, and set arg[i] to '\0' or ""?
@@ -162,7 +170,14 @@ char **parse(char *input)
      * We want to remove the quotes after tokeninazation so that we dont mess up the tokens
      * ["test 1 2 3"] is not the same as [test] [1] [2] [3]
      * */
+
+    for(int i = 0; args[i] != NULL; i++) 
+        fprintf(stderr, "args[%i]: %s\n", i,args[i]);
+
     args = remove_quotes(args);
+
+    for(int i = 0; args[i] != NULL; i++) 
+        fprintf(stderr, "args[%i]: %s\n", i,args[i]);
 
     // NOTE: args should be freed outside of this function
     return args;

@@ -61,13 +61,13 @@ int kill_process(char *process_name_or_id)
         //     exit(EXIT_FAILURE);
         // }
 
-        char   *buffer = NULL;
-        char *comm_file_path = NULL;
-        char *full_proc_path = NULL;
+        char    *buffer = NULL;
+        char    *comm_file_path = NULL;
+        char    *full_proc_path = NULL;
 
-        FILE            *fp = NULL;
+        FILE    *fp = NULL;
 
-        bool process_found = false;
+        bool    process_found = false;
 
         /*
          * We need to open every /proc/pid/comm file  (opendir() and readdir()) and check if the content matches
@@ -86,7 +86,9 @@ int kill_process(char *process_name_or_id)
                     continue;
                 }
 
+                // if the directory name is not all integers we skip
                 if(!is_numeric(dirent->d_name)) continue;
+
 
                 // string length for proc_dir_name + dirent->d_name
                 size_t full_proc_pathLength = strlen(proc_dir_name) + strlen(dirent->d_name) + 1;
@@ -146,12 +148,8 @@ int kill_process(char *process_name_or_id)
                     }
 
                     if(strcmp(strip_non_alpha(buffer), strip_non_alpha(process_name_or_id)) == 0) {
-                        // fprintf(stderr, "match found: %s / %s\n", process_name_or_id, buffer);
-                        for(unsigned int i = 0; i < strlen(process_name_or_id); i++) {
-                        }
                         if(kill(pid, 9) == 0) {
-                            // fprintf(stderr,"killed %i\n", pid);
-                            fprintf(stderr, "killed %s", process_name_or_id);
+                            fprintf(stderr, "killed %s with PID: %i", process_name_or_id, pid);
                             fflush(stderr);
                             process_found = true;
                         }

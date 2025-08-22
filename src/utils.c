@@ -38,7 +38,6 @@ int change_directory(char *directory)
         char *user_path = getenv("HOME");
         int new_path_length = strlen(user_path) + strlen(directory) + 1;
         // first char is ~ replace dir with /home/user/dir
-        // NOTE: How do we take out directory[0] ? because /home/ole/~/Dokumente/ is not valid
         remove_char(directory, '~');
         // fprintf(stderr, "%s%s",user_path, directory);
         new_path = malloc(new_path_length);
@@ -115,6 +114,7 @@ void oshell_loop(void)
     char *user_input = oshell_read_line();
     char **args = parse(user_input);
 
+    // handle return?
     execute_command(args);
     free(user_input);
     free(args);
