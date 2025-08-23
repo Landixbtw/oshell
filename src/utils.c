@@ -112,7 +112,9 @@ char *oshell_read_line(void)
 void oshell_loop(void)
 {
     char *user_input = oshell_read_line();
+
     char **args = parse(user_input);
+    if(args == NULL) perror("oshell: parsing failed ");
 
     // handle return?
     execute_command(args);

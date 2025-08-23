@@ -28,8 +28,6 @@
 #include <dirent.h>
 
 
-// gives you the length of an array
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 // parse.h
 char **parse(char *input);
