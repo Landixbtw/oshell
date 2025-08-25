@@ -134,10 +134,10 @@ char **remove_quotes(char **arg) {
                     }
                     
                     found_quote = true;
-                    break; // Exit the j loop since we processed this argument
+                    break; 
                 } else {
                     fprintf(stderr, "Warning: No closing quote found for quote starting at arg[%d][%d]\n", start_arg, start_pos);
-                    break; // Don't continue looking for more quotes in this arg
+                    break; 
                 }
             }
         }
