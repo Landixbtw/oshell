@@ -119,7 +119,7 @@ int pipe_redirection(char **args)
 
 
     // if cmd_idx 0 is NULL this will crash and burn
-    for(int i = 0; commands[cmd_idx][i] != NULL; i++) {
+    for(int i = 0; commands[cmd_idx][i] != NULL; i++) { // FIX: ../src/piping.c:122:37: runtime error: load of null pointer of type 'char *'
         fprintf(stderr, "commands\n");
         fprintf(stderr, "%s", commands[cmd_idx][i]);
         size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][start]) + 1;
