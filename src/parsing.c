@@ -27,22 +27,23 @@
  * everything in between quotes will be treated as a single argument
  * */
 
+/*
+ * TODO: 
+ * starting at first for loop we get error, conditional jump or move depens on uninitialised value(s)
+ * why?
+ * */
 
 // start_arg is the whole argument [i], the pos is the position of the char [i][j]
 char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, int end_pos, char quote) {
-    fprintf(stderr, "Build quote function\n\n");
     int arg_count = 0;
     while(arg && arg[arg_count]) arg_count++;
     char *new_args = malloc((arg_count + 1) * sizeof(char*));
     int index = 0;
     for(int i = start_arg; i < end_arg; i++) {
         for(int j = start_pos+1; j < end_pos; j++) {
-            fprintf(stderr, "in for loop");
-            fprintf(stderr, "%c\n", arg[i][j]);
             if(arg[i][j] != quote) {
                 // we want to keep adding until i++ is a single/double quote
                 new_args[index++] = arg[i][j]; 
-                fprintf(stderr, "%c", arg[i][j]);
             }
         }
     }
@@ -77,27 +78,28 @@ char **remove_quotes(char **arg) {
                     int start_arg = i;
                     int start_pos = j;
 
-                    int end_arg;
-                    int end_pos;
+                    int end_arg = -1;
+                    int end_pos = -1;
 
 
                     // character is double or single quote, find matching quote
                     quote = arg[i][j];
-// ---------- claude.ai
+
+                    // ---------- claude.ai start
 
                     while (arg[i][j] != quote) {
                     if (current_j >= strlen(arg[current_i])) {
                         current_i++;  
                         current_j = 0;
-                        
-                        // But what if there are no more arguments?
+
                         if (arg[current_i] == NULL) {
                             // Error: no closing quote found
                             break;
                         }
                     }
-                    
+
                     if (arg[current_i][current_j] == quote) {
+                        fprintf(stderr, "FOUND CLOSING QUOTE\n");
                         // Found closing quote!
                         end_arg = current_i;
                         end_pos = current_j;
@@ -106,36 +108,26 @@ char **remove_quotes(char **arg) {
                     current_j++;
                 }
                     // ---------- claude.ai end
-                    
-                    // to get the end_arg and end_pos we need to 
-                    // check all characters j in the current string i 
-                    // if we dont find closing quote move to i+1 
-                    // repeat
 
-                    
 
                     i = saved_i;
                     j = saved_j;
 
-                    // NOTE: need to allocte the correct size of memory for each word. Right now only the memory for the number of arrays 
-                    // is allocated but not the memory for the arrays.
-                    // new_args[i] = malloc();
-                    fprintf(stderr, "start arg and pos: %c - %i %i\n", arg[start_arg][start_pos], start_arg, start_pos);
-                    fprintf(stderr, "end arg and pos: %c - %i %i\n", arg[end_arg][end_pos], end_arg, end_pos);
+                    if(end_arg >= 0 || end_pos >= 0) {
+                        fprintf(stderr, "start arg and pos: %c - %i %i\n", arg[start_arg][start_pos], start_arg, start_pos);
+                        fprintf(stderr, "end arg and pos: %c - %i %i\n", arg[end_arg][end_pos], end_arg, end_pos);
 
-
-
-                    new_args[i] = build_quote_string(arg, start_arg, start_pos, end_arg, end_pos, quote);
-
-                    memmove(&new_args[i][j], &new_args[i][j+1], len - j);
-                    new_args[i][len - 1] = '\0';
+                        new_args[i] = build_quote_string(arg, start_arg, start_pos, end_arg, end_pos, quote);
+                        memmove(&new_args[i][j], &new_args[i][j+1], len - j);
+                        new_args[i][len - 1] = '\0';
+                    }
 
                     // we only want to enter this statement once, after we found one quote, we want to save it and never
                     // enter again
                 }
                 if(!in_quote) {
-                    new_args[i] = malloc(strlen(arg[i]) * sizeof(char*));
-                    strcat(new_args[i], arg[i]);
+                    new_args[i] = malloc(strlen(arg[i]) + 1);
+                    strcpy(new_args[i], arg[i]);
                 }
             }
         }
