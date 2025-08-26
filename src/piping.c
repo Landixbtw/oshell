@@ -20,6 +20,16 @@
 #include <unistd.h>
 
 
+
+void print_hex_dump(const char* data, size_t length) {
+    for (size_t i = 0; i < length; i++) {
+        fprintf(stderr, "%02X ", (unsigned char)data[i]);
+        if ((i + 1) % 16 == 0) fprintf(stderr, "\n");
+    }
+    fprintf(stderr, "\n");
+}
+
+
 int pipe_redirection(char **args) 
 {
 /*
@@ -77,7 +87,7 @@ int pipe_redirection(char **args)
      *        execv(path, commands[1]) for second command
      */
 
-    int MAX_ARGS;
+    int MAX_ARGS = 0;
     for(int i = 0; args[i] != NULL; i++) {
         MAX_ARGS++;
     }
@@ -94,10 +104,12 @@ int pipe_redirection(char **args)
                  * Since commands[cmd_idx][i] is not initialized and only
                  * command[cmd_idx] we need to allocate for each string in the array
                  * */
-                commands[i] = malloc(MAX_ARGS * sizeof(char*));
+                commands[cmd_idx] = malloc(MAX_ARGS * sizeof(char*));
                 if(args[i] != NULL) {
-                    commands[cmd_idx][i] = args[i];
+                    commands[cmd_idx][i] = malloc(strlen(args[i]) + 1);
+                    strcpy(commands[cmd_idx][i], args[i]);
                     fprintf(stderr, "commands[%i][%i] %s\n", cmd_idx, i,commands[cmd_idx][i]);
+                    print_hex_dump(commands[cmd_idx][i], strlen(commands[cmd_idx][i]) + 1);
                 }
                                 }
             commands[cmd_idx][end] = NULL;

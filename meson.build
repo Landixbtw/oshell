@@ -21,6 +21,7 @@ sources = [
   'src/main.c',
   'src/utils.c',
   'src/parsing.c',
+  'src/parsing_utils.c',
   'src/execute_command.c',
   # 'src/input_redirection.c',
   'src/piping.c',
