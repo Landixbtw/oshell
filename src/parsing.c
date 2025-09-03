@@ -42,8 +42,6 @@ int read_key(void) {
 }
 
 
-
-
 // TODO: UNDERSTAND THIS
 char **tokenize(char *input, int capacity) {
     char **tokens = malloc(sizeof(char *) * capacity);
@@ -130,9 +128,13 @@ char **parse(char *input)
      * ["test 1 2 3"] is not the same as [test] [1] [2] [3]
      * */
 
-    // remove_quotes returns something malloced
+    // need to free args, remove_quotes returns malloced string.
     args = remove_quotes(args);
 
+    // FIX: Where is everything after the quoted string? the | wc -w is missing
+    for(int i = 0; args[i] != NULL; i++) {
+        fprintf(stderr, "arg: %s\n", args[i]);
+    }
 
     // NOTE: args should be freed outside of this function
     return args;

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "../include/parsing_utils.h"
 
 /*
  * This function takes in the an array of strings, with the start_arg representing the word [i]. The start_pos representing the char [j]
@@ -18,6 +19,14 @@
 
 // WARN: claude.ai fixed this, my attempt can be found 
 // https://github.com/Landixbtw/oshell/blob/149c2aca4c62155b90a0b3952debf70ccea3c172/src/parsing.c
+
+void print_hex_dump(const char* data, size_t length) {
+    for (size_t i = 0; i < length; i++) {
+        fprintf(stderr, "%02X ", (unsigned char)data[i]);
+        if ((i + 1) % 16 == 0) fprintf(stderr, "\n");
+    }
+    fprintf(stderr, "\n");
+}
 
 char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, int end_pos) 
 {
@@ -68,7 +77,10 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
         }
     }
 
-    result[index] = '\0';
+    // result[index] = '\0';
+    fprintf(stderr, "quote string hex dump: ");
+    print_hex_dump(result, strlen(result) + 1);
+    fprintf(stderr, "\n");
     return result;
 }
 
@@ -78,6 +90,7 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
 // this way it can be saved in the function, because we execute the function once
 char **remove_quotes(char **arg) {
     size_t arg_count = 0;
+    int quote_string_pos = 0;
     while(arg && arg[arg_count]) arg_count++;
     char **new_args = malloc((arg_count + 1) * sizeof(char*));
     
@@ -93,6 +106,7 @@ char **remove_quotes(char **arg) {
         
         bool found_quote = false;
         
+
         for(int j = 0; j < strlen(arg[i]); j++) {
             if ((arg[i][j] == '"' || arg[i][j] == '\'')) {
                 char quote = arg[i][j];
@@ -122,17 +136,15 @@ char **remove_quotes(char **arg) {
                 }
                 
                 if (found_closing) {
-                    // fprintf(stderr, "start arg and pos: %c - %i %i\n", arg[start_arg][start_pos], start_arg, start_pos);
-                    // fprintf(stderr, "end arg and pos: %c - %i %i\n", arg[end_arg][end_pos], end_arg, end_pos);
-                    
+
                     // Build the quoted string and store it in new_args[i]
                     new_args[i] = build_quote_string(arg, start_arg, start_pos, end_arg, end_pos);
-                    
+                    quote_string_pos = i;
                     // Mark all arguments from start_arg to end_arg as processed
                     for(int k = start_arg; k <= end_arg; k++) {
                         processed[k] = true;
                     }
-                    
+
                     found_quote = true;
                     break; 
                 } else {
@@ -141,7 +153,13 @@ char **remove_quotes(char **arg) {
                 }
             }
         }
-        
+
+        /*
+         * NOTE: 
+         * This !found_quote is working just fine but building the string together, 
+         * with the quote string does not seem to work.
+         * */
+
         // If no quote was processed, copy the original string
         if (!found_quote) {
             new_args[i] = malloc(strlen(arg[i]) + 1);
@@ -149,20 +167,39 @@ char **remove_quotes(char **arg) {
         }
     }
     
-    // Compact the array - remove NULL entries from skipped arguments
     int write_index = 0;
-    for(int i = 0; i < arg_count; i++) {
-        if (new_args[i] != NULL) { // FIX: Conditional jump or move depends on uninitialised value(s), from malloc
-                                   // they seem to not be init only memory allocated
+
+    /*
+     * NOTE: 
+     * So this should go and look, if new_args[i] is "empty" and if yes, put in the string
+     * that was just built, and assinged to [i], but only if there actually was something, 
+     * checking for NULL does not work, because WHY? Printing the hex dump of the 
+     * 'result' string with 
+     *  result[index] = '\0';
+     *  always prints 00 at the end, why?
+     *  shouldnt it not print 00 if its not NULL terminated since there is no function used
+     *  that does terminate?
+     *      so there now needs to be a way, to find the spot, where it should go!
+     *  But we cant just save the int, because if there are multiple it wont work?
+     *  but checking for NULL also throws error, and going i < arg_count also does not 
+     *  work. The if statement never triggers because the loop leaves right when 
+     *  the new quote string would be placed there
+     *      This write_index idea does not work. There is a better approach. BUT WHAT.
+     * */
+
+
+    for(int i = 0; new_args[i] != NULL; i++) {
+    fprintf(stderr, "index: %i\n", i);
+    fprintf(stderr, "write_index: %i\n", write_index);
             if (write_index != i) {
-                new_args[write_index] = new_args[i];
+                fprintf(stderr, "new_args: %s", new_args[i]);
+                strcpy(new_args[write_index], new_args[i]);
                 new_args[i] = NULL;
             }
             write_index++;
         }
-    }
     new_args[write_index] = NULL; // Null terminate the compacted array
-    
+
     free(processed);
     return new_args;
 }

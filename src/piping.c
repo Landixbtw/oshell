@@ -13,21 +13,14 @@
  * */
 
 #include "../include/piping.h"
+#include "../include/parsing_utils.h"
+
 
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 
-
-
-void print_hex_dump(const char* data, size_t length) {
-    for (size_t i = 0; i < length; i++) {
-        fprintf(stderr, "%02X ", (unsigned char)data[i]);
-        if ((i + 1) % 16 == 0) fprintf(stderr, "\n");
-    }
-    fprintf(stderr, "\n");
-}
 
 
 int pipe_redirection(char **args) 
@@ -121,9 +114,10 @@ int pipe_redirection(char **args)
             start = end + 1; // Skip the pipe
             end = j;
             for(int i = start; i < end; i++) {
+                // is this even the correct way to assign memory for [x][y]
                 commands[i] = malloc(MAX_ARGS * sizeof(char*));
                 if(args[i] != NULL)
-                    commands[cmd_idx][i] = args[i];
+                    commands[cmd_idx][i] = args[i]; // segfault
             }
             commands[cmd_idx][end] = NULL;
         }
@@ -131,13 +125,17 @@ int pipe_redirection(char **args)
 
 
     // if cmd_idx 0 is NULL this will crash and burn
-    for(int i = 0; commands[cmd_idx][i] != NULL; i++) { // FIX: ../src/piping.c:122:37: runtime error: load of null pointer of type 'char *'
-        fprintf(stderr, "commands\n");
-        fprintf(stderr, "%s", commands[cmd_idx][i]);
-        size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][start]) + 1;
-        paths[cmd_idx] = malloc(path_length);
-        if (!paths[cmd_idx]) { perror("oshell: piping()"); exit(-1);}
-        snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][start]);
+    
+    fprintf(stderr, "int %i", cmd_idx);
+    for (; cmd_idx <= pipes_amount; cmd_idx++) {
+        for(int i = 0; commands[cmd_idx][i] != NULL; i++) {
+            fprintf(stderr, "commands\n");
+            fprintf(stderr, "%s", commands[cmd_idx][i]);
+            size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][start]) + 1;
+            paths[cmd_idx] = malloc(path_length);
+            if (!paths[cmd_idx]) { perror("oshell: piping()"); exit(-1);}
+            snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][start]);
+        }
     }
 
 
