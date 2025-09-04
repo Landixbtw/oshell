@@ -59,6 +59,7 @@ char **tokenize(char *input, int capacity) {
                 if (t >= capacity - 1) { 
                     capacity *= 2;
                     tokens = realloc(tokens, sizeof(char *) * capacity);
+                    if (tokens == NULL) free(tokens);
                 }
             }
             start = i + 1; // next token starts after space
@@ -97,6 +98,8 @@ char **parse(char *input)
         if(args == NULL) {
             perror("oshell: parsing() realloc failed ");
         }
+
+        if (args == NULL) free(args);
     }
 
     int i = 0;
@@ -128,13 +131,18 @@ char **parse(char *input)
      * ["test 1 2 3"] is not the same as [test] [1] [2] [3]
      * */
 
+    for(int i = 0; args[i] != NULL; i++) {
+        fprintf(stderr, "\targ: %s - hex dump: ", args[i]);
+        print_hex_dump(args[i], strlen(args[i]) + 1);
+    }
+
     // need to free args, remove_quotes returns malloced string.
     args = remove_quotes(args);
 
     // FIX: Where is everything after the quoted string? the | wc -w is missing
-    for(int i = 0; args[i] != NULL; i++) {
-        fprintf(stderr, "arg: %s\n", args[i]);
-    }
+    // for(int i = 0; args[i] != NULL; i++) {
+    //     fprintf(stderr, "\targ: %s\n\n", args[i]);
+    // }
 
     // NOTE: args should be freed outside of this function
     return args;

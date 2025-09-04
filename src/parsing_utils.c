@@ -78,9 +78,6 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
     }
 
     // result[index] = '\0';
-    fprintf(stderr, "quote string hex dump: ");
-    print_hex_dump(result, strlen(result) + 1);
-    fprintf(stderr, "\n");
     return result;
 }
 
@@ -92,20 +89,22 @@ char **remove_quotes(char **arg) {
     size_t arg_count = 0;
     int quote_string_pos = 0;
     while(arg && arg[arg_count]) arg_count++;
-    char **new_args = malloc((arg_count + 1) * sizeof(char*));
-    
+    char **tmp_args = malloc((arg_count + 1) * sizeof(char*));
+    if(tmp_args == NULL) perror("tmp_args memory allocation failed ");
+
     // Initialize the last element to NULL
-    new_args[arg_count] = NULL;
-    
+    tmp_args[arg_count] = NULL;
+
     bool *processed = calloc(arg_count, sizeof(bool)); // Track which args are processed
-    
+
+    int saved_i = 0;
+
     for(int i = 0; i < arg_count; i++) {
         if (processed[i]) {
             continue; // Skip already processed arguments
         }
-        
+
         bool found_quote = false;
-        
 
         for(int j = 0; j < strlen(arg[i]); j++) {
             if ((arg[i][j] == '"' || arg[i][j] == '\'')) {
@@ -114,17 +113,18 @@ char **remove_quotes(char **arg) {
                 int start_pos = j;
                 int end_arg = -1;
                 int end_pos = -1;
-                
+
                 // Search for closing quote
                 int current_i = i;
                 int current_j = j + 1;
-                
+
                 bool found_closing = false;
                 while (current_i < arg_count && arg[current_i] != NULL) {
                     while (current_j < strlen(arg[current_i])) {
                         if (arg[current_i][current_j] == quote) {
                             end_arg = current_i;
                             end_pos = current_j;
+                            saved_i = current_i;
                             found_closing = true;
                             break;
                         }
@@ -136,10 +136,9 @@ char **remove_quotes(char **arg) {
                 }
                 
                 if (found_closing) {
-
                     // Build the quoted string and store it in new_args[i]
-                    new_args[i] = build_quote_string(arg, start_arg, start_pos, end_arg, end_pos);
-                    quote_string_pos = i;
+                    tmp_args[i] = build_quote_string(arg, start_arg, start_pos, end_arg, end_pos);
+                    fprintf(stderr, "quoted string [%i]: %s\n", i, tmp_args[i]);
                     // Mark all arguments from start_arg to end_arg as processed
                     for(int k = start_arg; k <= end_arg; k++) {
                         processed[k] = true;
@@ -155,6 +154,30 @@ char **remove_quotes(char **arg) {
         }
 
         /*
+         * TODO: / NOTE 
+         * Since the array is shorther, because the string in between the quotes is now a single string and not 
+         * multiple different ones, the string is terminated early basically looks like this.
+         *      [echo] [foo bar baz] [NULL] [NULL] [|] [wc] [-w] instead of 
+         *      [echo] [foo]         [bar]  [baz]  [|] [wc] [-w] 
+         * This means the string has to be shortened and everything has to move by x amount to the left
+         * - will memmove do the trick?
+         * */
+
+
+        /* THIS IS FOR THE PROJECT REPORT DETAILED EXAMPLE OF OUTPUT AT THIS STATE
+         *  arg: echo - hex dump: 65 63 68 6F 00
+        arg: foo bar baz - hex dump: 66 6F 6F 20 62 61 72 20 62 61 7A 00
+         NULL
+         NULL
+        arg: | - hex dump: 7C 00
+        arg: wc - hex dump: 77 63 00
+        arg: -w - hex dump: 2D 77 00
+        arg: foo bar baz - hex dump: 66 6F 6F 20 62 61 72 20 62 61 7A 00
+         *
+         *
+         * */
+
+        /*
          * NOTE: 
          * This !found_quote is working just fine but building the string together, 
          * with the quote string does not seem to work.
@@ -162,44 +185,44 @@ char **remove_quotes(char **arg) {
 
         // If no quote was processed, copy the original string
         if (!found_quote) {
-            new_args[i] = malloc(strlen(arg[i]) + 1);
-            strcpy(new_args[i], arg[i]);
+            fprintf(stderr, "no found quote [%i]: %s\n", i, arg[i]);
+            tmp_args[i] = malloc(strlen(arg[i]) + 1);
+            strcpy(tmp_args[i], arg[i]);
+        }
+
+        for(int i = 0; i < arg_count; i++) {
+            if(tmp_args[i] == NULL) {
+                fprintf(stderr, "\t NULL \n");
+            } else {
+                fprintf(stderr, "\targ: %s - hex dump: ", tmp_args[i]);
+                print_hex_dump(tmp_args[i], strlen(tmp_args[i]) + 1);
+            }
         }
     }
-    
+
+    size_t new_arg_count = 0;
+    while(arg && arg[new_arg_count]) new_arg_count++;
+
+    char **new_args = malloc((new_arg_count + 1) * sizeof(char*));
+    if(new_args == NULL) perror("new_args memory allocation failed ");
+    new_args[new_arg_count] = NULL;
+
     int write_index = 0;
-
-    /*
-     * NOTE: 
-     * So this should go and look, if new_args[i] is "empty" and if yes, put in the string
-     * that was just built, and assinged to [i], but only if there actually was something, 
-     * checking for NULL does not work, because WHY? Printing the hex dump of the 
-     * 'result' string with 
-     *  result[index] = '\0';
-     *  always prints 00 at the end, why?
-     *  shouldnt it not print 00 if its not NULL terminated since there is no function used
-     *  that does terminate?
-     *      so there now needs to be a way, to find the spot, where it should go!
-     *  But we cant just save the int, because if there are multiple it wont work?
-     *  but checking for NULL also throws error, and going i < arg_count also does not 
-     *  work. The if statement never triggers because the loop leaves right when 
-     *  the new quote string would be placed there
-     *      This write_index idea does not work. There is a better approach. BUT WHAT.
-     * */
-
-
-    for(int i = 0; new_args[i] != NULL; i++) {
-    fprintf(stderr, "index: %i\n", i);
-    fprintf(stderr, "write_index: %i\n", write_index);
-            if (write_index != i) {
-                fprintf(stderr, "new_args: %s", new_args[i]);
-                strcpy(new_args[write_index], new_args[i]);
-                new_args[i] = NULL;
-            }
-            write_index++;
-        }
+    for(int i = 0; tmp_args[i] != NULL; i++) {
+        new_args[i] = malloc(strlen(arg[i]) + 1);
+        strcpy(new_args[write_index], tmp_args[i]);
+        tmp_args[i] = NULL;
+    }
+        write_index++;
     new_args[write_index] = NULL; // Null terminate the compacted array
 
+
     free(processed);
+
+    for(int i = 0; new_args[i] != NULL; i++) {
+        fprintf(stderr, "\targ: %s - hex dump: ", new_args[i]);
+        print_hex_dump(new_args[i], strlen(new_args[i]) + 1);
+    }
+    
     return new_args;
 }
