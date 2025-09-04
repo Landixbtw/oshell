@@ -139,11 +139,6 @@ char **parse(char *input)
     // need to free args, remove_quotes returns malloced string.
     args = remove_quotes(args);
 
-    // FIX: Where is everything after the quoted string? the | wc -w is missing
-    // for(int i = 0; args[i] != NULL; i++) {
-    //     fprintf(stderr, "\targ: %s\n\n", args[i]);
-    // }
-
     // NOTE: args should be freed outside of this function
     return args;
 }

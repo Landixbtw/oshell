@@ -51,6 +51,7 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
     }
 
     char *result = malloc((sizeof(char*) * total_length)  + 1);
+    if(result == NULL) perror("oshell: memeory allocation for string result failed");
     int index = 0;
 
     /*
@@ -87,6 +88,7 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
 // this way it can be saved in the function, because we execute the function once
 char **remove_quotes(char **arg) {
     size_t arg_count = 0;
+    size_t new_arg_count = 0;
     int quote_string_pos = 0;
     while(arg && arg[arg_count]) arg_count++;
     char **tmp_args = malloc((arg_count + 1) * sizeof(char*));
@@ -95,10 +97,15 @@ char **remove_quotes(char **arg) {
     // Initialize the last element to NULL
     tmp_args[arg_count] = NULL;
 
+
     bool *processed = calloc(arg_count, sizeof(bool)); // Track which args are processed
 
-    int saved_i = 0;
-
+    // this is not declared with the others e.g. start_arg,start_pos 
+    // because it is needed later down out of 
+    // that scope
+    int end_arg = -1;
+    int end_pos = -1;
+    
     for(int i = 0; i < arg_count; i++) {
         if (processed[i]) {
             continue; // Skip already processed arguments
@@ -111,8 +118,6 @@ char **remove_quotes(char **arg) {
                 char quote = arg[i][j];
                 int start_arg = i;
                 int start_pos = j;
-                int end_arg = -1;
-                int end_pos = -1;
 
                 // Search for closing quote
                 int current_i = i;
@@ -124,7 +129,6 @@ char **remove_quotes(char **arg) {
                         if (arg[current_i][current_j] == quote) {
                             end_arg = current_i;
                             end_pos = current_j;
-                            saved_i = current_i;
                             found_closing = true;
                             break;
                         }
@@ -183,46 +187,66 @@ char **remove_quotes(char **arg) {
          * with the quote string does not seem to work.
          * */
 
+
         // If no quote was processed, copy the original string
         if (!found_quote) {
             fprintf(stderr, "no found quote [%i]: %s\n", i, arg[i]);
             tmp_args[i] = malloc(strlen(arg[i]) + 1);
+            if(tmp_args[i] == NULL) fprintf(stderr,"oshell: memory allocation for %s failed", tmp_args[i]);
+            perror("");
             strcpy(tmp_args[i], arg[i]);
         }
+
+        // we want to memmove the string array entries now by count_diff to the left.
+        // source should be end_args and dest should be end args - count diff?
+
+        int n = arg_count + 1;
+        fprintf(stderr, "ARRAY_SIZE: %i\n", n);
+
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            if (tmp_args[i] != NULL) {
+                if (i != j) tmp_args[j] = tmp_args[i];
+                j++;
+            }
+        }
+        // Set leftover slots to NULL
+        for ( ; j < n; j++) tmp_args[j] = NULL;
 
         for(int i = 0; i < arg_count; i++) {
             if(tmp_args[i] == NULL) {
                 fprintf(stderr, "\t NULL \n");
             } else {
-                fprintf(stderr, "\targ: %s - hex dump: ", tmp_args[i]);
+                fprintf(stderr, "\targ[%i]: %s - hex dump: ", i, tmp_args[i]);
                 print_hex_dump(tmp_args[i], strlen(tmp_args[i]) + 1);
             }
         }
     }
 
-    size_t new_arg_count = 0;
-    while(arg && arg[new_arg_count]) new_arg_count++;
 
-    char **new_args = malloc((new_arg_count + 1) * sizeof(char*));
-    if(new_args == NULL) perror("new_args memory allocation failed ");
-    new_args[new_arg_count] = NULL;
 
-    int write_index = 0;
-    for(int i = 0; tmp_args[i] != NULL; i++) {
-        new_args[i] = malloc(strlen(arg[i]) + 1);
-        strcpy(new_args[write_index], tmp_args[i]);
-        tmp_args[i] = NULL;
-    }
-        write_index++;
-    new_args[write_index] = NULL; // Null terminate the compacted array
+    // /*
+    //  * So there is this tmp_args string that has the two NULLs in it. 
+    //  * the new_args should now have the size of it minus two, and then it should 
+    //  * copy everything but the NULLs into the new_args
+    //  * */
+    //
+    //
+    // char **new_args = malloc((new_arg_count + 1) * sizeof(char*));
+    // if(new_args == NULL) perror("new_args memory allocation failed ");
+    // new_args[new_arg_count] = NULL;
+    //
+    // int write_index = 0;
+    // for(int i = 0; tmp_args[i] != NULL; i++) {
+    //     new_args[i] = malloc(strlen(arg[i]) + 1);
+    //     strcpy(new_args[write_index], tmp_args[i]);
+    //     tmp_args[i] = NULL;
+    // }
+    //     write_index++;
+    // new_args[write_index] = NULL; // Null terminate the compacted array
 
 
     free(processed);
 
-    for(int i = 0; new_args[i] != NULL; i++) {
-        fprintf(stderr, "\targ: %s - hex dump: ", new_args[i]);
-        print_hex_dump(new_args[i], strlen(new_args[i]) + 1);
-    }
-    
-    return new_args;
+    return tmp_args;
 }

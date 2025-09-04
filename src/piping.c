@@ -15,12 +15,20 @@
 #include "../include/piping.h"
 #include "../include/parsing_utils.h"
 
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 
+
+char *my_strdup(const char *s) {
+    size_t len = strlen(s) + 1; // Length including null terminator
+    char *copy = malloc(len);
+    if (copy) {
+        strcpy(copy, s);
+    }
+    return copy;
+}
 
 
 int pipe_redirection(char **args) 
@@ -97,16 +105,30 @@ int pipe_redirection(char **args)
                  * Since commands[cmd_idx][i] is not initialized and only
                  * command[cmd_idx] we need to allocate for each string in the array
                  * */
+
+
+
                 commands[cmd_idx] = malloc(MAX_ARGS * sizeof(char*));
+                if (!commands[cmd_idx]) {
+                    perror("oshell: memory allocation for command[cmd_idx] failed");
+                }
+                memset(commands[cmd_idx], 0, MAX_ARGS * sizeof(char*));
                 if(args[i] != NULL) {
                     commands[cmd_idx][i] = malloc(strlen(args[i]) + 1);
                     strcpy(commands[cmd_idx][i], args[i]);
-                    fprintf(stderr, "commands[%i][%i] %s\n", cmd_idx, i,commands[cmd_idx][i]);
+                    fprintf(stderr, "commands[%i][%i] %s - hex dump: ", cmd_idx, i,commands[cmd_idx][i]);
                     print_hex_dump(commands[cmd_idx][i], strlen(commands[cmd_idx][i]) + 1);
                 }
                                 }
             commands[cmd_idx][end] = NULL;
         } else {
+            commands[cmd_idx] = malloc(MAX_ARGS * sizeof(char*));
+            if (!commands[cmd_idx]) {
+                perror("oshell: memory allocation for command[cmd_idx] failed");
+            }
+            memset(commands[cmd_idx], 0, MAX_ARGS * sizeof(char*));
+
+
             int j = 0;
             do {
                 j++;
@@ -114,12 +136,14 @@ int pipe_redirection(char **args)
             start = end + 1; // Skip the pipe
             end = j;
             for(int i = start; i < end; i++) {
-                // is this even the correct way to assign memory for [x][y]
-                commands[i] = malloc(MAX_ARGS * sizeof(char*));
+                // using strdup we dont need to manually allocate memory for 
+                // commands[cmd_idx][xyz] since strdup handles that
                 if(args[i] != NULL)
-                    commands[cmd_idx][i] = args[i]; // segfault
+                    // using [i] for commands is wrong, does dont 
+                    // correspond to args,
+                    commands[cmd_idx][(i - start)] = my_strdup(args[i]); // segfault
             }
-            commands[cmd_idx][end] = NULL;
+            commands[cmd_idx][end - start] = NULL;
         }
     }
 
