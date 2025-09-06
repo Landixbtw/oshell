@@ -131,10 +131,10 @@ char **parse(char *input)
      * ["test 1 2 3"] is not the same as [test] [1] [2] [3]
      * */
 
-    for(int i = 0; args[i] != NULL; i++) {
-        fprintf(stderr, "\targ: %s - hex dump: ", args[i]);
-        print_hex_dump(args[i], strlen(args[i]) + 1);
-    }
+    // for(int i = 0; args[i] != NULL; i++) {
+    //     fprintf(stderr, "\targ: %s - hex dump: ", args[i]);
+    //     print_hex_dump(args[i], strlen(args[i]) + 1);
+    // }
 
     // need to free args, remove_quotes returns malloced string.
     args = remove_quotes(args);

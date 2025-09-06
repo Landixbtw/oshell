@@ -1,7 +1,6 @@
 /*
  *  https://linuxhandbook.com/redirection-linux/
- *  https://beej.us/guide/bgipc/html/split-wide/pipes.html#pipes
- *  https://claude.ai/chat/77ae4eba-3cc6-440e-9aaa-4d13d97fac76
+ *  https://beej.us/guide/bgipc/html/split-wide/pipes.html#pipes https://claude.ai/chat/77ae4eba-3cc6-440e-9aaa-4d13d97fac76
  *  https://stackoverflow.com/questions/2804217/using-pipes-in-linux-with-c
  *  pipe redirection
  *
@@ -19,10 +18,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 
+// instead of having to allocate everytime in a loop one can just call this function with the string
 char *my_strdup(const char *s) {
-    size_t len = strlen(s) + 1; // Length including null terminator
+    size_t len = strlen(s) + 1; 
     char *copy = malloc(len);
     if (copy) {
         strcpy(copy, s);
@@ -95,39 +96,35 @@ int pipe_redirection(char **args)
 
     int start = 0;
     int end = 0;
-    int cmd_idx = 0;
-    for (; cmd_idx <= pipes_amount; cmd_idx++) {
-        if(cmd_idx < pipes_amount) {
-            end = pipe_pos[cmd_idx];
-            // create the commands from [cmd_idx][i] = args[i]
+    int cmd_id = 0;
+    for (cmd_id = 0; cmd_id <= pipes_amount; cmd_id++) {
+        if(cmd_id < pipes_amount) {
+
+            commands[cmd_id] = malloc(MAX_ARGS * sizeof(char*));
+            if (!commands[cmd_id]) {
+                perror("oshell: memory allocation for command[cmd_id] failed");
+            }
+            memset(commands[cmd_id], 0, MAX_ARGS * sizeof(char*));
+
+            end = pipe_pos[cmd_id];
+            // create the commands from [cmd_id][i] = args[i]
             for(int i = 0; i < end; i++) {
                 /*
-                 * Since commands[cmd_idx][i] is not initialized and only
-                 * command[cmd_idx] we need to allocate for each string in the array
+                 * Since commands[cmd_id][i] is not initialized and only
+                 * command[cmd_id] we need to allocate for each string in the array
                  * */
-
-
-
-                commands[cmd_idx] = malloc(MAX_ARGS * sizeof(char*));
-                if (!commands[cmd_idx]) {
-                    perror("oshell: memory allocation for command[cmd_idx] failed");
-                }
-                memset(commands[cmd_idx], 0, MAX_ARGS * sizeof(char*));
                 if(args[i] != NULL) {
-                    commands[cmd_idx][i] = malloc(strlen(args[i]) + 1);
-                    strcpy(commands[cmd_idx][i], args[i]);
-                    fprintf(stderr, "commands[%i][%i] %s - hex dump: ", cmd_idx, i,commands[cmd_idx][i]);
-                    print_hex_dump(commands[cmd_idx][i], strlen(commands[cmd_idx][i]) + 1);
+                    commands[cmd_id][i] = malloc(strlen(args[i]) + 1);
+                    strcpy(commands[cmd_id][i], args[i]);
                 }
                                 }
-            commands[cmd_idx][end] = NULL;
+            commands[cmd_id][end] = NULL;
         } else {
-            commands[cmd_idx] = malloc(MAX_ARGS * sizeof(char*));
-            if (!commands[cmd_idx]) {
-                perror("oshell: memory allocation for command[cmd_idx] failed");
+            commands[cmd_id] = malloc(MAX_ARGS * sizeof(char*));
+            if (!commands[cmd_id]) {
+                perror("oshell: memory allocation for command[cmd_id] failed");
             }
-            memset(commands[cmd_idx], 0, MAX_ARGS * sizeof(char*));
-
+            memset(commands[cmd_id], 0, MAX_ARGS * sizeof(char*));
 
             int j = 0;
             do {
@@ -137,31 +134,50 @@ int pipe_redirection(char **args)
             end = j;
             for(int i = start; i < end; i++) {
                 // using strdup we dont need to manually allocate memory for 
-                // commands[cmd_idx][xyz] since strdup handles that
-                if(args[i] != NULL)
-                    // using [i] for commands is wrong, does dont 
-                    // correspond to args,
-                    commands[cmd_idx][(i - start)] = my_strdup(args[i]); // segfault
+                // commands[cmd_id][xyz] since strdup handles that
+                if(args[i] != NULL) {
+                    // shit fuck why is i - start needed ??? DOES NOT WORK WITHOUT
+                    commands[cmd_id][(i - start)] = my_strdup(args[i]);
+                }
             }
-            commands[cmd_idx][end - start] = NULL;
+            commands[cmd_id][end - start] = NULL;
         }
+        size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_id][0]) + 1;
+        paths[cmd_id] = malloc(path_length);
+        if (!paths[cmd_id]) { perror("oshell: piping()"); exit(-1);}
+        snprintf(paths[cmd_id], path_length, "/usr/bin/%s", commands[cmd_id][0]);        
+
     }
+ 
 
+    // TODO: It seems as the command is executed, and then gets executed again? or something?
+    /*
+     *echo "foo bar baz" | wc -w
+	arg: echo - hex dump: 65 63 68 6F 00
+	arg: "foo - hex dump: 22 66 6F 6F 00
+	arg: bar - hex dump: 62 61 72 00
+	arg: baz" - hex dump: 62 61 7A 22 00
+	arg: | - hex dump: 7C 00
+	arg: wc - hex dump: 77 63 00
+	arg: -w - hex dump: 2D 77 00
+quoted string [1]: foo bar baz
+commands[0][0] echo - hex dump: 65 63 68 6F 00
+commands[0][1] foo bar baz - hex dump: 66 6F 6F 20 62 61 72 20 62 61 7A 00
 
-    // if cmd_idx 0 is NULL this will crash and burn
-    
-    fprintf(stderr, "int %i", cmd_idx);
-    for (; cmd_idx <= pipes_amount; cmd_idx++) {
-        for(int i = 0; commands[cmd_idx][i] != NULL; i++) {
-            fprintf(stderr, "commands\n");
-            fprintf(stderr, "%s", commands[cmd_idx][i]);
-            size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_idx][start]) + 1;
-            paths[cmd_idx] = malloc(path_length);
-            if (!paths[cmd_idx]) { perror("oshell: piping()"); exit(-1);}
-            snprintf(paths[cmd_idx], path_length, "/usr/bin/%s", commands[cmd_idx][start]);
-        }
-    }
+paths[2]: (null)
+foo bar baz | wc -w
+foo bar baz | wc -w
+	arg: foo - hex dump: 66 6F 6F 00
+	arg: bar - hex dump: 62 61 72 00
+	arg: baz - hex dump: 62 61 7A 00
+	arg: | - hex dump: 7C 00
+	arg: wc - hex dump: 77 63 00
+	arg: -w - hex dump: 2D 77 00
+commands[0][0] foo - hex dump: 66 6F 6F 00
+commands[0][1] bar - hex dump: 62 61 72 00
+commands[0][2] baz - hex dump: 62 61 7A 00
 
+     * */
 
     /*
      * pipe() returns two file descriptors, fd[0] is open for reading, fd[1] is open for writing
@@ -193,26 +209,31 @@ int pipe_redirection(char **args)
     // TODO: We need to know what number of command we have, this does not seem to work
     // stdout does not get redirected to stdin of second command
     
+    // NOTE: I think this works first redirection is the output from echo, stdout redirect
+    // second in stdin redirect for wc -w but its not redirected, and its just printed weird
+    //  This makes sense: 
+        // Only redirecting stdout - cmd_id = 2 loop iteration 0 
+        // Only redirecting stdin - cmd_id = 2 (-1 [1]) loop iteration 1
+    // Question is how can this now be executed, kinda thought this happens automagically
+    int f = 0;
+    for(int i = 0; i < cmd_id; i++) {
 
-    for(int i = 0; i < cmd_idx; i++) {
-        if (fork() == 0) {
+        if ((f = fork()) == 0) {
             // child: setup the redirections
             if(i == 0) { // first command, only redirect stdout
                 if(dup2(fd[i][1], STDOUT_FILENO) == -1) {
-                    return -1;
+                    fprintf(stderr, "Child %d: dup2 failed\n", i);
+                    _exit(EXIT_FAILURE);
                 }
-                fflush(stdout);
                 for(int j = 0; j < pipes_amount; j++) {
                     close(fd[j][0]);
                     close(fd[j][1]);
                 }
-
-            } else if (i == cmd_idx - 1) { // last command only redirect stdin
+            } else if (i == cmd_id - 1) { // last command only redirect stdin
                 if(dup2(fd[i-1][0], STDIN_FILENO) == -1) {
                     close(fd[i-1][0]);
-                    return -1;
+                    _exit(EXIT_FAILURE);
                 }
-                fflush(stdout);
                 for(int j = 0; j < pipes_amount; j++) {
                     close(fd[j][0]);
                     close(fd[j][1]);
@@ -220,17 +241,19 @@ int pipe_redirection(char **args)
             } else { // not first nor last, redirect stdin and stdout
                      // cmd0 ---> pipe[0] ---> cmd1 ---> pipe[1] ---> cmd2
                 if(dup2(fd[i-1][0], STDIN_FILENO) == -1 || dup2(fd[i][1], STDOUT_FILENO) == -1) {
-                    return -1;
+                    _exit(EXIT_FAILURE);
                 }
                 for(int j = 0; j < pipes_amount; j++) {
                     close(fd[j][0]);
                     close(fd[j][1]);
                 }
             }
+            if(commands[i] == NULL) {
+                fprintf(stderr, "ERROR: commands[%d] is NULL\n", i);
+                _exit(EXIT_FAILURE);
+            }
 
-            // this should +1 since we dont want 0 because 0 is the command in paths ie echo 
-            if(commands[cmd_idx] == NULL) return -1;
-            if (execv(*paths, commands[cmd_idx]) == -1) {
+            if (execv(paths[i], commands[i]) == -1) {
                 perror("execv() failed");
                 free(paths);
                 free(commands);
@@ -238,19 +261,29 @@ int pipe_redirection(char **args)
                     close(fd[i][0]);
                     close(fd[i][1]);
                 }
-                exit(EXIT_FAILURE);
+                _exit(EXIT_FAILURE);
             }
-
-            // NOTE: This never gets printed
-            fprintf(stderr, "%s", paths[0]);
-            for(int i = 0; args[i] != NULL; i++) {
-                fprintf(stderr, "%s", args[i]);
+            fprintf(stderr, "Child %d: ERROR - this should never print!\n", i);
+            } else if (f == -1) {
+                perror("oshell: fork() failed"); 
+                return -1; 
             }
+            // parent continues to next iteration
         }
-        // parent continues to next iteration
+    for(int j = 0; j < pipes_amount; j++) {
+        close(fd[j][0]);
+        close(fd[j][1]);
     }
 
-    
+    for(int i = 0; i < cmd_id; i++) {
+        int status;
+        pid_t result = waitpid(-1, &status, WNOHANG);  // Non-blocking wait
+        if (result == 0) {
+            continue;
+        } else if (result > 0) {
+            // fprintf(stderr, "Child %d finished with status %d\n", result, status);
+        }
+    }
 
     // restore stdin/stdout
     dup2(saved_stdin, STDIN_FILENO);

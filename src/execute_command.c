@@ -99,8 +99,9 @@ int execute_command(char **args)
     int pipe_pos = find_shell_operator("|", args);
     if (pipe_pos > 0 && args[pipe_pos + 1] != NULL) {
         if(pipe_redirection(args) != 0) {
-            perror("oshell: pipe_redirection()");
+            // perror("oshell: pipe_redirection()");
         }
+        return 0;
     }
 
     // clear -> clear function
