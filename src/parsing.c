@@ -1,5 +1,6 @@
 #include "../include/Header.h"
 #include "../include/parsing_utils.h"
+#include <stdio.h>
 
 #define KEY_DEL 127
 
@@ -58,8 +59,9 @@ char **tokenize(char *input, int capacity) {
                 tokens[t++] = &input[start]; 
                 if (t >= capacity - 1) { 
                     capacity *= 2;
-                    tokens = realloc(tokens, sizeof(char *) * capacity);
-                    if (tokens == NULL) free(tokens);
+                    char **tmp_token = realloc(tokens, sizeof(char *) * capacity);
+                    if (tmp_token == NULL) free(tokens);
+                    tokens = tmp_token;
                 }
             }
             start = i + 1; // next token starts after space

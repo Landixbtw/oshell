@@ -101,6 +101,9 @@ int execute_command(char **args)
         if(pipe_redirection(args) != 0) {
             // perror("oshell: pipe_redirection()");
         }
+        // this is needed otherwise, the code will try to execute the command provided e.g.
+        // echo "foo bar baz" | wc -w just like that. 
+        // this would output foo bar baz | wc -w 
         return 0;
     }
 

@@ -147,10 +147,11 @@ int pipe_redirection(char **args)
         if (!paths[cmd_id]) { perror("oshell: piping()"); exit(-1);}
         snprintf(paths[cmd_id], path_length, "/usr/bin/%s", commands[cmd_id][0]);        
 
+        for(int i = 0; i < MAX_ARGS; i++) {
+            fprintf(stderr, "command[%i] -> [%i]: %s\n", cmd_id, i, commands[cmd_id][i]);
+        }
     }
  
-
-    // TODO: It seems as the command is executed, and then gets executed again? or something?
     /*
      *echo "foo bar baz" | wc -w
 	arg: echo - hex dump: 65 63 68 6F 00
@@ -205,19 +206,8 @@ commands[0][2] baz - hex dump: 62 61 7A 00
     int saved_stdout = dup(STDOUT_FILENO);
     int saved_stdin = dup(STDIN_FILENO);
 
-
-    // TODO: We need to know what number of command we have, this does not seem to work
-    // stdout does not get redirected to stdin of second command
-    
-    // NOTE: I think this works first redirection is the output from echo, stdout redirect
-    // second in stdin redirect for wc -w but its not redirected, and its just printed weird
-    //  This makes sense: 
-        // Only redirecting stdout - cmd_id = 2 loop iteration 0 
-        // Only redirecting stdin - cmd_id = 2 (-1 [1]) loop iteration 1
-    // Question is how can this now be executed, kinda thought this happens automagically
     int f = 0;
     for(int i = 0; i < cmd_id; i++) {
-
         if ((f = fork()) == 0) {
             // child: setup the redirections
             if(i == 0) { // first command, only redirect stdout

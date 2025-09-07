@@ -34,8 +34,13 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
 
     for(int i = start_arg; i < end_arg; i++) {
 
-        /*
-         * We only want to skip the first character in the first word, 
+ 
+        // this is needed otherwise, the code will try to execute the command provided e.g.
+        // echo "foo bar baz" | wc -w just like that. 
+        // this would output foo bar baz | wc -w /*
+
+
+        /* We only want to skip the first character in the first word, 
          * since this is the outer quote that we want to remove
          * */
         int start_j;
