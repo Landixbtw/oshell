@@ -50,9 +50,9 @@ int main(void){
         // ole@tux
         // /home / ole / Dokumente / Projekte / c / oshell
 
-        // fprintf(stderr, "%s@%s\n", user, hostname);
-        // fprintf(stderr, " %s > \n", cwd);
-        // fflush(stderr);
+        fprintf(stderr, "%s@%s\n", user, hostname);
+        fprintf(stderr, " %s > \n", cwd);
+        fflush(stderr);
 
         oshell_loop();
     }
