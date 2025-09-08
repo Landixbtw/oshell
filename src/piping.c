@@ -51,7 +51,6 @@ int pipe_redirection(char **args)
     int max_args[pipes_amount+1];
     memset(max_args, 0, sizeof(max_args));
 
-    int start = 0;
     int end = 0;
     int cmd_id = 0;
 
@@ -63,63 +62,55 @@ int pipe_redirection(char **args)
         }
     }
 
+    
+    /*
+     *  CLEANED-UP COMMAND SPLITTING LOOP - AUTHOR: ChatGPT (GPT-5 mini)
+     *
+     *  This replaces the previous command splitting section in `pipe_redirection()`
+     *  from the original version in your repository:
+     *  https://github.com/Landixbtw/oshell/commit/f4ed2a9eec7686112a143dfd5ba2b7798d3f4426#diff-ae5b92a4c52a651a7d7efe8c5e47c7baa116b4e93aad84d2910d7b37b13d7e0e
+     *
+     *  The goal is to reduce complexity, fix bugs with offsets, and ensure
+     *  memory safety when splitting commands into a 2D array for piping.
+     *
+     *  Just so many small errors and oversights that just lead to a big ball of shit fuck
+     */
     for (cmd_id = 0; cmd_id <= pipes_amount; cmd_id++) {
-        if(cmd_id < pipes_amount) {
-            commands[cmd_id] = malloc((max_args[cmd_id] + 1) * sizeof(char*));
-            if (!commands[cmd_id]) {
-                perror("oshell: memory allocation for command[cmd_id] failed");
-            }
-            memset(commands[cmd_id], 0, max_args[cmd_id] * sizeof(char*));
-
-            end = pipe_pos[cmd_id];
-            // create the commands from [cmd_id][i] = args[i]
-            for(int i = 0; i < end; i++) {
-                /*
-                 * Since commands[cmd_id][i] is not initialized and only
-                 * command[cmd_id] we need to allocate for each string in the array
-                 * */
-                if(args[i] != NULL) {
-                    commands[cmd_id][i - start] = my_strdup(args[i]);
-                    fprintf(stderr, "Storing: cmd=%d arg=%d addr=%p str=%s\n",
-                    cmd_id, i - start, (void*)commands[cmd_id][i - start], commands[cmd_id][i - start]);
-                }
-                                }
-            commands[cmd_id][end] = NULL;
-        } else {
-            commands[cmd_id] = malloc(max_args[cmd_id] * sizeof(char*));
-            if (!commands[cmd_id]) {
-                perror("oshell: memory allocation for command[cmd_id] failed");
-            }
-            memset(commands[cmd_id], 0, max_args[cmd_id] * sizeof(char*));
-
-            int j = 0;
-            do {
-                j++;
-            }while (args[j] != NULL);
-            start = end + 1; // Skip the pipe
-            end = j;
-            for(int i = start; i < end; i++) {
-                // using strdup we dont need to manually allocate memory for 
-                // commands[cmd_id][xyz] since strdup handles that
-                if(args[i] != NULL) {
-                    // i - start is the offset to not have a | included
-                    commands[cmd_id][(i - start)] = my_strdup(args[i]);
-                    fprintf(stderr, "Storing: cmd=%d arg=%d addr=%p str=%s\n",
-                    cmd_id, i - start, (void*)commands[cmd_id][i - start], commands[cmd_id][i - start]);
-                }
-            }
-            commands[cmd_id][end - start] = NULL;
+        int start = (cmd_id == 0) ? 0 : pipe_pos[cmd_id - 1] + 1;
+        int end = (cmd_id < pipes_amount) ? pipe_pos[cmd_id] : 0;
+        if (cmd_id == pipes_amount) {
+            for (end = start; args[end] != NULL; end++);
         }
+
+        int cmd_arg_count = end - start;
+
+        commands[cmd_id] = malloc((cmd_arg_count + 1) * sizeof(char*));
+        if (!commands[cmd_id]) {
+            perror("oshell: memory allocation for command[cmd_id] failed");
+            exit(EXIT_FAILURE);
+        }
+
+        for (int i = 0; i < cmd_arg_count; i++) {
+            commands[cmd_id][i] = my_strdup(args[start + i]);
+        }
+        commands[cmd_id][cmd_arg_count] = NULL;
+
         size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_id][0]) + 1;
         paths[cmd_id] = malloc(path_length);
-        if (!paths[cmd_id]) { perror("oshell: piping()"); exit(-1);}
+        if (!paths[cmd_id]) {
+            perror("oshell: piping()");
+            exit(EXIT_FAILURE);
+        }
         snprintf(paths[cmd_id], path_length, "/usr/bin/%s", commands[cmd_id][0]);
 
-        for(int i = 0; i < max_args[cmd_id]; i++) {
-            fprintf(stderr, "command[%i] -> [%i]: %s -- pointer: %p -- hex dump: ", cmd_id, i, commands[cmd_id][i], (void*)commands[cmd_id][i]);
-            print_hex_dump(commands[cmd_id][i], strlen(commands[cmd_id][i]) + 1);
-        }
+        // for (int i = 0; i < cmd_arg_count; i++) {
+        //     fprintf(stderr, "command[%i] -> [%i]: %s -- pointer: %p -- hex dump: ",
+        //             cmd_id, i, commands[cmd_id][i], (void*)commands[cmd_id][i]);
+        //     print_hex_dump(commands[cmd_id][i], strlen(commands[cmd_id][i]) + 1);
+        // }
     }
+
+    // -----------------------------------------------------
  
     /*
      * pipe() returns two file descriptors, fd[0] is open for reading, fd[1] is open for writing
@@ -178,7 +169,6 @@ int pipe_redirection(char **args)
                     close(fd[j][0]);
                     close(fd[j][1]);
                 }
-		fprintf(stderr, "This is a command in the middle MULTIPIPE\n");
             }
             if(commands[i] == NULL) {
                 fprintf(stderr, "ERROR: commands[%d] is NULL\n", i);

@@ -456,8 +456,8 @@ cat nonexistent.txt | wc -l      # Error handling
 	command[1] = "echo \"foo bar baz\" | wc -w " // expect 3
 	expectedOutput[1] = "3\n"
 
-	// command[2] = "echo \"3\n1\n2\" | sort -n" // expect 1\n2\n3
-	// expectedOutput[2] = "1\n2\n3\n"
+	command[2] = "echo -e \"3\n1\n2\" | sort -n" // expect 1\n2\n3
+	expectedOutput[2] = "1\n2\n3\n"
 
 	// throws "custom" error
 	command[2] = "echo \"\" | cat" // expect ""
