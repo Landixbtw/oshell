@@ -1,5 +1,7 @@
 #include "../include/Header.h"
 #include "../include/parsing_utils.h"
+
+
 #include <stdio.h>
 
 #define KEY_DEL 127
@@ -25,22 +27,6 @@
  *
  * everything in between quotes will be treated as a single argument
  * */
-
-// this function captures raw key input, for most promenantly DEL
-// returns -1 on no key captured, or error
-int read_key(void) {
-    char ch = -1;
-    
-    if(read(STDIN_FILENO, &ch, 1) != 1) return -1;
-
-    if(ch == KEY_DEL) {
-        return KEY_DEL;
-    } else if (ch == 27) {
-        // ...
-        // return some other key or something
-    }
-    return ch;
-}
 
 
 // TODO: UNDERSTAND THIS

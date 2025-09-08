@@ -1,7 +1,37 @@
 #include "../include/Header.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <termios.h>
+#include <unistd.h>
+#include <assert.h>
 
 int main(void){
+    // TODO: This takes a long as time for the shell to then be responsive is 
+    // there a way to make it shorter ?
+
+    /*
+     * This code before the for loop enables "canonical mode" meaning
+     * that something like the backspace/delete key is properly handled by 
+     * the terminal AFAIk
+     * */
+    struct termios term;
+
+    // get current terminal attributes
+    if (tcgetattr(STDIN_FILENO, &term) == -1) {
+        perror("tcgetattr");
+        exit(EXIT_FAILURE);
+    }
+
+    // turn on canonical mode and echo
+    term.c_lflag |= ICANON | ECHOE | ECHOK;
+
+    // apply changes immediately
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1) {
+        perror("tcsetattr");
+        exit(EXIT_FAILURE);
+    } 
+
     for(;;) {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
@@ -21,7 +51,7 @@ int main(void){
         // /home / ole / Dokumente / Projekte / c / oshell
 
         // fprintf(stderr, "%s@%s\n", user, hostname);
-        // fprintf(stderr, " %s > ", cwd);
+        // fprintf(stderr, " %s > \n", cwd);
         // fflush(stderr);
 
         oshell_loop();

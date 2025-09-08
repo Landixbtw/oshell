@@ -11,6 +11,7 @@
  *
  * */
 
+
 #include "../include/piping.h"
 #include "../include/parsing_utils.h"
 
@@ -21,20 +22,9 @@
 #include <sys/wait.h>
 
 
-// instead of having to allocate everytime in a loop one can just call this function with the string
-char *my_strdup(const char *s) {
-    size_t len = strlen(s) + 1; 
-    char *copy = malloc(len);
-    if (copy) {
-        strcpy(copy, s);
-    }
-    return copy;
-}
-
-
 int pipe_redirection(char **args) 
 {
-/*
+    /*
      * To support more then one, pipe for "advanced" commands, there needs to be a way to track the amount of pipes we have
      * for later redirection, tracking of the multiple pipe positions, and the spliting of the commands
      * */
@@ -43,7 +33,6 @@ int pipe_redirection(char **args)
     for (int i = 0; args[i] != NULL; i++) {
         if(strcmp("|", args[i]) == 0) pipes_amount++;
     }
-
 
     if(pipes_amount == 0) return -1; // no pipes found, however
 
@@ -59,52 +48,28 @@ int pipe_redirection(char **args)
     char ***commands = malloc((pipes_amount + 1) * sizeof(char**));
     char **paths = malloc((pipes_amount + 1) * sizeof(char*));
 
-    /*
-     * So a char ***foobar is a pointer to an array of pointers that point to pointers to char.
-     * It's essentially a pointer to an array of argv arrays.
-     *
-     * commands (char***)
-     *      │
-     *      └──→ [0] ──→ argv for "echo hello"     ──→ [0]──→"echo"
-     *           [1] ──→ argv for "wc -w"          ──→ [1]──→"hello"
-     *                                                 [2]──→ NULL
-     *
-     *                                                 [0]──→"wc" 
-     *                                                 [1]──→"-w"
-     *                                                 [2]──→ NULL
-     * Memory layout:
-     * commands ──→ ┌─────────┐
-     *              │ ptr[0]  │──→ ┌─────────┐
-     *              ├─────────┤    │"echo"   │
-     *              │ ptr[1]  │    │"hello"  │
-     *              └─────────┘    │ NULL    │
-     *                   │         └─────────┘
-     *                   └──────→ ┌─────────┐
-     *                            │"wc"     │
-     *                            │"-w"     │
-     *                            │ NULL    │
-     *                            └─────────┘
-     *
-     * Usage: execv(path, commands[0]) for first command
-     *        execv(path, commands[1]) for second command
-     */
-
-    int MAX_ARGS = 0;
-    for(int i = 0; args[i] != NULL; i++) {
-        MAX_ARGS++;
-    }
+    int max_args[pipes_amount+1];
+    memset(max_args, 0, sizeof(max_args));
 
     int start = 0;
     int end = 0;
     int cmd_id = 0;
+
+    for(int i = 0; args[i] != NULL;i++) {
+        if(strcmp(args[i], "|") == 0) {
+            cmd_id++;
+        } else {
+            max_args[cmd_id]++;
+        }
+    }
+
     for (cmd_id = 0; cmd_id <= pipes_amount; cmd_id++) {
         if(cmd_id < pipes_amount) {
-
-            commands[cmd_id] = malloc(MAX_ARGS * sizeof(char*));
+            commands[cmd_id] = malloc((max_args[cmd_id] + 1) * sizeof(char*));
             if (!commands[cmd_id]) {
                 perror("oshell: memory allocation for command[cmd_id] failed");
             }
-            memset(commands[cmd_id], 0, MAX_ARGS * sizeof(char*));
+            memset(commands[cmd_id], 0, max_args[cmd_id] * sizeof(char*));
 
             end = pipe_pos[cmd_id];
             // create the commands from [cmd_id][i] = args[i]
@@ -114,17 +79,18 @@ int pipe_redirection(char **args)
                  * command[cmd_id] we need to allocate for each string in the array
                  * */
                 if(args[i] != NULL) {
-                    commands[cmd_id][i] = malloc(strlen(args[i]) + 1);
-                    strcpy(commands[cmd_id][i], args[i]);
+                    commands[cmd_id][i - start] = my_strdup(args[i]);
+                    fprintf(stderr, "Storing: cmd=%d arg=%d addr=%p str=%s\n",
+                    cmd_id, i - start, (void*)commands[cmd_id][i - start], commands[cmd_id][i - start]);
                 }
                                 }
             commands[cmd_id][end] = NULL;
         } else {
-            commands[cmd_id] = malloc(MAX_ARGS * sizeof(char*));
+            commands[cmd_id] = malloc(max_args[cmd_id] * sizeof(char*));
             if (!commands[cmd_id]) {
                 perror("oshell: memory allocation for command[cmd_id] failed");
             }
-            memset(commands[cmd_id], 0, MAX_ARGS * sizeof(char*));
+            memset(commands[cmd_id], 0, max_args[cmd_id] * sizeof(char*));
 
             int j = 0;
             do {
@@ -136,8 +102,10 @@ int pipe_redirection(char **args)
                 // using strdup we dont need to manually allocate memory for 
                 // commands[cmd_id][xyz] since strdup handles that
                 if(args[i] != NULL) {
-                    // shit fuck why is i - start needed ??? DOES NOT WORK WITHOUT
+                    // i - start is the offset to not have a | included
                     commands[cmd_id][(i - start)] = my_strdup(args[i]);
+                    fprintf(stderr, "Storing: cmd=%d arg=%d addr=%p str=%s\n",
+                    cmd_id, i - start, (void*)commands[cmd_id][i - start], commands[cmd_id][i - start]);
                 }
             }
             commands[cmd_id][end - start] = NULL;
@@ -145,41 +113,14 @@ int pipe_redirection(char **args)
         size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_id][0]) + 1;
         paths[cmd_id] = malloc(path_length);
         if (!paths[cmd_id]) { perror("oshell: piping()"); exit(-1);}
-        snprintf(paths[cmd_id], path_length, "/usr/bin/%s", commands[cmd_id][0]);        
+        snprintf(paths[cmd_id], path_length, "/usr/bin/%s", commands[cmd_id][0]);
 
-        for(int i = 0; i < MAX_ARGS; i++) {
-            fprintf(stderr, "command[%i] -> [%i]: %s\n", cmd_id, i, commands[cmd_id][i]);
+        for(int i = 0; i < max_args[cmd_id]; i++) {
+            fprintf(stderr, "command[%i] -> [%i]: %s -- pointer: %p -- hex dump: ", cmd_id, i, commands[cmd_id][i], (void*)commands[cmd_id][i]);
+            print_hex_dump(commands[cmd_id][i], strlen(commands[cmd_id][i]) + 1);
         }
     }
  
-    /*
-     *echo "foo bar baz" | wc -w
-	arg: echo - hex dump: 65 63 68 6F 00
-	arg: "foo - hex dump: 22 66 6F 6F 00
-	arg: bar - hex dump: 62 61 72 00
-	arg: baz" - hex dump: 62 61 7A 22 00
-	arg: | - hex dump: 7C 00
-	arg: wc - hex dump: 77 63 00
-	arg: -w - hex dump: 2D 77 00
-quoted string [1]: foo bar baz
-commands[0][0] echo - hex dump: 65 63 68 6F 00
-commands[0][1] foo bar baz - hex dump: 66 6F 6F 20 62 61 72 20 62 61 7A 00
-
-paths[2]: (null)
-foo bar baz | wc -w
-foo bar baz | wc -w
-	arg: foo - hex dump: 66 6F 6F 00
-	arg: bar - hex dump: 62 61 72 00
-	arg: baz - hex dump: 62 61 7A 00
-	arg: | - hex dump: 7C 00
-	arg: wc - hex dump: 77 63 00
-	arg: -w - hex dump: 2D 77 00
-commands[0][0] foo - hex dump: 66 6F 6F 00
-commands[0][1] bar - hex dump: 62 61 72 00
-commands[0][2] baz - hex dump: 62 61 7A 00
-
-     * */
-
     /*
      * pipe() returns two file descriptors, fd[0] is open for reading, fd[1] is open for writing
      * ouput of fd[1] is input for fd[0].
@@ -237,6 +178,7 @@ commands[0][2] baz - hex dump: 62 61 7A 00
                     close(fd[j][0]);
                     close(fd[j][1]);
                 }
+		fprintf(stderr, "This is a command in the middle MULTIPIPE\n");
             }
             if(commands[i] == NULL) {
                 fprintf(stderr, "ERROR: commands[%d] is NULL\n", i);
@@ -267,7 +209,7 @@ commands[0][2] baz - hex dump: 62 61 7A 00
 
     for(int i = 0; i < cmd_id; i++) {
         int status;
-        pid_t result = waitpid(-1, &status, WNOHANG);  // Non-blocking wait
+        pid_t result = wait(&status);  // Non-blocking wait
         if (result == 0) {
             continue;
         } else if (result > 0) {
@@ -281,6 +223,14 @@ commands[0][2] baz - hex dump: 62 61 7A 00
 
     if(close(saved_stdin) != 0) perror("oshell: piping()");
     if(close(saved_stdout) != 0) perror("oshell: piping()");
+
+    for (int i = 0; i <= pipes_amount; i++) {
+        for (int j = 0; commands[i][j]; j++) {
+            free(commands[i][j]);
+        }
+        free(commands[i]);
+        free(paths[i]);
+    }
 
     free(paths);
     free(commands);

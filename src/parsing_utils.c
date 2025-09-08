@@ -55,8 +55,11 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
         if(i < end_arg) total_length++; // add N (amount of args) - 1 spaces for between each word
     }
 
-    char *result = malloc((sizeof(char*) * total_length)  + 1);
-    if(result == NULL) perror("oshell: memeory allocation for string result failed");
+    char *result = malloc((sizeof(char) * total_length)  + 1);
+    if (!result) {
+        perror("malloc failed");
+        exit(EXIT_FAILURE);
+    }
     int index = 0;
 
     /*
@@ -82,8 +85,6 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
             result[index++] = ' ';
         }
     }
-
-    // result[index] = '\0';
     return result;
 }
 
@@ -96,12 +97,10 @@ char **remove_quotes(char **arg) {
     size_t new_arg_count = 0;
     int quote_string_pos = 0;
     while(arg && arg[arg_count]) arg_count++;
-    char **tmp_args = malloc((arg_count + 1) * sizeof(char*));
+    // in this case calloc is being used, because there are cases where it is being 
+    // accessed without having a value there causing it to crash.
+    char **tmp_args = calloc(arg_count + 1, sizeof(char*));
     if(tmp_args == NULL) perror("tmp_args memory allocation failed ");
-
-    // Initialize the last element to NULL
-    tmp_args[arg_count] = NULL;
-
 
     bool *processed = calloc(arg_count, sizeof(bool)); // Track which args are processed
 
@@ -197,25 +196,14 @@ char **remove_quotes(char **arg) {
         // If no quote was processed, copy the original string
         if (!found_quote) {
             // fprintf(stderr, "no found quote [%i]: %s\n", i, arg[i]);
-            tmp_args[i] = malloc(strlen(arg[i]) + 1);
-            if(tmp_args[i] == NULL) fprintf(stderr,"oshell: memory allocation for %s failed", tmp_args[i]);
-            strcpy(tmp_args[i], arg[i]);
+            // tmp_args[i] = malloc(strlen(arg[i]) + 1);
+            // if(tmp_args[i] == NULL) fprintf(stderr,"oshell: memory allocation for %s failed", tmp_args[i]);
+            // strcpy(tmp_args[i], arg[i]);
+            tmp_args[i] = my_strdup(arg[i]);
         }
 
         // we want to memmove the string array entries now by count_diff to the left.
         // source should be end_args and dest should be end args - count diff?
-
-        int n = arg_count + 1;
-
-        int j = 0;
-        for (int i = 0; i < n; i++) {
-            if (tmp_args[i] != NULL) {
-                if (i != j) tmp_args[j] = tmp_args[i];
-                j++;
-            }
-        }
-        // Set leftover slots to NULL
-        for ( ; j < n; j++) tmp_args[j] = NULL;
 
         // for(int i = 0; i < arg_count; i++) {
         //     if(tmp_args[i] == NULL) {
@@ -226,8 +214,28 @@ char **remove_quotes(char **arg) {
         //     }
         // }
     }
+    int n = arg_count + 1;
+
+    int j = 0;
+    for (int i = 0; i < n; i++) {
+        if (tmp_args[i] != NULL) {
+            if (i != j) tmp_args[j] = tmp_args[i];
+            j++;
+        }
+    }
+    // Set leftover slots to NULL
+    for ( ; j < n; j++) tmp_args[j] = NULL;
 
     free(processed);
-
     return tmp_args;
+}
+
+// instead of having to allocate everytime in a loop one can just call this function with the string
+char *my_strdup(const char *s) {
+    size_t len = strlen(s) + 1; 
+    char *copy = malloc(len);
+    if (copy) {
+        strcpy(copy, s);
+    }
+    return copy;
 }
