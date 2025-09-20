@@ -4,8 +4,6 @@
 
 #include <stdio.h>
 
-#define KEY_DEL 127
-
 /*
  * TODO:  
  *      - extract command name
