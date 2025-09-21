@@ -11,8 +11,11 @@ Key features
 - redirect output with xx > output.txt ✅
 
 ### Todo
-- make README nicer
-- add descriptive error messages? Check return statements so that process only gets terminated on 
+- [ ] make README nicer
+- [ ] add descriptive error messages? Check return statements so that process only gets terminated on 
+- [ ] Fix all memory leaks.
+- [ ] Properly interpret newline char \n so that command chaining can still work without && (also important for project report
+5.1 Getting the input)
 really really bad failure? or exit().
 - echo passes the "" to the file, it should not - remove the "" when parsing ✅ (added simple function from claude.ai)
 
