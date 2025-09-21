@@ -1,6 +1,4 @@
 # oshell
-Todo
-make nice readme
 
 Key features
 
@@ -13,7 +11,9 @@ Key features
 - redirect output with xx > output.txt ✅
 
 ### Todo
-
+- make README nicer
+- add descriptive error messages? Check return statements so that process only gets terminated on 
+really really bad failure? or exit().
 - echo passes the "" to the file, it should not - remove the "" when parsing ✅ (added simple function from claude.ai)
 
 #### CRITICAL
@@ -22,8 +22,6 @@ Key features
 
 ## Environment Variables
 - echo $USER should yield the user (ie. ole), with getenv()
-
-
 
 MVP
 - read a system command parse it and execute it
