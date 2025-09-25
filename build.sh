@@ -5,19 +5,21 @@ BUILD_DIR="buildDir"
 SANITIZER=""
 CLEAN=0
 RUN_GO_TESTS=0
+RUN_PROG=0
 
 # Help message
 show_help() {
     echo "Usage: ./build.sh [options]"
     echo "Options:"
-    echo "  -h, --help           Show this help message"
-    echo "  -c, --clean          Clean build directory before building"
-    echo "  -r, --release        Build in Release mode"
+    echo "  -h, --help            Show this help message"
+    echo "  -c, --clean           Clean build directory before building"
+    echo "  -r, --release         Build in Release mode"
     echo "  -a, --asan          Build with Address Sanitizer"
     echo "  -m, --msan          Build with Memory Sanitizer"
     echo "  -t, --tsan          Build with Thread Sanitizer"
-    echo "  -u, --ubsan         Build with Undefined Behavior Sanitizer"
-    echo "  --run-go-tests       Build and run Go integration tests"
+    echo "  -u, --ubsan           Build with Undefined Behavior Sanitizer"
+    echo "  --run-go-tests        Build and run Go integration tests"
+    echo "  --run-with-asan       Run the built program with ASan preloaded (only with -a)"
     echo ""
     echo "Note: MSAN only works with Clang"
     echo "      TSAN can't be combined with ASAN"
@@ -56,6 +58,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --run-go-tests)
             RUN_GO_TESTS=1
+            shift
+            ;;
+        --run-with-asan)
+            RUN_PROG=1
             shift
             ;;
         *)
@@ -132,6 +138,27 @@ if [ $? -eq 0 ]; then
             exit 1
         fi
     fi
+
+    # Run the program with ASan preloaded if requested
+    if [[ $RUN_PROG -eq 1 ]]; then
+        if [[ "$SANITIZER" == "address" ]]; then
+            echo ""
+            echo "Running the program with ASan preloaded..."
+
+            # Find the libasan.so path
+            ASAN_LIB_PATH=$(find /usr/lib -name 'libasan.so*' 2>/dev/null | head -n 1)
+
+            if [[ -z "$ASAN_LIB_PATH" ]]; then
+                echo "Error: libasan.so not found. Please install the ASan library (e.g., libasan-dev or libasan-x.x)."
+                exit 1
+            else
+                LD_PRELOAD=$ASAN_LIB_PATH "./$BUILD_DIR/oshell"
+            fi
+        else
+            echo "Warning: The --run-with-asan option is only valid when using --asan."
+        fi
+    fi
+
 else
     echo "Build failed!"
     exit 1

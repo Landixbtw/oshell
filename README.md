@@ -16,6 +16,7 @@ Key features
 - [ ] Fix all memory leaks.
 - [ ] Properly interpret newline char \n so that command chaining can still work without && (also important for project report
 5.1 Getting the input)
+- [ ] shell fails when e.g. file does not exists for "sort"
 really really bad failure? or exit().
 - echo passes the "" to the file, it should not - remove the "" when parsing ✅ (added simple function from claude.ai)
 
