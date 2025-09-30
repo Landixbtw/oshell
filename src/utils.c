@@ -26,8 +26,6 @@ char* remove_char(char* str, char find) {
     return str;
 }
 
-// FIX: Sometimes, cd outputs 
-// oshell: change_directory() error: No such file or directory
 int change_directory(char *directory)
 {
     // add /home/user/ if ~ is the first char
@@ -41,6 +39,9 @@ int change_directory(char *directory)
         remove_char(directory, '~');
         // fprintf(stderr, "%s%s",user_path, directory);
         new_path = malloc(new_path_length);
+        if(new_path == NULL) {
+            perror("oshell: change_directory() memory allocation failed");
+        }
         snprintf(new_path, new_path_length, "%s%s", user_path, directory);
         fprintf(stderr, "%s\n", new_path);
         use_home_path = true;
@@ -79,8 +80,7 @@ int string_to_int(char *string) {
     }
     
     /* Check for invalid input (no conversion performed) */
-    if (endptr == str) { return -1;
-    }
+    if (endptr == str) { return -1;}
     
     /* TODO: Consider checking for partial conversions (endptr != '\0') */
     /* TODO: Add range validation for int vs long on different platforms */
@@ -116,7 +116,6 @@ void oshell_loop(void)
     char **args = parse(user_input);
     if(args == NULL) perror("oshell: parsing failed ");
 
-    // handle return?
     execute_command(args);
     free(user_input);
     free(args);

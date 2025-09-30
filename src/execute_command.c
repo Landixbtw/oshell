@@ -298,10 +298,12 @@ int execute_command(char **args)
             sleep(1);
         } else {
             if (WIFEXITED(status)) {
+                free(new_command);
                 break;
                 // printf("child exited with status of %d\n", WEXITSTATUS(status));
             } else {
                 puts("child did not exit successfully");
+                free(new_command);
             }
         }
    } while (pid == 0);
@@ -318,7 +320,6 @@ int execute_command(char **args)
         if (fd_in != -1)
             close(fd_in);
     }
-
     return 0;
 }
 
