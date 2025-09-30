@@ -1,4 +1,6 @@
 #include "../include/Header.h"
+#include <string.h>
+#include <errno.h>
 
 /*
  * NOTE: More explanation on pointer to pointer, why? what? how?
@@ -72,8 +74,7 @@ int execute_command(char **args)
         if(args[1] != NULL) {
             int status = change_directory(args[1]);
             if (status != 0) {
-                perror("oshell: change_directory() error");
-                return 1;
+                fprintf(stderr, "change_directory() error: %s \nTo avoid this error make sure this directory you want to navigate to exists. \n\t directory and Directory are not the same.\n", strerror(errno));
             }
         } else {
             chdir(getenv("HOME"));
