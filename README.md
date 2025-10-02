@@ -1,15 +1,5 @@
 # oshell
 
-Key features
-
-- Show a prompt indicating user input e.g. > ✅
-- Read a command entered by the user e.g. ping google.com ✅
-- fork() for every user command ✅
-- wait() for the command to finish executing ✅
-- builtin commands like cd exit help, without calling external programms ✅
-- Error handling -- meh kinda most minimal, not extensive
-- redirect output with xx > output.txt ✅
-
 ### Todo
 - [ ] make README nicer
 - [ ] add descriptive error messages? Check return statements so that process only gets terminated on 
@@ -18,25 +8,14 @@ Key features
 5.1 Getting the input)
 - [ ] shell fails when e.g. file does not exists for "sort" 
 really really bad failure? or exit(). - crashes, handle more gracefully like zsh. check before if file exists.
-- echo passes the "" to the file, it should not - remove the "" when parsing ✅ (added simple function from claude.ai)
 
-#### CRITICAL
-- pressing enter with nothing on the console, crashes, because assert command != NULL, 
-    + if command == NULL, make \\n or something ✅
-
-## Environment Variables
-- echo $USER should yield the user (ie. ole), with getenv()
-
-MVP
-- read a system command parse it and execute it
-
-Maybe some good stuff in here.  
-https://pdos.csail.mit.edu/6.828/2018/labguide.html  
+# https://pdos.csail.mit.edu/6.828/2018/labguide.html  
+## This explains fd good, maybe can include something
 https://barsky.ca/marina/SR/c2018/lectures/7.pipe/06.01.FileDescriptorsPipes.pdf  
 
 ----------------
 
-**oshell** is a simple Unix-based shell following a specification by a Professor
+**oshell** is a simple Unix-based shell following a specification [1](specification.pdf) by a Professor
 from SFU. It supports the following key-features.
 
 - Show a prompt indicating user input '>'
@@ -46,9 +25,9 @@ from SFU. It supports the following key-features.
 - builtin commands like 'cd, exit, help' without calling external programms
 - redirect output with 'xx > output.txt'
 - redirecting input with 'xx < input.txt'
+...
 
-
-This project was not made in any official capacity, but there still is a project report,
-the pdf and code can be found in the [projectReport](projectReport/oshellReport) folder.
+This project was not made in any official capacity, so the project report should be viewed like that.
+The pdf and LaTeX code can be found in the [projectReport](projectReport/oshellReport) folder.
 
 

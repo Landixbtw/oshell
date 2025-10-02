@@ -1,4 +1,4 @@
-./build.sh -u && ./buildDir/oshell
+./build.sh -c -u && ./buildDir/oshell
 
 ./build.sh -u
 

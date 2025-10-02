@@ -26,8 +26,27 @@
  * everything in between quotes will be treated as a single argument
  * */
 
+/*
+ * TODO: 
+ * Write function description
+ * */
 
-// TODO: UNDERSTAND THIS
+// include checking for \ newline in tokenize to split immediatly here. way better then
+// in seperate function
+//
+// we want to handle \ as \n not just text
+// right now it is just text which does not allow us to chain commands
+// together via linebreak since && is not implemented (yet)
+
+/*
+ * If \ is detected as a single char we want to linebreak 
+ * we do not want to linebreak if \n is detected since it could 
+ * be included in a string thta is supposed to go into a file or sometihng
+ * and we do not want to mess with that. And mess up the input.
+ * */
+
+
+
 char **tokenize(char *input, int capacity) {
     char **tokens = malloc(sizeof(char *) * capacity);
     if (!tokens) return NULL;

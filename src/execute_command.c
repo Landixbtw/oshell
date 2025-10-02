@@ -44,18 +44,6 @@ int execute_command(char **args)
     // if the command is NULL meaning just enter, we just return
     if (command == NULL) return 0;
 
-    // TODO: Handle case for DEL key
-    // maybe with getchar() but this would have to happend outside this function.
-    // any idea on how to do it inside?
-    // AFAIK del doesnt send something like ENTER when pressed, so there is no NULL command or anything passed
-    // add special value to DEL otuside this function, pass it and then handle the delete?
-
-    // WARN: Might not need to handle this? today it works
-
-    // if(strcmp(command, "127") == 0) {
-    //     // DELETE KEY HAS BEEN PRESSED
-    //     fprintf(stderr, "DELETE KEY HAS BEEN PRESSED");
-    // }
 
     if (strcmp(command, "exit") == 0)
     {
@@ -244,7 +232,7 @@ int execute_command(char **args)
         // strings ends, and just read garbage
         if(strcmp("$",envCharStr) == 0) {
             // fprintf(stderr, "passing %s to secure_getenv\n", envVar);
-            fprintf(stderr, "%s", secure_getenv(envVar));
+            fprintf(stderr, "%s \n\n", secure_getenv(envVar));
             free(envVar);
             return 0;
         }
