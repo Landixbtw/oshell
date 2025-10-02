@@ -1,0 +1,99 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n+nf}{kill\PYGZus{}process}\PYG{p}{(}\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{process\PYGZus{}name\PYGZus{}or\PYGZus{}id}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k}{if}\PYG{p}{(}\PYG{n}{string\PYGZus{}to\PYGZus{}int}\PYG{p}{(}\PYG{n}{process\PYGZus{}name\PYGZus{}or\PYGZus{}id}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{dirent}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{dirent}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k+kt}{pid\PYGZus{}t}\PYG{+w}{ }\PYG{n}{pid}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{proc\PYGZus{}dir\PYGZus{}name}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{/proc/}\PYG{l+s}{\PYGZdq{}}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k+kt}{DIR}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{dir}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{opendir}\PYG{p}{(}\PYG{n}{proc\PYGZus{}dir\PYGZus{}name}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{dir}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{exit}\PYG{p}{(}\PYG{n}{EXIT\PYGZus{}FAILURE}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k+kt}{char}\PYG{+w}{    }\PYG{o}{*}\PYG{n}{buffer}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k+kt}{char}\PYG{+w}{    }\PYG{o}{*}\PYG{n}{comm\PYGZus{}file\PYGZus{}path}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k+kt}{char}\PYG{+w}{    }\PYG{o}{*}\PYG{n}{full\PYGZus{}proc\PYGZus{}path}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{;}
+
+\PYG{+w}{        }\PYG{k+kt}{FILE}\PYG{+w}{    }\PYG{o}{*}\PYG{n}{fp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{;}
+
+\PYG{+w}{        }\PYG{k+kt}{bool}\PYG{+w}{    }\PYG{n}{process\PYGZus{}found}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{false}\PYG{p}{;}
+
+\PYG{+w}{        }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{count}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{while}\PYG{p}{(}\PYG{p}{(}\PYG{n}{dirent}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{readdir}\PYG{p}{(}\PYG{n}{dir}\PYG{p}{)}\PYG{p}{)}\PYG{o}{!}\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{k}{if}\PYG{p}{(}\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}type}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{n}{DT\PYGZus{}DIR}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{count}\PYG{o}{+}\PYG{o}{+}\PYG{p}{;}
+\PYG{+w}{                }\PYG{k}{if}\PYG{p}{(}\PYG{n}{strcmp}\PYG{p}{(}\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}name}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{.}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{|}\PYG{o}{|}\PYG{+w}{ }\PYG{n}{strcmp}\PYG{p}{(}\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}name}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{..}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                    }\PYG{k}{continue}\PYG{p}{;}
+\PYG{+w}{                }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{                }\PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{is\PYGZus{}numeric}\PYG{p}{(}\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}name}\PYG{p}{)}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{continue}\PYG{p}{;}
+
+\PYG{+w}{                }\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{ }\PYG{n}{full\PYGZus{}proc\PYGZus{}pathLength}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{proc\PYGZus{}dir\PYGZus{}name}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}name}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{                }\PYG{n}{full\PYGZus{}proc\PYGZus{}path}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{malloc}\PYG{p}{(}\PYG{n}{full\PYGZus{}proc\PYGZus{}pathLength}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{                }\PYG{k}{if}\PYG{p}{(}\PYG{n}{full\PYGZus{}proc\PYGZus{}path}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                    }\PYG{k}{goto}\PYG{+w}{ }\PYG{n}{cleanup}\PYG{p}{;}
+\PYG{+w}{                }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{                }\PYG{n}{snprintf}\PYG{p}{(}\PYG{n}{full\PYGZus{}proc\PYGZus{}path}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{full\PYGZus{}proc\PYGZus{}pathLength}\PYG{+w}{ }\PYG{p}{,}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{\PYGZpc{}s\PYGZpc{}s}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{proc\PYGZus{}dir\PYGZus{}name}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}name}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{                }\PYG{k}{if}\PYG{p}{(}\PYG{p}{(}\PYG{n}{opendir}\PYG{p}{(}\PYG{n}{full\PYGZus{}proc\PYGZus{}path}\PYG{p}{)}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{!}\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{+w}{ }\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+
+\PYG{+w}{                    }\PYG{n}{pid}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{pid\PYGZus{}t}\PYG{p}{)}\PYG{n}{atoi}\PYG{p}{(}\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}name}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{                    }\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{ }\PYG{n}{comm\PYGZus{}file\PYGZus{}pathLength}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{proc\PYGZus{}dir\PYGZus{}name}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}name}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{strlen}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{/comm}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{n}{comm\PYGZus{}file\PYGZus{}path}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{malloc}\PYG{p}{(}\PYG{n}{comm\PYGZus{}file\PYGZus{}pathLength}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{k}{if}\PYG{p}{(}\PYG{n}{comm\PYGZus{}file\PYGZus{}path}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                        }\PYG{k}{goto}\PYG{+w}{ }\PYG{n}{cleanup}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{                    }\PYG{n}{snprintf}\PYG{p}{(}\PYG{n}{comm\PYGZus{}file\PYGZus{}path}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{comm\PYGZus{}file\PYGZus{}pathLength}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{\PYGZpc{}s\PYGZpc{}s/comm}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{proc\PYGZus{}dir\PYGZus{}name}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dirent}\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}}\PYG{n}{d\PYGZus{}name}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{                    }\PYG{n}{fp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{fopen}\PYG{p}{(}\PYG{n}{comm\PYGZus{}file\PYGZus{}path}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{r}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{k}{if}\PYG{p}{(}\PYG{n}{fp}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                        }\PYG{k}{goto}\PYG{+w}{ }\PYG{n}{cleanup}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{                    }\PYG{k+kt}{long}\PYG{+w}{ }\PYG{n}{filesize}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{getc}\PYG{p}{(}\PYG{n}{fp}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{!}\PYG{o}{=}\PYG{+w}{ }\PYG{n}{EOF}\PYG{p}{)}
+\PYG{+w}{                        }\PYG{n}{filesize}\PYG{o}{+}\PYG{o}{+}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{n}{fseek}\PYG{p}{(}\PYG{n}{fp}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{SEEK\PYGZus{}SET}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{                    }\PYG{k}{const}\PYG{+w}{ }\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{          }\PYG{n}{BUFFER\PYGZus{}SIZE}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{p}{(}\PYG{k}{sizeof}\PYG{p}{(}\PYG{k+kt}{char}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{filesize}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{                    }\PYG{n}{buffer}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{malloc}\PYG{p}{(}\PYG{n}{BUFFER\PYGZus{}SIZE}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{k}{if}\PYG{p}{(}\PYG{n}{buffer}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                        }\PYG{k}{goto}\PYG{+w}{ }\PYG{n}{cleanup}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{                    }\PYG{n}{fgets}\PYG{p}{(}\PYG{n}{buffer}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{BUFFER\PYGZus{}SIZE}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{fp}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{                    }\PYG{k}{if}\PYG{p}{(}\PYG{n}{ferror}\PYG{p}{(}\PYG{n}{fp}\PYG{p}{)}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                        }\PYG{k}{goto}\PYG{+w}{ }\PYG{n}{cleanup}\PYG{p}{;}
+\PYG{+w}{                        }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}2}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{                    }\PYG{k}{if}\PYG{p}{(}\PYG{n}{strcmp}\PYG{p}{(}\PYG{n}{strip\PYGZus{}non\PYGZus{}alpha}\PYG{p}{(}\PYG{n}{buffer}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{strip\PYGZus{}non\PYGZus{}alpha}\PYG{p}{(}\PYG{n}{process\PYGZus{}name\PYGZus{}or\PYGZus{}id}\PYG{p}{)}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{kill}\PYG{p}{(}\PYG{n}{pid}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{9}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                            }\PYG{n}{fprintf}\PYG{p}{(}\PYG{n}{stderr}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{killed \PYGZpc{}s with PID: \PYGZpc{}i}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{process\PYGZus{}name\PYGZus{}or\PYGZus{}id}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{pid}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{                            }\PYG{n}{fflush}\PYG{p}{(}\PYG{n}{stderr}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{                            }\PYG{n}{process\PYGZus{}found}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{true}\PYG{p}{;}
+\PYG{+w}{                        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{                        }\PYG{k}{goto}\PYG{+w}{ }\PYG{n}{cleanup}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{                }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{process\PYGZus{}found}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{fprintf}\PYG{p}{(}\PYG{n}{stderr}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Could not find process \PYGZsq{}\PYGZpc{}s\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{process\PYGZus{}name\PYGZus{}or\PYGZus{}id}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{n+nl}{cleanup}\PYG{p}{:}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{buffer}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{free}\PYG{p}{(}\PYG{n}{buffer}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{comm\PYGZus{}file\PYGZus{}path}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{free}\PYG{p}{(}\PYG{n}{comm\PYGZus{}file\PYGZus{}path}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{full\PYGZus{}proc\PYGZus{}path}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{free}\PYG{p}{(}\PYG{n}{full\PYGZus{}proc\PYGZus{}path}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{fp}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{fclose}\PYG{p}{(}\PYG{n}{fp}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{c+c1}{// the directory was not closed in every secenario}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{dir}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{closedir}\PYG{p}{(}\PYG{n}{dir}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{k}{const}\PYG{+w}{ }\PYG{k+kt}{pid\PYGZus{}t}\PYG{+w}{ }\PYG{n}{pid}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{string\PYGZus{}to\PYGZus{}int}\PYG{p}{(}\PYG{n}{process\PYGZus{}name\PYGZus{}or\PYGZus{}id}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{kill}\PYG{p}{(}\PYG{n}{pid}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{9}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{fprintf}\PYG{p}{(}\PYG{n}{stderr}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{killed \PYGZpc{}i}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{pid}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{fflush}\PYG{p}{(}\PYG{n}{stderr}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

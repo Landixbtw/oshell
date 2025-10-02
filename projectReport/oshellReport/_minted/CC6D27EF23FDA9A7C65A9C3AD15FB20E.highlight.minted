@@ -1,0 +1,10 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{if}\PYG{p}{(}\PYG{n}{strcmp}\PYG{p}{(}\PYG{n}{strip\PYGZus{}non\PYGZus{}alpha}\PYG{p}{(}\PYG{n}{buffer}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{strip\PYGZus{}non\PYGZus{}alpha}\PYG{p}{(}\PYG{n}{process\PYGZus{}name\PYGZus{}or\PYGZus{}id}\PYG{p}{)}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k}{if}\PYG{p}{(}\PYG{n}{kill}\PYG{p}{(}\PYG{n}{pid}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{9}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{fprintf}\PYG{p}{(}\PYG{n}{stderr}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{killed \PYGZpc{}s with PID: \PYGZpc{}i}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{process\PYGZus{}name\PYGZus{}or\PYGZus{}id}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{pid}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{fflush}\PYG{p}{(}\PYG{n}{stderr}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{process\PYGZus{}found}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{true}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{k}{goto}\PYG{+w}{ }\PYG{n}{cleanup}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

@@ -1,0 +1,31 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {section}{\numberline {2}Planning}{1}{section.2}%
+\contentsline {section}{\numberline {3}Essential Terminology and Concepts}{1}{section.3}%
+\contentsline {section}{\numberline {4}Design}{2}{section.4}%
+\contentsline {section}{\numberline {5}The Implementation}{3}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Getting the input}{3}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Parsing the user input}{4}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Removing quotes and building a new string}{6}{subsubsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.3}Executing Commands}{6}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Builtin Commands and functionalities}{6}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}CD - Change Directory}{6}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Kill - Killing a process by name or ID}{7}{subsubsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.3}Piping}{8}{subsubsection.5.4.3}%
+\contentsline {subsubsection}{\numberline {5.4.4}Clear - Clearing the terminal}{9}{subsubsection.5.4.4}%
+\contentsline {subsubsection}{\numberline {5.4.5}Input Redirection (<)}{10}{subsubsection.5.4.5}%
+\contentsline {subsubsection}{\numberline {5.4.6}Output Redirection ($>$, $>>$)}{10}{subsubsection.5.4.6}%
+\contentsline {subsection}{\numberline {5.5}Environment Variables}{11}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Input loop}{11}{subsection.5.6}%
+\contentsline {section}{\numberline {6}Testing}{12}{section.6}%
+\contentsline {section}{\numberline {7}??Evaluation??}{12}{section.7}%
+\contentsline {section}{\numberline {}Bibliographie}{13}{section*.15}%
+\contentsline {section}{\numberline {}Appendix}{}{section*.17}%
+\contentsline {subsection}{\numberline {}Parsing - Remove quotes function}{}{section*.18}%
+\contentsline {subsection}{\numberline {}Execute Command - Change Directory}{}{section*.19}%
+\contentsline {subsection}{\numberline {}Execute Command - Kill}{}{section*.21}%
+\contentsline {subsection}{\numberline {}Execute Command - Input Redirection}{}{section*.23}%
+\contentsline {subsection}{\numberline {}Execute Command - Output Redirection}{}{section*.25}%
+\contentsline {subsection}{\numberline {}Utils - Find a shell operator}{}{section*.26}%
+\contentsline {subsection}{\numberline {}Parsing Utils - Build a new string}{}{section*.27}%
+\contentsline {subsection}{\numberline {}Piping}{}{section*.28}%

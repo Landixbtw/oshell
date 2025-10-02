@@ -1,0 +1,11 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{oshell\PYGZus{}loop}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{user\PYGZus{}input}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{oshell\PYGZus{}read\PYGZus{}line}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{o}{*}\PYG{n}{args}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{parse}\PYG{p}{(}\PYG{n}{user\PYGZus{}input}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{n}{execute\PYGZus{}command}\PYG{p}{(}\PYG{n}{args}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{free}\PYG{p}{(}\PYG{n}{user\PYGZus{}input}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{free}\PYG{p}{(}\PYG{n}{args}\PYG{p}{)}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

@@ -1,0 +1,1579 @@
+\documentclass[12pt,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{a4wide}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usetikzlibrary{positioning, calc}
+\usepackage{url}
+\usepackage{csquotes}
+\usepackage{verbatim}
+\usepackage{newfloat}
+\setlength{\marginparwidth}{2cm}
+\usepackage{todonotes}
+\usepackage{indentfirst}
+\usepackage{svg}
+\usepackage{caption}
+\usepackage{fvextra}
+\usepackage{xspace}
+\usepackage{lipsum}
+
+\usepackage{newcomputermodern}
+
+% needed for breaking in \texttt
+% https://tex.stackexchange.com/questions/299/how-to-get-long-texttt-sections-to-break
+\usepackage[htt]{hyphenat}
+
+
+\definecolor{pblue}{rgb}{0.13,0.13,0.7}
+\definecolor{pgreen}{rgb}{0.0,0.5,0.0}
+\definecolor{pred}{rgb}{0.8,0.0,0.0}
+\definecolor{pyellow}{rgb}{0.55,0.33,0.03}
+\definecolor{pgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{codebg}{rgb}{0.98,0.98,0.98}
+\definecolor{pblack}{rgb}{0.1,0.1,0.1}
+
+\usepackage[newfloat]{minted}
+\setminted{bgcolor=gray!10, breaklines, fontsize=\small}
+\newcommand{\mintedlabel}[1]{\label{line:#1}}
+
+\usepackage{xcolor}
+
+%% needed for minted label
+\newenvironment{code}{\captionsetup{type=listing}}{}
+
+% THEME DOES NOT WORK
+
+% Define the TempleOS-inspired color palette
+\definecolor{templeos-bg}{HTML}{0000AA}
+\definecolor{templeos-fg}{HTML}{FFFFFF}
+\definecolor{templeos-cyan}{HTML}{00FFFF}
+\definecolor{templeos-green}{HTML}{00FF00}
+\definecolor{templeos-yellow}{HTML}{FFFF00}
+\definecolor{templeos-red}{HTML}{FF0000}
+\definecolor{templeos-gray}{HTML}{AAAAAA}
+
+\newminted{c}{
+    bgcolor=templeos-bg,
+    fontsize=\small,
+    linenos=true,
+    frame=lines,
+    framesep=2mm,
+    fontfamily=courier,
+    commentstyle=\color{templeos-green},
+    keywordstyle=\color{templeos-cyan},
+    stringstyle=\color{templeos-red},
+    numberstyle=\color{templeos-gray},
+    identifierstyle=\color{templeos-fg},
+    functionstyle=\color{templeos-yellow},
+    outputdir=./,
+    breaklines
+}
+
+\lstdefinestyle{inlinecommandcore}{
+    basicstyle=\ttfamily\small\color{black}, % <--- ADD \color{black} HERE
+    keepspaces=true,
+    showspaces=false,
+    showstringspaces=false,
+    language=bash,
+    morekeywords={sudo, arpspoof, apt, install, ipconfig, arp, ifconfig, netstat, sysctl, ping},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{purple},
+    literate={>}{{\textgreater}}1 {<}{{\textless}}1 {\_}{{\textunderscore}}1,
+    columns=flexible,
+    basewidth={0.5em,0.4em},
+    aboveskip=0pt,
+    belowskip=0pt,
+    literate={``}{{"}}1 {''}{{"}}1,
+}
+
+% Define the command combining boxing and listing
+\usepackage{xparse}
+\NewDocumentCommand{\inlinecode}{v}{%
+    \begingroup
+    \setlength{\fboxsep}{1.5pt}%
+    \setlength{\fboxrule}{0.4pt}%
+    \textcolor{black!40}{%
+        \fbox{%
+            \colorbox{black!5}{%
+              \lstinline[style=inlinecommandcore]{#1}%
+            }%
+        }%
+    }%
+    \endgroup
+}
+
+
+
+\usepackage[backend=biber,style=ieee,language=english]{biblatex}
+\addbibresource{oshell.bib}
+
+%% remove for default font
+%% \usepackage{fontspec}
+%% \setmainfont{EB Garamond}
+%% \usepackage{libertinus-otf}
+
+
+% three custom commands to create an unnumbered (sub(sub))section
+% that still gets included in table of contents.
+
+\newcommand{\usection}[1]{\section*{#1}
+\addcontentsline{toc}{section}{\protect\numberline{}#1}}
+
+\newcommand{\usubsection}[1]{\subsection*{#1}
+\addcontentsline{toc}{subsection}{\protect\numberline{}#1}}
+
+\newcommand{\usubsubsection}[1]{\subsubsection*{#1}
+\addcontentsline{toc}{subsubsection}{\protect\numberline{}#1}}
+
+\newcommand{\funcname}[1]{\texttt{#1()}\xspace} % for functions
+
+\newcommand{\projectname}{\textsc{oshell}}
+
+
+\graphicspath{{figures/}}
+\svgpath{{figures/}}
+
+\newcommand{\mycomment}[1]{}
+
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\crefname{listing}{listing}{listings}
+\begin{document}
+
+\pagenumbering{gobble}
+
+%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%
+
+% Recommended: German Academic Style (English Document)
+% Really good
+
+\mycomment{
+  \begin{titlepage}
+\begin{center}
+	\vspace*{30mm}
+
+	% University/Institution at top (German style)
+	{\large
+	Universität Ulm\\
+	Faculty of Engineering, Computer Sciences and Psychology\\
+	Institute of Distributed Systems
+	}\\
+
+	\vspace{25mm}
+
+	% Main title
+	{\fontsize{12mm}{14mm}\selectfont\bfseries
+    oshell}\\
+	\vspace{8mm}
+
+	% Subtitle
+	{\Large Implementation of a Unix Inspired Shell in C11}\\
+
+	\vspace{15mm}
+
+	% Document type (common in German academia)
+	{\large Project Report / Bachelor Thesis / Seminar Paper}\\
+
+	\vspace{30mm}
+
+	% Author information in German academic format
+	\begin{tabular}{ll}
+	\textbf{Author:} & Your Full Name \\[3mm]
+	\textbf{Matriculation Number:} & 123456 \\[3mm]
+	\textbf{Email:} & your.email@uni-ulm.de \\[8mm]
+	\textbf{Supervisor:} & Prof. Dr. Supervisor Name \\[3mm]
+	\textbf{Second Examiner:} & Dr. Second Examiner \\[8mm]
+	\textbf{Submission Date:} & \today \\
+	\end{tabular}
+
+	\vfill
+
+	% Semester info at bottom (German style)
+	{\normalsize Winter Semester 2024/25}
+
+\end{center}
+\end{titlepage}
+
+}
+
+% Hauptseite für erstmal
+\begin{titlepage}
+\begin{center}
+    \vfill
+	
+	% Title with sans-serif font
+	{\sffamily\fontsize{16mm}{18mm}\selectfont\bfseries
+    oshell}\\
+	\vspace{12mm}
+
+	% Subtitle in smaller sans-serif
+	{\sffamily\large Implementation of a Unix Inspired Shell in C11}\\
+
+	\vspace{60mm}
+
+	% Clean author and date layout
+	\begin{tabular}{ll}
+	\textbf{Author:} & Ole Wortmann \\[5mm]
+	\textbf{Date:} & \today \\[5mm]
+	%%\textbf{Version:} & 1.0 \\
+	\end{tabular}
+
+	\vfill
+
+\end{center}
+\end{titlepage}
+
+\newpage
+\begin{abstract}
+  \textit{
+\textbf{abstract}
+  }
+\end{abstract}
+\newpage
+
+\pagenumbering{roman}
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+\section{Introduction}
+The following is a project report for a small Unix-based
+shell made by \{the author\} was not created in any official
+context and should be treated as such.
+
+This project came to life because I was looking for a
+new project that was not game developement, had something to
+do with systems but was not as complicated as making an
+Operating system.
+% look over this, tho I like it it does not really fit
+Tho this may very well be a step in the
+direction of starting developing one, there are no plans as
+of right now.
+%%%
+Since it had peaked
+my interest in the past, but I was just not ready implementing
+the C standard library.
+
+This is neither something new
+nor outstanding but just a fun project that took me way
+longer then I would like to admit, because I only thought
+of some edgecases or obvious failure points, after I was
+already ``done''.
+
+It also does not implement any new ideas, but builds on a
+specification sheet, which you will learn more about in the
+planning section (see~\Cref{sec:planning}). It also mostly
+follows the bash shell way of commands, tho keep in mind
+that this is really simple, and advanced bash commands might
+not work. At the time of writing this command chaining (\&\&)
+aswell as background execution (\&) have not (yet) been implemented.
+
+
+\section{Planning} \label{sec:planning}
+Since building a \textit{(small)} shell is not unusual for a University
+project, I figured there would be some article or specification or
+anything that could give me a sense of direction and ease the
+planning. I found a specification from a professor at Florida
+State University (FSU), but since I cannot find the article in
+which it was posted I can only provide a direct download link
+(\url{https://www.cs.fsu.edu/~cop4610t/assignments/project1/writeup/specification.pdf}
+. A copy is provided in the github repository.
+
+The specification provided a clear roadmap to follow outlining
+features and functionalities to implement.
+% Maybe what features and functionalities are to implement
+I did not follow it linear, but
+just worked on what I felt like. 
+
+%% problem → options considered → final choice → justification.
+
+\section{Essential Terminology and Concepts}
+This will explain some basic like \textsc{STDIN/STDOUT}, file
+descriptors and other terms that will come up in this
+report.
+\begin{itemize}
+\item STDIN: Standard input (integer value \textsc{0}), comes
+  from a ``standard input device'' which is usually
+  (but not limited to) the keyboard, but could also be a
+  \texttt{file.txt}.
+\item STDOUT: Standard output (integer value \textsc{1}),
+  either goes to the terminal or an X terminal, this 
+  entirely depens on where the process originated.
+\item File Descriptors: ``A file descriptor is an unsigned
+  integer used by a process to identify an open file'' \cite{AIX2025}. An open file could be a normal (text) file or
+  \texttt{STDIN}/\texttt{STDOUT}.
+\end{itemize}~\cite{StdinStdoutStderr}
+
+\section{Design}
+\mycomment{
+  \textbf{Checklist for design section}
+\begin{itemize}
+\item Maybe some high level explanation flow chart of everything
+\item Go into detail with inbuilt commands and piping redirection \ldots
+\item CHOOSE MOST COMPLEX/INTERESTING PART to go indepth, flow chart explanations \ldots, flow chart explanations \ldots
+\item \textbf{Focus on the overall structure and flow of your program, rather than specific code details}
+\end{itemize}
+
+}
+
+% what gets extracted during parsing (maybe)
+\textbf{\projectname} follows this really simple \texttt{read-parse-execute} loop, \Cref{fig:mainLoopFlowchart}
+displays this nicely. Input
+is parsed, and then passed to the \funcname{execute\_command} function. This is really the most obvious way to
+implement the high level behavior of a shell, since it is always running, and always needs to do these three things.
+
+\begin{figure}[!htb]
+  \centering
+  \includesvg[scale=1]{mainLoopFlowchart.drawio}
+  \caption{Figure visualising the main flow}~\label{fig:mainLoopFlowchart}
+\end{figure}
+
+The \textbf{input handler} passes the string without modification to the
+\textbf{parser}, which parses the string, tokenizes it, and removes exces quotes.
+The command execution function then checks for different character ``operators'' in the parsed string,
+to then trigger different functions based on the input. 
+
+\Cref{fig:executeCommandFlowchart} shows a
+simplified flowchart of what the execution looks like.
+\begin{figure}[!htb]
+  \centering
+  \includesvg[scale=1]{executeCommand.drawio}
+  \caption{Figure visualising the flow of command execution (simplified)}~\label{fig:executeCommandFlowchart}
+\end{figure}
+
+The specification sheet, specified the commands which were to be implemented as inbuilt
+(although not all have been).
+
+\todo{memory leaks still exist so this will not be written yet.}
+\lipsum[1]
+% Your approach to memory management (dynamic allocation, cleanup strategy)
+\newline
+\todo{this is also a todo}
+% A brief mention of your overall error handling approach - do you try to recover gracefully, provide user-friendly
+% messages, etc.?
+\lipsum[1]
+
+\section{The Implementation}
+\subsection{Getting the input}
+C provides several functions for capturing
+the user input (\texttt{STDIN}) from the commandline, including \funcname{fgets}
+(\url{https://linux.die.net/man/3/fgets}), and
+\funcname{getline} (\url{https://linux.die.net/man/3/getline}).
+While both are valid options to capture user input, \funcname{getline} is (in this case) superior.
+
+While initially \funcname{fgets} seemes like a valid
+approach, it stops when reading a newline character
+(\texttt{'\textbackslash n'})
+and also does not handle memory management by itself~\cite{OS2023}.
+Since \textbf{\projectname} does not support command chaining
+by \&\& this is the only way to chain commands together e.g.
+\mintinline{bash}{command \n command1 \n command2}
+
+The \funcname{getline} function does all this
+, it reads line-by-line, includes the newline
+character, null-terminates the buffer and
+handles the memory management for the buffer.
+
+% this is shit, but I need some 3-4 line text to get the codeblock to the next page (elegantly)
+\mycomment{
+  Which is exactly what you want, because this means that the input handling is less prone to (memory) errors then it
+would
+be with any other input reading function.
+
+}
+\todo{i feel like this is missing something, there is no text here}
+\begin{minted}[linenos]{c}
+char *oshell_read_line(void)
+{
+    char *line = NULL;
+    size_t buffsize = 0;
+
+    if(getline(&line, &buffsize, stdin) == -1)
+    {
+        if(feof(stdin))
+        {
+            free(line);
+        } else {
+            perror("oshell: readline");
+            free(line);
+            exit(EXIT_FAILURE);
+        }
+    }
+    return line;
+}
+\end{minted}
+
+\subsection{Parsing the user input}
+Parsing the input for a small/basic shell might not seem like
+a huge endevour, just look at the first part of the input, as the command
+and the second as the argument, pass that to \funcname{execv}
+(\url{https://linux.die.net/man/3/execv}) and you are done. This works for something like \mintinline{bash}{echo "hello world"},
+but this will fall apart quite fast for anything even slighty more complex e.g.
+\begin{minted}{bash}
+echo "foo bar baz" | wc -w
+\end{minted}
+\textbf{Expected Output:}
+\begin{minted}[bgcolor=gray!10]{text}
+3
+\end{minted}
+Because now the pipe operator \texttt{(|)} needs to be dealt with (see~\Cref{sec:piping}).
+To successfully parse the user input we need to:
+% explain what tokens are
+% why do we need to tokenize
+% (how do we tokenize)?
+
+% why do we replace the last char if newline char with null-terminator
+% why do we need to remove the quotes? Why do we remove them very last?
+% echo "test 1 2 3" -> ["test 1 2 3"] is not the same as [test] [1] [2] [3]
+
+\begin{enumerate}
+\item Tokenize
+  \begin{itemize}
+  \item What are tokens?
+    Tokens are the smallest ``unit'' that the shell can work with. When
+    looking at a command like \mintinline{bash}{ls -l /home/user} the tokens
+    would be [\texttt{ls}] [\texttt{-l}] [\texttt{/home/user}].
+
+  \item Why is tokenization necessary? Tokenization is needed because
+    the \funcname{execv} function that \textbf{\projectname} uses to
+    execute the
+    commands, takes the \texttt{path} and the \texttt{argv} seperate.
+    \todo{this is also needed for parsing, and actually called in parse function}
+
+  \item How does the tokenization work? When tokenizing
+    \textbf{\projectname} loops through the input string and
+    checks for every character if it is a space or a null-terminator \texttt{('\textbackslash0')}.
+    They act as so called \textbf{delimiters},
+    ``A delimiter is one or more characters that separate text strings.''~\cite{WhatDelimiter}.
+    If the character 
+    to be replaced is not the first character, it is replaced with the \texttt{('\textbackslash0')},  to terminate the string. The adress of the beginning of the new string is then saved to a \texttt{tokens} array, and if needed 
+   the memory will be reallocated to fit the string.
+    \end{itemize}
+    
+  \item If the last character is a newline, replace it with null-terminator
+\begin{minted}[linenos]{c}
+char *mod_str = args[i];
+if (strlen(mod_str) > 0 && mod_str[strlen(mod_str) - 1] == '\n') {
+    mod_str[strlen(mod_str) - 1] = '\0';
+}
+\end{minted}
+    \captionof{listing}{codeblock from parse function showing way of shortening string but not always?}~\label{mnt:WhatShows}
+
+    If the last character of the last token
+\texttt{mod\_str[strlen(mod\_str) - 1]} is a newline~\texttt{(' \textbackslash n')},
+it gets replaced with a null-terminator \texttt{('\textbackslash 0')}. 
+This can effectively ``shorten'' the string. 
+Which would look something like this: 
+\[
+\texttt{foobar\textbackslash n\textbackslash 0} 
+\;\rightarrow\; 
+\texttt{foobar\textbackslash 0\textbackslash 0} 
+\;\rightarrow\; 
+\texttt{foobar\textbackslash 0}
+\]
+
+This sanitization is necessary because some programs may behave
+incorrectly or crash
+if they receive strings with embedded newline characters.
+
+
+\item Removing the outer quotes after
+  tokenization is necessary so that the command and thus
+  the output (mostly)
+  behaves like assumed.
+  This is a ``very basic'' implementation of parsing quotes and
+  building new strings. As of writing this \textbf{\projectname}
+  does not behave 1:1 like \textsc{bash} or \textsc{zsh}, this
+  can be seen with the parsing and handling of newline characters
+  inside quotes. Most simple example would be \texttt{echo} and
+  \texttt{sort} e.g.
+\begin{minted}[linenos]{bash}
+echo "3\n1\n2" | sort -n
+\end{minted}
+  \textbf{Expected Output}
+\begin{minted}[linenos]{bash}
+tuxpad% echo "3\n1\n2" | sort -n
+1
+2
+3
+\end{minted}
+  But \textbf{\projectname} will just parrot the string back to you because as
+  of writing this, it does not handle the newline character inside
+  quotes as the newline character but just as a string literal.
+\begin{minted}[linenos]{bash}
+echo "3\n1\n2" | sort -n
+3\n1\n2
+\end{minted}
+  providing echo with the \texttt{-e} flag, will yield the correct
+  output.
+\begin{minted}[linenos]{bash}
+echo -e "3\n1\n2" | sort -n
+1
+2
+3
+\end{minted}
+  Using
+  \mintinline{bash}{echo "test123" >> append.txt} as an example,
+  if during parsing the quotes are not removed the quotes will
+  be appended to the file so
+  \mintinline{bash}{cat append.txt} would return
+\begin{minted}{text}
+"test123"
+\end{minted}
+  instead of
+\begin{minted}{text}
+test123
+\end{minted}
+\end{enumerate}
+  \subsubsection{Removing quotes and building a new string}
+  The \funcname{remove\_quotes}
+  function (see~\Cref{mnt:removeQuotes}),
+  \mycomment{
+ \textbf{---------------}
+  keeps track of the
+  processed arguments to be able to piece together the
+  ``unmodified'' strings later.
+\textbf{---------------}
+  }
+  loops through every word, and letter, to find either a first
+  single or double quote. Uppon finding one, it logs the first word
+  and letter position and the last word and
+  letter position (See~\Cref{mnt:removeQuotes}
+  lines 28~-~46).
+  If a closing quote is found, the \funcname{build\_quote\_string}
+  function is called with the following parameters
+  provided,
+  \texttt{arg, start\_arg, start\_pos, end\_arg, end\_pos}.
+  This then just turns the multiple arguments into one string without
+  the quotes, null-terminating the string (See~\Cref{mnt:bqString}).
+
+\subsection{Executing Commands}
+% THIS READS LIKE A FIFTHGREADER GO INTO MORE DETAIL
+% WRITE BETTER
+The \funcname{execute\_command} function uses the return value
+\texttt{char **args} from the \funcname{parse} function which
+holds the
+command name, and the arguments e.g.
+\mintinline{bash}{echo "hello world"}.
+
+It first checks for the inbuilt commands such as,
+\texttt{exit}, \texttt{help}, \texttt{cd} or \texttt{kill}, which \funcname{exit}
+the programm print some help text, change the directory or
+kill a process based on the \textsc{PID} or
+\texttt{process name}. \textbf{\projectname} can also do
+piping, output and input
+redirection, this is all handled internally before spawning
+any external processes.
+
+If the command or the arguments do not call any of the
+internal functions, \textbf{\projectname} builds the command with the
+proper structure, and creates a fork to try and execute the
+command.
+
+The following subsections will go into more detail about
+how each function/system works.
+
+\subsection{Builtin Commands and functionalities}
+\subsubsection{CD - Change Directory}
+The inbuilt commands all follow the same pattern,
+\funcname{strcmp} checks if the command
+(\texttt{args[0]}) is equal to any of the inbuilt commands. Should this be the case
+it calls the correct function. \newline
+E.g. ``cd'' there are two cases:
+\begin{enumerate}
+\item User wants to navigate to directory X. \texttt{args[1]} is
+  not \textsc{null} meaning there is something behind \texttt{cd}
+  ideally
+  a path to a directory
+\item User wants to take the shortcut to \texttt{\$HOME}. \texttt{args[1]} is \textsc{null}.
+\end{enumerate}
+
+\begin{minted}[linenos]{c}
+if (strcmp("cd", command) == 0)
+    {
+        if(args[1] != NULL) {
+            int status = change_directory(args[1]);
+            if (status != 0) {
+                perror("oshell: change_directory() error");
+                return 1;
+            }
+        } else {
+            chdir(getenv("HOME"));
+        }
+        return 0;
+    }
+\end{minted}
+\captionof{listing}{sourcecode showing the 'cd' implementation of
+\projectname}
+\label{mnt:cd}
+
+ Depending on if \texttt{args[1]} is \textsc{null} or not the  
+\funcname{change\_directory}
+(see~\Cref{mnt:changeDir}) function is called
+and the wanted directory name is passed to it. If the user
+enters a directory name that does not exists in the directory the user is currently in, an error is thrown and the user is
+sent back to the commandline. Depending on
+if the first character after the \texttt{cd} command is a
+tilde (\texttt{\string~}), a new path is constructed
+with \texttt{\$HOME/user/\emph{some/new/path}} because the \funcname{chdir}
+function, \textbf{\projectname} uses to actually change
+the directories,
+does not use relative paths with tilde, but only
+absolute paths.
+
+\subsubsection{Kill - Killing a process by name or ID}
+\todo{why might you want to kill a process, and not just press the
+close window icon?}
+Killing a process by \textsc{id} or \textsc{name} is done
+through the same \funcname{kill\_process} function.
+This function takes a \texttt{char *process\_name\_or\_id},
+and utilizes a helper function called
+\funcname{string\_to\_int}
+that can parse the \texttt{process\_name\_or\_id}
+into an integer if the string represents a valid number.
+Based on the return value of the \funcname{strint\_to\_int}
+function it will the two cases:
+\begin{enumerate}
+\item User submitted a valid integer
+ \item User submitted a string
+ \end{enumerate}
+
+ In the event that the user submitted an \texttt{int} 
+ it will be cast to \texttt{pid\_t}
+ and passed to the \funcname{kill}
+ (\url{https://linux.die.net/man/1/kill}) function.
+
+ In the event that the user submitted a string, the function will
+ try and get the \texttt{PID} it does this the following way.
+
+ On unix systems there is a pseudo-filesystem called
+ \texttt{/proc/} which acts like an \texttt{API} to kernel data structures.
+ It holds a subdirectory to each process that is currently running.
+ Each of those holds process specific files, like the
+ \texttt{comm}
+file~\cite{Proc5LinuxManual}~\cite{ProcPseudoFile}.
+The \texttt{comm} file stores the process name e.g.
+\mintinline{bash}{cat/<PID>/comm} could return ``zsh'',
+ and has the \texttt{PID} of the running process, as the
+ filename.
+ When looping through \texttt{/proc/<PID>} the programm
+ checks whether the directory name is all integers, if so
+ it constructs a path to said folder.
+\begin{minted}[linenos, breaklines]{c}
+snprintf(full_proc_path, full_proc_pathLength ,"%s%s", proc_dir_name, dirent->d_name);
+\end{minted}
+ Else it just takes the \texttt{PID} provided and tries
+ to kill the process.
+ 
+\begin{minted}[linenos, breaklines]{c}
+if(strcmp(strip_non_alpha(buffer), strip_non_alpha(process_name_or_id)) == 0) {
+    if(kill(pid, 9) == 0) {
+        fprintf(stderr, "killed %s with PID: %i", process_name_or_id, pid);
+        fflush(stderr);
+        process_found = true;
+    }
+    goto cleanup;
+}
+\end{minted}
+\captionof{listing}{sourcecode showing comparison between file contents
+(buffer) and the user input}
+
+\medskip
+ Before validating if this is the correct process
+ the \texttt{PID} (directory name) is saved, so that it can be
+ later used to kill said process if it is the correct one.
+ A new path to the \texttt{comm} file is then created to
+ be able to read the file contents, if the contents and the
+ user input match the process is killed.
+
+ \subsubsection{Piping} \label{sec:piping}
+The implementation of piping
+(See~\Cref{mnt:pipeRedirection})
+was one of the hardest functionalities to implement.
+A pipe is a point-to-point connection that has one read-end and one
+write-end. It allows for the standard output of one process
+to become the standard input of another process, without needing to
+make any temporary files or something which makes it extremly
+efficient.
+
+\begin{figure}[!htb]
+  \centering
+  \includesvg[scale=1]{pipeVis.drawio}
+  \caption{Figure visualising the pipe}~\label{fig:pipeVis}
+\end{figure}
+
+%% This is not smooth and needs a redo
+The string is divided into multiple strings whenever the 
+pipe operator \texttt{(|)} is identified, and the position of it is saved.
+The pipe positions are used to be able to construct 
+\texttt{commands} out of the seperated strings e.g.
+\mintinline{bash}{ls -la | grep txt | wc -l}
+is represented as three different commands, always split at the
+pipe symbol.
+
+\medskip
+Each command is executed as its own process. Using \funcname{fork}
+and \funcname{execv} while they are ``connected'' to the pipe.
+Depending on the commands position the the content is redirected
+different.
+
+\begin{itemize}
+\item First command: \textsc{STDOUT} is redirected to the \textsc{STDIN} of the following command.
+\item Middle command(s): \textsc{STDIN} will receive the
+  \textsc{STDOUT} of the previous command, and will redirect
+  the output to the \textsc{STDIN} of the following command.
+\item Last command: Gets its \textsc{STDIN} from the previous
+  command it points its \textsc{STDOUT} to the current terminal.
+  \end{itemize}
+
+\Cref{fig:multipipe} shows a visualisation of the data flow.
+  
+\begin{figure}[!htb]
+  \centering
+  \includesvg[width=0.9\linewidth]{multiPipe.drawio}
+  \caption{Figure visualising the data flow of multiple pipes chained together}~\label{fig:multipipe}
+\end{figure}
+
+The parsed commands are represented as
+\mintinline{c}{char ***commands}, which is simply a pointer to an array
+of pointers that point to pointers of characters (a string). Which is a typical way to
+represent arguments for a shell since this can store mulitple
+arguments while still being able to easily access individual strings if needed. \Cref{fig:memoryLayout} gives a simplified
+view of how \mintinline{bash}{echo "foo bar baz" | wc -w} is
+mapped in memory.
+
+\begin{figure}[!htb]
+  \centering
+  \includesvg[width=0.7\linewidth]{pipeRedirectionMemoryLayout.drawio}
+  \caption{Memory layout example of \texttt{commands} (simplified)}~\label{fig:memoryLayout}
+\end{figure}
+
+\subsubsection{Clear - Clearing the terminal}
+The \funcname{clear} function does not actually erase the content. Instead, this function prints enough newline characters to move the existing text beyond the visible
+screen area. The previous content remains in memory and can be
+accessed by scrolling up.
+
+\medskip
+It works by calling the \funcname{ioctl} function, with
+the open file descriptor, the request type and in this case
+to store the output in
+the \texttt{winsize structure} (\texttt{w}).
+The \texttt{0} (\textsc{STDIN}) tells the \funcname{ioctl}
+function that the terminal it wants information
+about
+is the one currently being used.
+
+\medskip
+The \texttt{TIOCGWINSZ} is a request that returns the current
+windowsize~\cite{UbuntuManpageIoctl_list}. It then loops over
+the amount of rows the
+terminal currently has, and prints a newline character
+each time, after that the cursor is being moved to the top
+left. 
+
+\begin{minted}[linenos]{c}
+void clear(void)
+{    struct winsize w;
+    ioctl(0, TIOCGWINSZ, &w);
+
+    for (int i = 0; i < w.ws_row; i++) {
+        fprintf(stderr, "\n");
+    }
+    fprintf(stderr, "\033[0;0H");
+}
+\end{minted}
+\captionof{listing}{sourcecode showing implementation of the
+\funcname{clear} function}
+\label{mnt:clear}
+\subsubsection{Input Redirection (<)}~\label{sec:inputRedirection}
+Input redirection redirects the input
+for the command. It allows the command to read the input
+from a file instead of the standard input.
+This is esentially a toned down version of piping
+(see~\Cref{sec:piping}). Opposed to
+piping it does not work with live processes, only with files
+, this makes it usefull for simple operations.
+
+\medskip
+So instead of feeding the information
+in the commandline like so: \mintinline{bash}{echo "Hello World" | tr 'a-z' 'A-Z'},
+it can be read from a file e.g.
+\mintinline{bash}{tr 'a-z' 'A-Z' < test.txt}. 
+This will open \texttt{test.txt} and redirect its contents to the \textsc{STDIN} of \texttt{tr}.
+
+ \Cref{fig:inputRedirection} shows a visualisation of how input redirection might look like.
+\begin{figure}[!htb]
+  \centering
+  \includesvg[width=0.7\linewidth]{inputRedirection.drawio}
+  \caption{Figure to help visualize input redirection}~\label{fig:inputRedirection}
+\end{figure}
+
+For the implementation see
+\Cref{mnt:inputRedirection}.
+
+\subsubsection{Output Redirection \texorpdfstring{($>$, $>>$)}{(>, >>)}}\label{sec:outputRedirection}
+% Find a good example for output redirection
+A user can redirect output from a command like \texttt{ls} and
+either truncate (\texttt{$>$}), or append (\texttt{$>>$}) to the file. This works the same as
+input redirection, only for \texttt{STDOUT}.
+% How to include (better) example smoothly
+
+\mintinline{bash}{ls > ls.txt} will create the file if needed
+and truncate if exists.
+
+
+\mintinline{bash}{echo "line1\nline2\nline3" >> append.txt}
+will create the file and append if exists.
+\Cref{fig:outputRedirection} shows a simple visualisation of how
+the output redirection might look like.
+
+\begin{figure}[!htb]
+  \centering
+  \includesvg[width=0.8\linewidth]{outputRedirection.drawio}
+  \caption{Figure to help visualize output redirection}
+  \label{fig:outputRedirection}
+\end{figure}
+
+For the implementation of this see \Cref{mnt:outputRedirection}
+
+\subsection{Environment Variables}
+An environment variable is basically a variable, with
+a name and value. They can hold all sorts values, for example
+the \texttt{HOME} path, things like the
+\texttt{DESKTOP\_SESSION} or your current \texttt{SHELL}.
+On Linux they can be listed with \texttt{printenv} or
+\texttt{env}.
+\textbf{\projectname} uses the \funcname{secure\_getenv} (\url{https://linux.die.net/man/3/secure_getenv})
+function to retrieve the value behind the variable if valid.
+
+\begin{minted}{c}
+int dollar_pos = find_shell_operator("$", args);
+if(dollar_pos >= 0 && args[dollar_pos][1]) {
+    char envChar = args[dollar_pos][0];
+    strncpy(envVar, &args[dollar_pos][1], sizeof(args[dollar_pos] -1));
+    char envCharStr[2] = {envChar, '\0'};  
+    if(strcmp("$",envCharStr) == 0) {
+        fprintf(stderr, "%s", secure_getenv(envVar));
+        free(envVar);
+        return 0;
+    }
+}
+\end{minted}
+\captionof{listing}{sourcecode showing implementation of
+\textbf{\projectname} handling environment variables.}
+\label{mnt:envVar}
+\todo{should the code be explained a bit (better)}
+\medskip
+The \funcname{find\_shell\_operator} function loops
+through the string array, provided to it and checks against
+the operator given (see~\Cref{mnt:findOperator}).
+
+\medskip
+Since \funcname{find\_shell\_operator} will only return
+a positive non zero value on success it is safe to assume
+that if the programm goes inside the \texttt{if} statement,
+there is at least once char behind the dollar sign
+(\texttt{\$}). This means
+that we can copy everything but the dollar sign
+and construct an environment variable to pass to the
+\funcname{secure\_getenv} function.
+
+\todo{better title needed, also not final this can do better}
+\subsection{Input loop}
+The shell is something that needs to continuously run,
+to read user input, parse it manage different processes and execute
+commands.
+
+\textbf{\projectname} implements this using the
+\funcname{oshell\_loop} as its main function. This basically runs
+the whole shell.
+\begin{enumerate}
+    \item \textbf{Read}: Reads the user input line by line.
+    \item \textbf{Parse}: Tokenizes the string and parses it
+      e.g. for operators like \string<, $<<$, \string~ or
+      \string$
+    \item \textbf{Execute}: Based on the input of the string
+      performs different actions to execute the command,
+      inbuilt commands are handled differently then commands
+      that have a pipe or input redirection.
+\end{enumerate}
+
+\Cref{mnt:oshellLoop} shows the implementation of the main loop.
+\begin{minted}[linenos]{c}
+void oshell_loop(void)
+{
+    char *user_input = oshell_read_line();
+    char **args = parse(user_input);
+
+    execute_command(args);
+    free(user_input);
+    free(args);
+}
+\end{minted}
+\captionof{listing}{sourcecode showing the main loop}
+\label{mnt:oshellLoop}
+
+\section{Testing}
+Testing and Validation: A critical part of any software project is demonstrating that it works correctly. A dedicated section on how you tested your shell is important. This could include:
+
+\begin{itemize}
+\item Unit testing: Did you test individual functions?
+
+\item Integration testing: Did you test how different parts work together?
+
+\item User acceptance testing: Did you run it with a set of common commands to verify it functions as expected?
+\end{itemize}
+\section{??Evaluation??}
+
+\newpage
+\usection{Bibliographie}
+\printbibliography
+\newpage
+\pagenumbering{gobble}
+\appendix
+\usection{Appendix}
+\usubsection{Parsing - Remove quotes function}
+\begin{minted}[linenos, breaklines]{c}
+char **remove_quotes(char **arg) {
+    size_t arg_count = 0;
+    size_t new_arg_count = 0;
+    int quote_string_pos = 0;
+    while(arg && arg[arg_count]) arg_count++;
+    char **tmp_args = malloc((arg_count + 1) * sizeof(char*));
+    if(tmp_args == NULL) perror("tmp_args memory allocation failed ");
+
+    // Initialize the last element to NULL
+    tmp_args[arg_count] = NULL;
+
+
+    bool *processed = calloc(arg_count, sizeof(bool)); // Track which args are processed
+
+    // this is not declared with the others e.g. start_arg,start_pos 
+    // because it is needed later down out of 
+    // that scope
+    int end_arg = -1;
+    int end_pos = -1;
+    
+    for(int i = 0; i < arg_count; i++) {
+        if (processed[i]) {
+            continue; // Skip already processed arguments
+        }
+
+        bool found_quote = false;
+
+            if ((arg[i][j] == '"' || arg[i][j] == '\'')) {
+                char quote = arg[i][j];
+                int start_arg = i;
+                int start_pos = j;
+
+                // Search for closing quote
+                int current_i = i;
+                int current_j = j + 1;
+
+                bool found_closing = false;
+                while (current_i < arg_count && arg[current_i] != NULL) {
+                    while (current_j < strlen(arg[current_i])) {
+                        if (arg[current_i][current_j] == quote) {
+                            end_arg = current_i;
+                            end_pos = current_j;
+                            found_closing = true;
+                            break;
+                        } 
+                        current_j++; 
+                    }
+                    if (found_closing) break;
+                    current_i++;
+                    current_j = 0;
+                }
+                
+                if (found_closing) {
+                    // Build the quoted string and store it in new_args[i]
+                    tmp_args[i] = build_quote_string(arg, start_arg, start_pos, end_arg, end_pos);
+                    // fprintf(stderr, "quoted string [%i]: %s\n", i, tmp_args[i]);
+
+                    // Mark all arguments from start_arg to end_arg as processed
+                    for(int k = start_arg; k <= end_arg; k++) {
+                        processed[k] = true;
+                    }
+
+                    found_quote = true;
+                    break; 
+                } else {
+                    fprintf(stderr, "Warning: No closing quote found for quote starting at arg[%d][%d]\n", start_arg, start_pos);
+                    break; 
+                }
+            }
+        }
+
+        // If no quote was processed, copy the original string
+        if (!found_quote) {
+            // fprintf(stderr, "no found quote [%i]: %s\n", i, arg[i]);
+            tmp_args[i] = malloc(strlen(arg[i]) + 1);
+            if(tmp_args[i] == NULL) fprintf(stderr,"oshell: memory allocation for %s failed", tmp_args[i]);
+            strcpy(tmp_args[i], arg[i]);
+        }
+
+        int n = arg_count + 1;
+
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            if (tmp_args[i] != NULL) {
+                if (i != j) tmp_args[j] = tmp_args[i];
+                j++;
+            }
+        }
+        // Set leftover slots to NULL
+        for ( ; j < n; j++) tmp_args[j] = NULL;
+    }
+    free(processed);
+    return tmp_args;
+}
+\end{minted}
+\captionof{listing}{Removes quotes from argument strings.}
+\label{mnt:removeQuotes}
+
+\newpage
+\usubsection{Execute Command - Change Directory}
+\begin{listing}[!htb]
+\begin{minted}[linenos]{c}
+int change_directory(char *directory)
+{
+    // add /home/user/ if ~ is the first char
+    char* new_path = NULL;
+    bool use_home_path = false;
+    if(strcmp(&directory[0], "~") == 0) {
+        char *user_path = getenv("HOME");
+        int new_path_length = strlen(user_path) + strlen(directory) + 1;
+        // first char is ~ replace dir with /home/user/dir
+        remove_char(directory, '~');
+        // fprintf(stderr, "%s%s",user_path, directory);
+        new_path = malloc(new_path_length);
+        snprintf(new_path, new_path_length, "%s%s", user_path, directory);
+        fprintf(stderr, "%s\n", new_path);
+        use_home_path = true;
+    }
+    int res = 0;
+    if(use_home_path) {
+        res = chdir(new_path);
+    } else {
+        res = chdir(directory);
+    }
+    if (res == -1) {
+        free(new_path);
+        return -1;
+    }
+    free(new_path);
+    return 0;
+}
+\end{minted}
+\label{mnt:changeDir}
+\caption{sourcecode showing the implementation of the
+change\_directory function}
+\end{listing}
+
+\newpage
+\usubsection{Execute Command - Kill}
+\todo{restore some comments, but remove commented functions and clutter.}
+\begin{minted}[linenos, breaklines]{c}
+int kill_process(char *process_name_or_id)
+{
+    if(string_to_int(process_name_or_id) == -1) {
+        struct dirent *dirent;
+        pid_t pid = 0;
+        char *proc_dir_name = "/proc/";
+        DIR *dir = opendir(proc_dir_name);
+        if(dir == NULL) {
+            exit(EXIT_FAILURE);
+        }
+        char    *buffer = NULL;
+        char    *comm_file_path = NULL;
+        char    *full_proc_path = NULL;
+
+        FILE    *fp = NULL;
+
+        bool    process_found = false;
+
+        int count = 0;
+        while((dirent = readdir(dir))!= NULL) {
+            if(dirent->d_type == DT_DIR) {
+                count++;
+                if(strcmp(dirent->d_name, ".") == 0 || strcmp(dirent->d_name, "..") == 0) {
+                    continue;
+                }
+                if(!is_numeric(dirent->d_name)) continue;
+
+                size_t full_proc_pathLength = strlen(proc_dir_name) + strlen(dirent->d_name) + 1;
+                full_proc_path = malloc(full_proc_pathLength);
+                if(full_proc_path == NULL) {
+                    goto cleanup;
+                }
+                snprintf(full_proc_path, full_proc_pathLength ,"%s%s", proc_dir_name, dirent->d_name);
+                if((opendir(full_proc_path)) != NULL ) {
+
+                    pid = (pid_t)atoi(dirent->d_name);
+
+                    size_t comm_file_pathLength = strlen(proc_dir_name) + strlen(dirent->d_name) + strlen("/comm") + 1;
+                    comm_file_path = malloc(comm_file_pathLength);
+                    if(comm_file_path == NULL) {
+                        goto cleanup;
+                    }
+                    snprintf(comm_file_path, comm_file_pathLength,"%s%s/comm", proc_dir_name, dirent->d_name);
+
+                    fp = fopen(comm_file_path, "r");
+                    if(fp == NULL) {
+                        goto cleanup;
+                    }
+
+                    long filesize = 0;
+                    while (getc(fp) != EOF)
+                        filesize++;
+                    fseek(fp, 0, SEEK_SET);
+
+                    const size_t          BUFFER_SIZE = ((sizeof(char) * filesize) +1);
+
+                    buffer = malloc(BUFFER_SIZE);
+                    if(buffer == NULL) {
+                        goto cleanup;
+                    }
+
+                    fgets(buffer, BUFFER_SIZE, fp);
+
+                    if(ferror(fp)) {
+                        goto cleanup;
+                        return -2;
+                    }
+
+                    if(strcmp(strip_non_alpha(buffer), strip_non_alpha(process_name_or_id)) == 0) {
+                        if(kill(pid, 9) == 0) {
+                            fprintf(stderr, "killed %s with PID: %i", process_name_or_id, pid);
+                            fflush(stderr);
+                            process_found = true;
+                        }
+                        goto cleanup;
+                    }
+                }
+            }
+        }
+        if(!process_found) {
+            fprintf(stderr, "Could not find process '%s'\n", process_name_or_id);
+        } 
+    cleanup: 
+        if(buffer) free(buffer);
+        if(comm_file_path) free(comm_file_path);
+        if(full_proc_path) free(full_proc_path);
+        if(fp) fclose(fp);
+        // the directory was not closed in every secenario
+        if(dir) closedir(dir);
+        return 0;
+    }
+    const pid_t pid = string_to_int(process_name_or_id);
+    kill(pid, 9);
+    fprintf(stderr,"killed %i\n", pid);
+    fflush(stderr);
+    return 0;
+}
+\end{minted}
+\captionof{listing}{sourcecode implementation of the \funcname{kill\_process} function. \newline
+  \textit{(some comments have been removed for clarity, can be found in the repository)}}
+\label{mnt:kill}
+
+
+\newpage
+\usubsection{Execute Command - Input Redirection}
+\begin{listing}[!htb]
+\begin{minted}[linenos]{c}
+int saved_stdin = dup(STDIN_FILENO);
+int do_input_redirection = 0;
+int fd_in = 0;
+
+int input_red_pos = find_shell_operator("<", args);
+
+if (input_red_pos > 0 && args[input_red_pos + 1] != NULL) {
+    // < does not check if the file in the argument is a valid file,
+    // it will redirect anything
+    char        *filename = args[2];
+    FILE        *file = fopen(filename, "r");
+
+    if(file == NULL) {
+        fprintf(stderr, "Error: %s is not a valid file.", filename);
+    }
+
+    if (feof(file) || ferror(file)) {
+        perror("oshell: fread() failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // open filebased pipeline channel for file 'filename' in read only
+    // 0 = stdin | 1 = stdout | 2 = stderr
+
+    fd_in = open(filename, O_RDONLY);
+
+    close(STDIN_FILENO); // we close stdin
+    // we duplicate fd, into stdin
+    if (dup2(fd_in, STDIN_FILENO) == -1) {
+        perror("oshell: dup2 error");
+        close(fd_in);
+        return -1;
+    }
+    args[input_red_pos] = NULL; // remove '<' from the command
+
+    do_input_redirection = 1;
+}
+\end{minted}
+\caption{sourcecode showing the implementation of
+input redirection}
+\label{mnt:inputRedirection}
+\end{listing}
+
+\newpage
+\usubsection{Execute Command -  Output Redirection}
+\begin{minted}[linenos, breaklines]{c}
+int saved_stdout = dup(STDOUT_FILENO);
+int do_output_redirection = 0;
+int fd = 0;
+
+int truncate_pos = find_shell_operator(">", args);
+int append_pos = find_shell_operator(">>", args);
+// redirect stdout to the file
+if ((append_pos > 0 && args[append_pos + 1] != NULL) || (truncate_pos > 0 && args[truncate_pos + 1] != NULL)) {
+    // > truncate (overwrite) ; >> append
+
+    if (args[truncate_pos + 1] == NULL || args[append_pos + 1] == NULL)  {
+        fprintf(stderr, "Error: missing filename after > / >> \n");
+        return -1;
+    }
+
+    if (args[truncate_pos + 2] != NULL || args[append_pos + 2] != NULL) {
+        fprintf(stderr, "Error: too many arguments after > / >> \n");
+        return -1;
+    }
+
+    char *filename = NULL;
+    // if (append_pos != -1) { append_pos } else truncate_pos
+    int pos = (append_pos != -1) ? append_pos : truncate_pos;
+    if (pos != -1) {
+        filename = args[pos + 1];
+    }
+
+    int flags;
+    if (strcmp(">>", (args[append_pos])) == 0) {
+        // inplace bitwise OR (x |= y ; x = x | y)
+        // add flag O_APPEND to flags
+        // &= ~xyz (remove xyz)
+        flags = O_APPEND | O_WRONLY | O_CREAT; // create if needed, append if exists
+    } else {
+        flags = O_TRUNC | O_WRONLY | O_CREAT; // create if needed, truncate if exists
+    }
+
+    fd = open(filename, flags, 0644);
+    if(fd == -1) perror("oshell: open() failed");
+
+    if (dup2(fd, STDOUT_FILENO) == -1) {
+        perror("oshell: dup2 error");
+        close(fd);
+        return 1;
+    }
+
+    // this is to remove the operator and filename from the command
+    args[pos] = NULL;
+    args[pos + 1] = NULL;
+
+    do_output_redirection = 1;
+}
+\end{minted}
+\captionof{listing}{sourcecode showing the implementation of
+output redirection}
+\label{mnt:outputRedirection}
+
+
+\newpage
+\usubsection{Utils - Find a shell operator}
+\begin{minted}[linenos,breaklines]{c}
+int find_shell_operator(char* operator, char **args) {
+    for (int i = 0; args[i] != NULL; i++) {
+        if (strcmp(args[i], operator) == 0) {
+            return i;
+        }
+        if (args[i][0] == operator[0]) {
+            return i;
+        }
+    }
+    return -1;
+}
+\end{minted}
+\captionof{listing}{sourcecode showing the implementation of
+the \funcname{find\_shell\_operator} function}
+\label{mnt:findOperator}
+
+\newpage
+\usubsection{Parsing Utils - Build a new string}
+\begin{minted}[linenos]{c}
+char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, int end_pos) 
+{
+    int total_length = 0;
+
+    for(int i = start_arg; i < end_arg; i++) {
+
+ 
+        // this is needed otherwise, the code will try to execute the command provided e.g.
+        // echo "foo bar baz" | wc -w just like that. 
+        // this would output foo bar baz | wc -w /*
+        /* We only want to skip the first character in the first word, 
+         * since this is the outer quote that we want to remove
+         * */
+        int start_j;
+        if(i == start_arg) start_j = start_pos + 1;
+        else start_j = 0;
+
+        int end_j;
+        if (i == end_arg) end_j = end_pos;
+        else end_j = strlen(arg[i]);
+
+        for(int j = start_j; j < end_j; j++) total_length++; // amount of characters 
+        if(i < end_arg) total_length++; // add N (amount of args) - 1 spaces for between each word
+    }
+
+    char *result = malloc((sizeof(char*) * total_length)  + 1);
+    if(result == NULL) perror("oshell: memeory allocation for string result failed");
+    int index = 0;
+
+    /*
+     * Building the string
+     * This is basically the same as the loop before we make start_j and end_j 
+     * and then loop from start to end, adding the characters one by one to the 
+     * result string and null terminating it.
+     * */
+
+    for(int i = start_arg; i <= end_arg; i++) {
+        int start_j;
+        if(i == start_arg) start_j = start_pos + 1;
+        else start_j = 0;
+
+        int end_j;
+        if (i == end_arg) end_j = end_pos;
+        else end_j = strlen(arg[i]);
+
+        for(int j = start_j; j < end_j; j++) result[index++] = arg[i][j];
+
+        // add a space after each word
+        if(i < end_arg) {
+            result[index++] = ' ';
+        }
+    }
+    return result;
+}
+\end{minted}
+\captionof{listing}{sourcecode showing the implementation of the
+  \funcname{build\_quote\_string} function}
+\label{mnt:bqString}
+
+\newpage
+\usubsection{Piping}
+\begin{minted}[linenos]{c}
+int pipe_redirection(char **args) 
+{
+/*
+     * To support more then one, pipe for "advanced" commands, there needs to be a way to track the amount of pipes we have
+     * for later redirection, tracking of the multiple pipe positions, and the spliting of the commands
+     * */
+    int pipes_amount = 0;
+
+    for (int i = 0; args[i] != NULL; i++) {
+        if(strcmp("|", args[i]) == 0) pipes_amount++;
+    }
+
+
+    if(pipes_amount == 0) return -1; // no pipes found, however
+
+    
+    int pipe_pos[pipes_amount];
+    int pipe_index = 0;
+    for (int i = 0; args[i] != NULL; i++) {
+        if (strcmp(args[i], "|") == 0) {
+            pipe_pos[pipe_index++] = i;
+        }
+    }
+
+    char ***commands = malloc((pipes_amount + 1) * sizeof(char**));
+    char **paths = malloc((pipes_amount + 1) * sizeof(char*));
+
+    int MAX_ARGS = 0;
+    for(int i = 0; args[i] != NULL; i++) {
+        MAX_ARGS++;
+    }
+
+    int start = 0;
+    int end = 0;
+    int cmd_id = 0;
+    for (cmd_id = 0; cmd_id <= pipes_amount; cmd_id++) {
+        if(cmd_id < pipes_amount) {
+
+            commands[cmd_id] = malloc(MAX_ARGS * sizeof(char*));
+            if (!commands[cmd_id]) {
+                perror("oshell: memory allocation for command[cmd_id] failed");
+            }
+            memset(commands[cmd_id], 0, MAX_ARGS * sizeof(char*));
+
+            end = pipe_pos[cmd_id];
+            // create the commands from [cmd_id][i] = args[i]
+            for(int i = 0; i < end; i++) {
+                /*
+                 * Since commands[cmd_id][i] is not initialized and only
+                 * command[cmd_id] we need to allocate for each string in the array
+                 * */
+                if(args[i] != NULL) {
+                    commands[cmd_id][i] = malloc(strlen(args[i]) + 1);
+                    strcpy(commands[cmd_id][i], args[i]);
+                }
+                                }
+            commands[cmd_id][end] = NULL;
+        } else {
+            commands[cmd_id] = malloc(MAX_ARGS * sizeof(char*));
+            if (!commands[cmd_id]) {
+                perror("oshell: memory allocation for command[cmd_id] failed");
+            }
+            memset(commands[cmd_id], 0, MAX_ARGS * sizeof(char*));
+
+            int j = 0;
+            do {
+                j++;
+            }while (args[j] != NULL);
+            start = end + 1; // Skip the pipe
+            end = j;
+            for(int i = start; i < end; i++) {
+                // using strdup we dont need to manually allocate memory for 
+                // commands[cmd_id][xyz] since strdup handles that
+                if(args[i] != NULL) {
+                    // shit fuck why is i - start needed ??? DOES NOT WORK WITHOUT
+                    commands[cmd_id][(i - start)] = my_strdup(args[i]);
+                }
+            }
+            commands[cmd_id][end - start] = NULL;
+        }
+        size_t path_length = strlen("/usr/bin/") + strlen(commands[cmd_id][0]) + 1;
+        paths[cmd_id] = malloc(path_length);
+        if (!paths[cmd_id]) { perror("oshell: piping()"); exit(-1);}
+        snprintf(paths[cmd_id], path_length, "/usr/bin/%s", commands[cmd_id][0]);        
+
+    }
+ 
+    /*
+     * pipe() returns two file descriptors, fd[0] is open for reading, fd[1] is open for writing
+     * ouput of fd[1] is input for fd[0].
+     *
+     * Since pipes are a point-to-point connection, one for every command, so we need n-1 pipes if n is the amount of commands we have
+     * */
+
+    int fd[pipes_amount][2];
+
+    for(int i = 0; i < pipes_amount; i++) {
+        if (pipe(fd[i]) == -1) {
+            perror("oshell: fd ");
+        }
+    }
+
+    /*
+     * We need to track, what gets redirected where
+     * "This is the first command, only redirect STDOUT"
+     * "This is a middle command, redirect both"
+     * "This is the last command, only redirect STDIN"
+     * */
+
+    // save the stdin/stdout, to later restore 
+    int saved_stdout = dup(STDOUT_FILENO);
+    int saved_stdin = dup(STDIN_FILENO);
+
+    int f = 0;
+    for(int i = 0; i < cmd_id; i++) {
+
+        if ((f = fork()) == 0) {
+            // child: setup the redirections
+            if(i == 0) { // first command, only redirect stdout
+                if(dup2(fd[i][1], STDOUT_FILENO) == -1) {
+                    fprintf(stderr, "Child %d: dup2 failed\n", i);
+                    _exit(EXIT_FAILURE);
+                }
+                for(int j = 0; j < pipes_amount; j++) {
+                    close(fd[j][0]);
+                    close(fd[j][1]);
+                }
+            } else if (i == cmd_id - 1) { // last command only redirect stdin
+                if(dup2(fd[i-1][0], STDIN_FILENO) == -1) {
+                    close(fd[i-1][0]);
+                    _exit(EXIT_FAILURE);
+                }
+                for(int j = 0; j < pipes_amount; j++) {
+                    close(fd[j][0]);
+                    close(fd[j][1]);
+                }
+            } else { // not first nor last, redirect stdin and stdout
+                     // cmd0 ---> pipe[0] ---> cmd1 ---> pipe[1] ---> cmd2
+                if(dup2(fd[i-1][0], STDIN_FILENO) == -1 || dup2(fd[i][1], STDOUT_FILENO) == -1) {
+                    _exit(EXIT_FAILURE);
+                }
+                for(int j = 0; j < pipes_amount; j++) {
+                    close(fd[j][0]);
+                    close(fd[j][1]);
+                }
+            }
+            if(commands[i] == NULL) {
+                fprintf(stderr, "ERROR: commands[%d] is NULL\n", i);
+                _exit(EXIT_FAILURE);
+            }
+
+            if (execv(paths[i], commands[i]) == -1) {
+                perror("execv() failed");
+                free(paths);
+                free(commands);
+                for(int i = 0; i < pipes_amount; i++) {
+                    close(fd[i][0]);
+                    close(fd[i][1]);
+                }
+                _exit(EXIT_FAILURE);
+            }
+            fprintf(stderr, "Child %d: ERROR - this should never print!\n", i);
+            } else if (f == -1) {
+                perror("oshell: fork() failed"); 
+                return -1; 
+            }
+            // parent continues to next iteration
+        }
+    for(int j = 0; j < pipes_amount; j++) {
+        close(fd[j][0]);
+        close(fd[j][1]);
+    }
+
+    for(int i = 0; i < cmd_id; i++) {
+        int status;
+        pid_t result = waitpid(-1, &status, WNOHANG);  // Non-blocking wait
+        if (result == 0) {
+            continue;
+        } else if (result > 0) {
+        }
+    }
+
+    // restore stdin/stdout
+    dup2(saved_stdin, STDIN_FILENO);
+    dup2(saved_stdout, STDOUT_FILENO);
+
+    if(close(saved_stdin) != 0) perror("oshell: piping()");
+    if(close(saved_stdout) != 0) perror("oshell: piping()");
+
+    free(paths);
+    free(commands);
+
+    return 0;
+}
+\end{minted}
+\captionof{listing}{sourcecode showing the implementation of the
+\funcname{pipe\_redirection} function}~\label{mnt:pipeRedirection}
+
+\end{document}

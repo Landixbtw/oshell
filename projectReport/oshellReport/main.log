@@ -1,0 +1,2820 @@
+This is LuaHBTeX, Version 1.18.0 (TeX Live 2024)  (format=lualatex 2024.11.16)  30 SEP 2025 15:13
+ restricted system commands enabled.
+ file:line:error style messages enabled.
+**main.tex
+(./main.tex
+LaTeX2e <2024-11-01>
+L3 programming layer <2024-11-02>
+Lua module: luaotfload 2024-02-14 v3.28 Lua based OpenType font support
+Lua module: lualibs 2023-07-13 v2.76 ConTeXt Lua standard libraries.
+Lua module: lualibs-extended 2023-07-13 v2.76 ConTeXt Lua libraries -- extended 
+collection.
+luaotfload | conf : Root cache directory is "/home/ole/.texlive2024/texmf-var/lu
+atex-cache/generic/names".
+luaotfload | init : Loading fontloader "fontloader-2023-12-28.lua" from kpse-res
+olved path "/usr/local/texlive/2024/texmf-dist/tex/luatex/luaotfload/fontloader-
+2023-12-28.lua".
+Lua-only attribute luaotfload@noligature = 1
+luaotfload | init : Context OpenType loader version 3.134
+Inserting `luaotfload.node_processor' in `pre_linebreak_filter'.
+Inserting `luaotfload.node_processor' in `hpack_filter'.
+Inserting `luaotfload.glyph_stream' in `glyph_stream_provider'.
+Inserting `luaotfload.define_font' in `define_font'.
+Lua-only attribute luaotfload_color_attribute = 2
+luaotfload | conf : Root cache directory is "/home/ole/.texlive2024/texmf-var/lu
+atex-cache/generic/names".
+Inserting `luaotfload.harf.strip_prefix' in `find_opentype_file'.
+Inserting `luaotfload.harf.strip_prefix' in `find_truetype_file'.
+Removing  `luaotfload.glyph_stream' from `glyph_stream_provider'.
+Inserting `luaotfload.harf.glyphstream' in `glyph_stream_provider'.
+Inserting `luaotfload.harf.finalize_vlist' in `post_linebreak_filter'.
+Inserting `luaotfload.harf.finalize_hlist' in `hpack_filter'.
+Inserting `luaotfload.cleanup_files' in `wrapup_run'.
+Inserting `luaotfload.harf.finalize_unicode' in `finish_pdffile'.
+Inserting `luaotfload.glyphinfo' in `glyph_info'.
+Lua-only attribute luaotfload.letterspace_done = 3
+Inserting `luaotfload.aux.set_sscale_dimens' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_font_index' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.patch_cambria_domh' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.fixup_fontdata' in `luaotfload.patch_font_unsafe'.
+Inserting `luaotfload.aux.set_capheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_xheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.rewrite_fontname' in `luaotfload.patch_font'.
+Inserting `tracingstacklevels' in `input_level_string'. (/usr/local/texlive/202
+4/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2024/06/29 v1.4n Standard LaTeX document class
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2024/06/29 v1.4n Standard LaTeX file (size option)
+luaotfload | db : Font names database loaded from /home/ole/.texlive2024/texmf-v
+ar/luatex-cache/generic/names/luaotfload-names.luc.gz)
+\c@part=\count194
+\c@section=\count195
+\c@subsection=\count196
+\c@subsubsection=\count197
+\c@paragraph=\count198
+\c@subparagraph=\count199
+\c@figure=\count266
+\c@table=\count267
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen140
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 11
+6.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks17
+\inpenc@posthook=\toks18
+
+
+Package inputenc Warning: inputenc package ignored with utf8 based engines.
+
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: luatex.def on input line 106.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-def/luatex.def
+File: luatex.def 2024/04/13 v1.2e Graphics/color driver for luatex
+))
+\Gin@req@height=\dimen141
+\Gin@req@width=\dimen142
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count268
+\float@exts=\toks20
+\float@box=\box52
+\@float@everytoks=\toks21
+\@floatcapt=\box53
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2024/11/08 v24.13 The multilingual framework for pdfLaTeX, LuaLa
+TeX and XeLaTeX
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/babel/luababel.def
+\bbl@readstream=\read2
+\l@dumylang=\language2
+Package babel Info: Non-standard hyphenation setup on input line 118.
+\l@nohyphenation=\language3
+\l@vietnamese=\language4
+\l@hebrew=\language5
+\l@german-x-2024-02-28=\language6
+\l@ngerman-x-2024-02-28=\language7
+\l@afrikaans=\language8
+\l@ancientgreek=\language9
+\l@ibycus=\language10
+\l@arabic=\language11
+\l@armenian=\language12
+\l@basque=\language13
+\l@belarusian=\language14
+\l@bulgarian=\language15
+\l@catalan=\language16
+\l@pinyin=\language17
+\l@churchslavonic=\language18
+\l@coptic=\language19
+\l@croatian=\language20
+\l@czech=\language21
+\l@danish=\language22
+\l@dutch=\language23
+\l@ukenglish=\language24
+\l@usenglishmax=\language25
+\l@esperanto=\language26
+\l@estonian=\language27
+\l@ethiopic=\language28
+\l@farsi=\language29
+\l@finnish=\language30
+\l@schoolfinnish=\language31
+\l@french=\language32
+\l@friulan=\language33
+\l@galician=\language34
+\l@georgian=\language35
+\l@german=\language36
+\l@ngerman=\language37
+\l@swissgerman=\language38
+\l@greek=\language39
+\l@monogreek=\language40
+\l@hungarian=\language41
+\l@icelandic=\language42
+\l@assamese=\language43
+\l@bengali=\language44
+\l@gujarati=\language45
+\l@hindi=\language46
+\l@kannada=\language47
+\l@malayalam=\language48
+\l@marathi=\language49
+\l@oriya=\language50
+\l@pali=\language51
+\l@panjabi=\language52
+\l@tamil=\language53
+\l@telugu=\language54
+\l@indonesian=\language55
+\l@interlingua=\language56
+\l@irish=\language57
+\l@italian=\language58
+\l@kurmanji=\language59
+\l@classiclatin=\language60
+\l@latin=\language61
+\l@liturgicallatin=\language62
+\l@latvian=\language63
+\l@lithuanian=\language64
+\l@macedonian=\language65
+\l@mongolian=\language66
+\l@mongolianlmc=\language67
+\l@bokmal=\language68
+\l@nynorsk=\language69
+\l@occitan=\language70
+\l@piedmontese=\language71
+\l@polish=\language72
+\l@portuguese=\language73
+\l@romanian=\language74
+\l@romansh=\language75
+\l@russian=\language76
+\l@sanskrit=\language77
+\l@serbian=\language78
+\l@serbianc=\language79
+\l@slovak=\language80
+\l@slovenian=\language81
+\l@spanish=\language82
+\l@swedish=\language83
+\l@thai=\language84
+\l@turkish=\language85
+\l@turkmen=\language86
+\l@ukrainian=\language87
+\l@uppersorbian=\language88
+\l@welsh=\language89
+\babelcatcodetablenum=\catcodetable14
+\bbl@pattcodes=\catcodetable15
+)
+\babel@savecnt=\count269
+\U@D=\dimen143
+\l@unhyphenated=\language90
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/babel/luababel.def
+\bbl@attr@locale=\attribute4
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/babel-english/english.ldf
+Language: english 2017/06/06 v3.3r English support from the babel system
+Package babel Info: Hyphen rules for 'canadian' set to \l@english
+(babel)             (\language0). Reported on input line 102.
+Package babel Info: Hyphen rules for 'australian' set to \l@ukenglish
+(babel)             (\language24). Reported on input line 105.
+Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
+(babel)             (\language24). Reported on input line 108.
+))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/babel/locale/en/babel-english.t
+ex
+Package babel Info: Importing font and identification data for english
+(babel)             from babel-en.ini. Reported on input line 11.
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/a4wide/a4wide.sty
+Package: a4wide 1994/08/30
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/ntgclass/a4.sty
+Package: a4 2023/01/10 v1.2g A4 based page layout
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: luatex.def on input line 274.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count270
+\lst@gtempboxa=\box54
+\lst@token=\toks22
+\lst@length=\count271
+\lst@currlwidth=\dimen144
+\lst@column=\count272
+\lst@pos=\count273
+\lst@lostspace=\dimen145
+\lst@width=\dimen146
+\lst@newlines=\count274
+\lst@lineno=\count275
+\lst@maxwidth=\dimen147
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2024/09/23 1.10c (Carsten Heinz)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
+\c@lstnumber=\count276
+\lst@skipnumbers=\count277
+\lst@framebox=\box55
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2024/09/23 1.10c listings configuration
+))
+Package: listings 2024/09/23 1.10c (Carsten Heinz)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+x
+\pgfutil@everybye=\toks23
+\pgfutil@tempdima=\dimen148
+\pgfutil@tempdimb=\dimen149
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box56
+) (/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks24
+\pgfkeys@temptoks=\toks25
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfil
+tered.code.tex
+\pgfkeys@tmptoks=\toks26
+))
+\pgf@x=\dimen150
+\pgf@y=\dimen151
+\pgf@xa=\dimen152
+\pgf@ya=\dimen153
+\pgf@xb=\dimen154
+\pgf@yb=\dimen155
+\pgf@xc=\dimen156
+\pgf@yc=\dimen157
+\pgf@xd=\dimen158
+\pgf@yd=\dimen159
+\w@pgf@writea=\write3
+\r@pgf@reada=\read3
+\c@pgf@counta=\count278
+\c@pgf@countb=\count279
+\c@pgf@countc=\count280
+\c@pgf@countd=\count281
+\t@pgf@toka=\toks27
+\t@pgf@tokb=\toks28
+\t@pgf@tokc=\toks29
+\pgf@sys@id@count=\count282
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-luatex.def
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-luatex.d
+ef
+File: pgfsys-luatex.def 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
+df.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count283
+\pgfsyssoftpath@bigbuffer@items=\count284
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen160
+\pgfmath@count=\count285
+\pgfmath@box=\box57
+\pgfmath@toks=\toks30
+\pgfmath@stack@operand=\toks31
+\pgfmath@stack@operation=\toks32
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count286
+)) (/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex
+File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@picminx=\dimen161
+\pgf@picmaxx=\dimen162
+\pgf@picminy=\dimen163
+\pgf@picmaxy=\dimen164
+\pgf@pathminx=\dimen165
+\pgf@pathmaxx=\dimen166
+\pgf@pathminy=\dimen167
+\pgf@pathmaxy=\dimen168
+\pgf@xx=\dimen169
+\pgf@xy=\dimen170
+\pgf@yx=\dimen171
+\pgf@yy=\dimen172
+\pgf@zx=\dimen173
+\pgf@zy=\dimen174
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex
+File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@path@lastx=\dimen175
+\pgf@path@lasty=\dimen176
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+.code.tex
+File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@shorten@end@additional=\dimen177
+\pgf@shorten@start@additional=\dimen178
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex
+File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfpic=\box58
+\pgf@hbox=\box59
+\pgf@layerbox@main=\box60
+\pgf@picture@serial@count=\count287
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex
+File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgflinewidth=\dimen179
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex
+File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@pt@x=\dimen180
+\pgf@pt@y=\dimen181
+\pgf@pt@temp=\dimen182
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex
+File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+ode.tex
+File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex
+File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex
+File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowsep=\dimen183
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex
+File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@max=\dimen184
+\pgf@sys@shading@range@num=\count288
+\pgf@shadingcount=\count289
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex
+File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex
+File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfexternal@startupbox=\box61
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+de.tex
+File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex
+File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex
+File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.
+tex
+File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodeparttextbox=\box62
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
+\pgf@nodesepstart=\dimen185
+\pgf@nodesepend=\dimen186
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty
+Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
+\pgffor@iter=\dimen187
+\pgffor@skip=\dimen188
+\pgffor@stack=\toks33
+\pgffor@toks=\toks34
+))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+Package: tikz 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex
+File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@plot@mark@count=\count290
+\pgfplotmarksize=\dimen189
+)
+\tikz@lastx=\dimen190
+\tikz@lasty=\dimen191
+\tikz@lastxsaved=\dimen192
+\tikz@lastysaved=\dimen193
+\tikz@lastmovetox=\dimen194
+\tikz@lastmovetoy=\dimen195
+\tikzleveldistance=\dimen196
+\tikzsiblingdistance=\dimen197
+\tikz@figbox=\box63
+\tikz@figbox@bg=\box64
+\tikz@tempbox=\box65
+\tikz@tempbox@bg=\box66
+\tikztreelevel=\count291
+\tikznumberofchildren=\count292
+\tikznumberofcurrentchild=\count293
+\tikz@fig@count=\count294
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex
+File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfmatrixcurrentrow=\count295
+\pgfmatrixcurrentcolumn=\count296
+\pgf@matrix@numberofcolumns=\count297
+)
+\tikz@expandcount=\count298
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/enumitem/enumitem.sty
+Package: enumitem 2019/06/20 v3.9 Customized lists
+\labelindent=\skip51
+\enit@outerparindent=\dimen198
+\enit@toks=\toks35
+\enit@inbox=\box67
+\enit@count@id=\count299
+\enitdp@description=\count300
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarycalc.code.tex
+File: tikzlibrarycalc.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/csquotes/csquotes.sty
+Package: csquotes 2024-04-04 v5.2o context-sensitive quotations (JAW)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count301
+)
+\csq@reset=\count302
+\csq@gtype=\count303
+\csq@glevel=\count304
+\csq@qlevel=\count305
+\csq@maxlvl=\count306
+\csq@tshold=\count307
+\csq@ltx@everypar=\toks36
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/csquotes/csquotes.def
+File: csquotes.def 2024-04-04 v5.2o csquotes generic definitions (JAW)
+)
+Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
+Package csquotes Info: ... configuration file loaded successfully.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/csquotes/csquotes.cfg
+File: csquotes.cfg 
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks37
+\verbatim@line=\toks38
+\verbatim@in@stream=\read4
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/newfloat/newfloat.sty
+Package: newfloat 2023/10/01 v1.2 Defining new floating environments (AR)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/todonotes/todonotes.sty
+Package: todonotes 2024/01/05 v1.1.7 Todonotes source and documentation.
+Package: todonotes 2024/01/05
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks39
+\XKV@tempa@toks=\toks40
+)
+\XKV@depth=\count308
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count309
+\calc@Bcount=\count310
+\calc@Adimen=\dimen199
+\calc@Bdimen=\dimen256
+\calc@Askip=\skip52
+\calc@Bskip=\skip53
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count311
+\calc@Cskip=\skip54
+)
+\c@@todonotes@numberoftodonotes=\count312
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/tools/indentfirst.sty
+Package: indentfirst 2023/07/02 v1.03 Indent first paragraph (DPC)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/svg/svg.sty
+Package: svg 2020/11/26 v2.02k (include SVG pictures)
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrbase.sty
+Package: scrbase 2024/10/24 v3.43 KOMA-Script package (KOMA-Script-independent 
+basics and keyval usage)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlfile.sty
+Package: scrlfile 2024/10/24 v3.43 KOMA-Script package (file load hooks)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
+Package: scrlfile-hook 2024/10/24 v3.43 KOMA-Script package (using LaTeX hooks)
+
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlogo.sty
+Package: scrlogo 2024/10/24 v3.43 KOMA-Script package (logo)
+)))
+Applying: [2021/05/01] Usage of raw or classic option list on input line 254.
+Already applied: [0000/00/00] Usage of raw or classic option list on input line
+ 370.
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+\pdftexcmds@toks=\toks41
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/tools/shellesc.sty
+Package: shellesc 2023/07/08 v1.0d unified shell escape interface for LaTeX
+Package shellesc Info: Restricted shell escape enabled on input line 77.
+)
+\c@svg@param@lastpage=\count313
+\svg@box=\box68
+\c@svg@param@currpage=\count314
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/transparent/transparent.sty
+Package: transparent 2022-10-27 v1.5 Transparency with color stacks
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/transparent/transparent-nometadat
+a.sty
+Package: transparent-nometadata 2022-10-27 v1.5 Transparency via pdfTeX's color
+ stack (HO)
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen257
+\captionmargin=\dimen258
+\caption@leftmargin=\dimen259
+\caption@rightmargin=\dimen260
+\caption@width=\dimen261
+\caption@indent=\dimen262
+\caption@parindent=\dimen263
+\caption@hangindent=\dimen264
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count315
+\c@continuedfloat=\count316
+Package caption Info: float package is loaded.
+Package caption Info: listings package is loaded.
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fvextra/fvextra.sty
+Package: fvextra 2024/10/16 v1.9.0 fvextra - extensions and patches for fancyvr
+b
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2024/01/20 4.5c verbatim text (tvz,hv)
+\FV@CodeLineNo=\count317
+\FV@InFile=\read5
+\FV@TabBox=\box69
+\c@FancyVerbLine=\count318
+\FV@StepNumber=\count319
+\FV@OutFile=\write4
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2024/04/24 v2.1b Standard LaTeX package
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2023/05/20 line numbers on paragraphs v5.3
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+))
+\linenopenalty=\count320
+\output=\toks42
+\linenoprevgraf=\count321
+\linenumbersep=\dimen265
+\linenumberwidth=\dimen266
+\c@linenumber=\count322
+\c@pagewiselinenumber=\count323
+\c@LN@truepage=\count324
+\c@internallinenumber=\count325
+\c@internallinenumbers=\count326
+\quotelinenumbersep=\dimen267
+\bframerule=\dimen268
+\bframesep=\dimen269
+\bframebox=\box70
+
+
+LaTeX Warning: Command \@parboxrestore  has changed.
+               Check if current package is valid.
+
+LaTeX Info: Redefining \\ on input line 3180.
+)
+
+Package fvextra Warning: csquotes should be loaded after fvextra, to avoid a wa
+rning from the lineno package on input line 36.
+
+\c@FancyVerbWriteLine=\count327
+\c@FancyVerbBufferIndex=\count328
+\c@FancyVerbBufferLine=\count329
+\c@FV@TrueTabGroupLevel=\count330
+\c@FV@TrueTabCounter=\count331
+\FV@TabBox@Group=\box71
+\FV@TmpLength=\skip55
+\c@FV@HighlightLinesStart=\count332
+\c@FV@HighlightLinesStop=\count333
+\FV@LoopCount=\count334
+\FV@NCharsBox=\box72
+\FV@BreakIndent=\dimen270
+\FV@BreakIndentNChars=\count335
+\FV@BreakSymbolSepLeft=\dimen271
+\FV@BreakSymbolSepLeftNChars=\count336
+\FV@BreakSymbolSepRight=\dimen272
+\FV@BreakSymbolSepRightNChars=\count337
+\FV@BreakSymbolIndentLeft=\dimen273
+\FV@BreakSymbolIndentLeftNChars=\count338
+\FV@BreakSymbolIndentRight=\dimen274
+\FV@BreakSymbolIndentRightNChars=\count339
+\c@FancyVerbLineBreakLast=\count340
+\FV@LineBox=\box73
+\FV@LineIndentBox=\box74
+\c@FV@BreakBufferDepth=\count341
+\FV@LineWidth=\dimen275
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/lipsum/lipsum.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2024-11-02 L3 programming layer (loader) 
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
+File: l3backend-luatex.def 2024-05-08 L3 backend support: PDF output (LuaTeX)
+\l__color_backend_stack_int=\count342
+Inserting `l3color' in `luaotfload.parse_color'.
+\l__pdf_internal_box=\box75
+))
+Package: l3keys2e 2024-08-16 LaTeX2e option processing using LaTeX3 keys
+)
+Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
+\g__lipsum_par_int=\count343
+\l__lipsum_a_int=\count344
+\l__lipsum_b_int=\count345
+(/usr/local/texlive/2024/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/newcomputermodern/newcomputermode
+rn.sty
+Package: newcomputermodern v7.0.0 NewCM fonts by Antonis Tsolomitis
+
+Loading NewCM fonts by Antonis Tsolomitis
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fontspec/fontspec.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2024-08-16 L3 Experimental document command parser
+)
+Package: fontspec 2024/05/11 v2.9e Font selection for XeLaTeX and LuaLaTeX
+Lua module: fontspec 2024/05/11 v2.9e Font selection for XeLaTeX and LuaLaTeX
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty
+Package: fontspec-luatex 2024/05/11 v2.9e Font selection for XeLaTeX and LuaLaT
+eX
+\l__fontspec_script_int=\count346
+\l__fontspec_language_int=\count347
+\l__fontspec_strnum_int=\count348
+\l__fontspec_tmp_int=\count349
+\l__fontspec_tmpa_int=\count350
+\l__fontspec_tmpb_int=\count351
+\l__fontspec_tmpc_int=\count352
+\l__fontspec_em_int=\count353
+\l__fontspec_emdef_int=\count354
+\l__fontspec_strong_int=\count355
+\l__fontspec_strongdef_int=\count356
+\l__fontspec_tmpa_dim=\dimen276
+\l__fontspec_tmpb_dim=\dimen277
+\l__fontspec_tmpc_dim=\dimen278
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/unicode-math/unicode-math.sty
+Package: unicode-math 2023/08/13 v0.8r Unicode maths in XeLaTeX and LuaLaTeX
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/unicode-math/unicode-math-luatex.
+sty
+Package: unicode-math-luatex 2023/08/13 v0.8r Unicode maths in XeLaTeX and LuaL
+aTeX
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/base/fix-cm.sty
+Package: fix-cm 2020/11/24 v1.1t fixes to LaTeX
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding TS1 on input line 47.
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2024/11/05 v2.17t AMS math features
+\@mathmargin=\skip56
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks43
+\ex@=\dimen279
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen280
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count357
+LaTeX Info: Redefining \frac on input line 235.
+\uproot@=\count358
+\leftroot@=\count359
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count360
+\DOTSCASE@=\count361
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box76
+\strutbox@=\box77
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen281
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count362
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count363
+\dotsspace@=\muskip18
+\c@parentequation=\count364
+\dspbrk@lvl=\count365
+\tag@help=\toks44
+\row@=\count366
+\column@=\count367
+\maxfields@=\count368
+\andhelp@=\toks45
+\eqnshift@=\dimen282
+\alignsep@=\dimen283
+\tagshift@=\dimen284
+\tagwidth@=\dimen285
+\totwidth@=\dimen286
+\lineht@=\dimen287
+\@envbody=\toks46
+\multlinegap=\skip57
+\multlinetaggap=\skip58
+\mathdisplay@stack=\toks47
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+)
+\linenoamsmath@ams@eqpen=\count369
+
+(/usr/local/texlive/2024/texmf-dist/tex/lualatex/lualatex-math/lualatex-math.st
+y
+Package: lualatex-math 2022/01/01 v1.12 Patches for mathematics typesetting wit
+h LuaLaTeX
+Lua module: lualatex-math 2013/08/03 v1.3 Patches for mathematics typesetting wi
+th LuaLaTeX)
+\g__um_fam_int=\count370
+\g__um_fonts_used_int=\count371
+\l__um_primecount_int=\count372
+\g__um_primekern_muskip=\muskip19
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/unicode-math/unicode-math-table.t
+ex))) (/usr/local/texlive/2024/texmf-dist/tex/latex/fontsetup/fspdefault.tex
+(/usr/local/texlive/2024/texmf-dist/tex/latex/newcomputermodern/NewCM10-Book.fo
+ntspec)
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCM10-Book.otf(0)' created for font
+(fontspec)             'NewCM10-Book.otf' with options
+(fontspec)             [Ligatures=TeX,Extension = .otf,SizeFeatures={{Size=-8,
+(fontspec)             Font=NewCM08-Book,
+(fontspec)             ItalicFont=NewCM08-BookItalic,BoldFont=NewCM10-Bold,Bold
+ItalicFont=NewCM10-BoldItalic,SlantedFont=NewCM08-Book,BoldSlantedFont=NewCM10-
+Bold,SmallCapsFeatures={Numbers=OldStyle}},
+(fontspec)             {Size=8, Font=NewCM08-Book,
+(fontspec)             ItalicFont=NewCM08-BookItalic,BoldFont=NewCM10-Bold,Bold
+ItalicFont=NewCM10-BoldItalic,SlantedFont=NewCM08-Book,BoldSlantedFont=NewCM10-
+Bold,SmallCapsFeatures={Numbers=OldStyle}},
+(fontspec)             {Size= 9-, Font = NewCM10-Book,
+(fontspec)             ItalicFont=NewCM10-BookItalic,BoldFont=NewCM10-Bold,Bold
+ItalicFont=NewCM10-BoldItalic,SlantedFont=NewCM10-Book,BoldSlantedFont=NewCM10-
+Bold,SmallCapsFeatures={Numbers=OldStyle}}},SizeFeatures={{Size=-8,
+(fontspec)             Font=NewCM08-Book.otf,
+(fontspec)             ItalicFont=NewCM08-BookItalic.otf,BoldFont=NewCM10-Bold.
+otf,BoldItalicFont=NewCM10-BoldItalic.otf,SlantedFont=NewCM08-Book.otf,BoldSlan
+tedFont=NewCM10-Bold.otf,SmallCapsFeatures={Numbers=OldStyle}},
+(fontspec)             {Size=8, Font=NewCM08-Book.otf,
+(fontspec)             ItalicFont=NewCM08-BookItalic.otf,BoldFont=NewCM10-Bold.
+otf,BoldItalicFont=NewCM10-BoldItalic.otf,SlantedFont=NewCM08-Book.otf,BoldSlan
+tedFont=NewCM10-Bold.otf,SmallCapsFeatures={Numbers=OldStyle}},
+(fontspec)             {Size= 9-, Font = NewCM10-Book.otf,
+(fontspec)             ItalicFont=NewCM10-BookItalic.otf,BoldFont=NewCM10-Bold.
+otf,BoldItalicFont=NewCM10-BoldItalic.otf,SlantedFont=NewCM10-Book.otf,BoldSlan
+tedFont=NewCM10-Bold.otf,SmallCapsFeatures={Numbers=OldStyle}}},SmallCapsFeatur
+es={Numbers=OldStyle},BoldSlantedFont=NewCM10-Bold.otf,SlantedFont=NewCM10-Book
+.otf,BoldItalicFont=NewCM10-BoldItalic.otf,BoldFont=NewCM10-Bold.otf,ItalicFont
+=NewCM10-BookItalic.otf,SlantedFeatures={FakeSlant=0.25},BoldSlantedFeatures={F
+akeSlant=0.25}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <-8>"[NewCM08-Book.otf]:mode=node;script=latn;language=d
+flt;+tlig;"<8>"[NewCM08-Book.otf]:mode=node;script=latn;language=dflt;+tlig;"<9
+->"[NewCM10-Book.otf]:mode=node;script=latn;language=dflt;+tlig;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.:
+(fontspec)             <-8>"[NewCM08-Book.otf]:mode=node;script=latn;language=d
+flt;+tlig;+smcp;+onum;"<8>"[NewCM08-Book.otf]:mode=node;script=latn;language=df
+lt;+tlig;+smcp;+onum;"<9->"[NewCM10-Book.otf]:mode=node;script=latn;language=df
+lt;+tlig;+smcp;+onum;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Bold.otf]:mode=node;script=latn;language=df
+lt;+tlig;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Bold.otf]:mode=node;script=latn;language=df
+lt;+tlig;+smcp;+onum;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"[NewCM10-BookItalic.otf]:mode=node;script=latn;langu
+age=dflt;+tlig;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.:
+(fontspec)             <->"[NewCM10-BookItalic.otf]:mode=node;script=latn;langu
+age=dflt;+tlig;+smcp;+onum;"
+(fontspec)             - 'slanted' (m/sl) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Book.otf]:mode=node;script=latn;language=df
+lt;slant=0.25;+tlig;"
+(fontspec)             - 'slanted small caps'  (m/scsl) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Book.otf]:mode=node;script=latn;language=df
+lt;slant=0.25;+tlig;+smcp;+onum;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"[NewCM10-BoldItalic.otf]:mode=node;script=latn;langu
+age=dflt;+tlig;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.:
+(fontspec)             <->"[NewCM10-BoldItalic.otf]:mode=node;script=latn;langu
+age=dflt;+tlig;+smcp;+onum;"
+(fontspec)             - 'bold slanted' (b/sl) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Bold.otf]:mode=node;script=latn;language=df
+lt;slant=0.25;+tlig;"
+(fontspec)             - 'bold slanted small caps'  (b/scsl) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Bold.otf]:mode=node;script=latn;language=df
+lt;slant=0.25;+tlig;+smcp;+onum;"
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCM10-Book.otf(1)' created for font
+(fontspec)             'NewCM10-Book.otf' with options [Extension =
+(fontspec)             .otf,SizeFeatures={{Size=-8, Font=NewCM08-Book,
+(fontspec)             ItalicFont=NewCM08-BookItalic,BoldFont=NewCM10-Bold,Bold
+ItalicFont=NewCM10-BoldItalic,SlantedFont=NewCM08-Book,BoldSlantedFont=NewCM10-
+Bold,SmallCapsFeatures={Numbers=OldStyle}},
+(fontspec)             {Size=8, Font=NewCM08-Book,
+(fontspec)             ItalicFont=NewCM08-BookItalic,BoldFont=NewCM10-Bold,Bold
+ItalicFont=NewCM10-BoldItalic,SlantedFont=NewCM08-Book,BoldSlantedFont=NewCM10-
+Bold,SmallCapsFeatures={Numbers=OldStyle}},
+(fontspec)             {Size= 9-, Font = NewCM10-Book,
+(fontspec)             ItalicFont=NewCM10-BookItalic,BoldFont=NewCM10-Bold,Bold
+ItalicFont=NewCM10-BoldItalic,SlantedFont=NewCM10-Book,BoldSlantedFont=NewCM10-
+Bold,SmallCapsFeatures={Numbers=OldStyle}}},Renderer=Basic,SizeFeatures={{Size=
+-8,
+(fontspec)             Font=NewCM08-Book.otf,
+(fontspec)             ItalicFont=NewCM08-BookItalic.otf,BoldFont=NewCM10-Bold.
+otf,BoldItalicFont=NewCM10-BoldItalic.otf,SlantedFont=NewCM08-Book.otf,BoldSlan
+tedFont=NewCM10-Bold.otf,SmallCapsFeatures={Numbers=OldStyle}},
+(fontspec)             {Size=8, Font=NewCM08-Book.otf,
+(fontspec)             ItalicFont=NewCM08-BookItalic.otf,BoldFont=NewCM10-Bold.
+otf,BoldItalicFont=NewCM10-BoldItalic.otf,SlantedFont=NewCM08-Book.otf,BoldSlan
+tedFont=NewCM10-Bold.otf,SmallCapsFeatures={Numbers=OldStyle}},
+(fontspec)             {Size= 9-, Font = NewCM10-Book.otf,
+(fontspec)             ItalicFont=NewCM10-BookItalic.otf,BoldFont=NewCM10-Bold.
+otf,BoldItalicFont=NewCM10-BoldItalic.otf,SlantedFont=NewCM10-Book.otf,BoldSlan
+tedFont=NewCM10-Bold.otf,SmallCapsFeatures={Numbers=OldStyle}}},SmallCapsFeatur
+es={Numbers=OldStyle},BoldSlantedFont=NewCM10-Bold.otf,SlantedFont=NewCM10-Book
+.otf,BoldItalicFont=NewCM10-BoldItalic.otf,BoldFont=NewCM10-Bold.otf,ItalicFont
+=NewCM10-BookItalic.otf,SlantedFeatures={FakeSlant=0.25},BoldSlantedFeatures={F
+akeSlant=0.25}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <-8>"[NewCM08-Book.otf]:mode=base;script=latn;language=d
+flt;"<8>"[NewCM08-Book.otf]:mode=base;script=latn;language=dflt;"<9->"[NewCM10-
+Book.otf]:mode=base;script=latn;language=dflt;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.:
+(fontspec)             <-8>"[NewCM08-Book.otf]:mode=base;script=latn;language=d
+flt;+smcp;+onum;"<8>"[NewCM08-Book.otf]:mode=base;script=latn;language=dflt;+sm
+cp;+onum;"<9->"[NewCM10-Book.otf]:mode=base;script=latn;language=dflt;+smcp;+on
+um;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Bold.otf]:mode=base;script=latn;language=df
+lt;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Bold.otf]:mode=base;script=latn;language=df
+lt;+smcp;+onum;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"[NewCM10-BookItalic.otf]:mode=base;script=latn;langu
+age=dflt;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.:
+(fontspec)             <->"[NewCM10-BookItalic.otf]:mode=base;script=latn;langu
+age=dflt;+smcp;+onum;"
+(fontspec)             - 'slanted' (m/sl) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Book.otf]:mode=base;script=latn;language=df
+lt;slant=0.25;"
+(fontspec)             - 'slanted small caps'  (m/scsl) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Book.otf]:mode=base;script=latn;language=df
+lt;slant=0.25;+smcp;+onum;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"[NewCM10-BoldItalic.otf]:mode=base;script=latn;langu
+age=dflt;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.:
+(fontspec)             <->"[NewCM10-BoldItalic.otf]:mode=base;script=latn;langu
+age=dflt;+smcp;+onum;"
+(fontspec)             - 'bold slanted' (b/sl) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Bold.otf]:mode=base;script=latn;language=df
+lt;slant=0.25;"
+(fontspec)             - 'bold slanted small caps'  (b/scsl) with NFSS spec.:
+(fontspec)             <->"[NewCM10-Bold.otf]:mode=base;script=latn;language=df
+lt;slant=0.25;+smcp;+onum;"
+
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
+(Font)                  OT1/cmr/m/n --> TU/NewCM10-Book.otf(1)/m/n on input lin
+e 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> TU/NewCM10-Book.otf(1)/m/it on input l
+ine 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> TU/NewCM10-Book.otf(1)/b/n on input li
+ne 35.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/newcomputermodern/NewCMSans10-Boo
+k.fontspec)
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script dflt
+ with language dflt
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMSans10-Book.otf(0)' created for font
+(fontspec)             'NewCMSans10-Book.otf' with options
+(fontspec)             [Ligatures=TeX,Extension = .otf,SizeFeatures={{Size=
+(fontspec)             -8,
+(fontspec)             Font=NewCMSans08-Book,ItalicFont=NewCMSans08-BookOblique
+,BoldFont=NewCMSans10-Bold,BoldItalicFont=NewCMSans10-BoldOblique,SmallCapsFeat
+ures={Numbers=OldStyle}},
+(fontspec)             {Size= 8,
+(fontspec)             Font=NewCMSans08-Book,ItalicFont=NewCMSans08-BookOblique
+,BoldFont=NewCMSans10-Bold,BoldItalicFont=NewCMSans10-BoldOblique,SmallCapsFeat
+ures={Numbers=OldStyle}},
+(fontspec)             {Size= 9-,
+(fontspec)             Font=NewCMSans10-Book,ItalicFont=NewCMSans10-BookOblique
+,BoldFont=NewCMSans10-Bold,BoldItalicFont=NewCMSans10-BoldOblique,SmallCapsFeat
+ures={Numbers=OldStyle}}
+(fontspec)             },SizeFeatures={{Size= -8,
+(fontspec)             Font=NewCMSans08-Book.otf,ItalicFont=NewCMSans08-BookObl
+ique.otf,BoldFont=NewCMSans10-Bold.otf,BoldItalicFont=NewCMSans10-BoldOblique.o
+tf,SmallCapsFeatures={Numbers=OldStyle},},
+(fontspec)             {Size= 8,
+(fontspec)             Font=NewCMSans08-Book.otf,ItalicFont=NewCMSans08-BookObl
+ique.otf,BoldFont=NewCMSans10-Bold.otf,BoldItalicFont=NewCMSans10-BoldOblique.o
+tf,SmallCapsFeatures={Numbers=OldStyle},},
+(fontspec)             {Size= 9-,
+(fontspec)             Font=NewCMSans10-Book.otf,ItalicFont=NewCMSans10-BookObl
+ique.otf,BoldFont=NewCMSans10-Bold.otf,BoldItalicFont=NewCMSans10-BoldOblique.o
+tf,SmallCapsFeatures={Numbers=OldStyle},}},ItalicFont=NewCMSans10-BookOblique.o
+tf,BoldFont=NewCMSans10-Bold.otf,BoldItalicFont=NewCMSans10-BoldOblique.otf,Sma
+llCapsFeatures={Numbers=OldStyle},SlantedFont=NewCMSans10-BookOblique.otf,BoldS
+lantedFont=NewCMSans10-BoldOblique.otf].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <-8>"[NewCMSans08-Book.otf]:mode=node;script=latn;langua
+ge=dflt;+tlig;"<8>"[NewCMSans08-Book.otf]:mode=node;script=latn;language=dflt;+
+tlig;"<9->"[NewCMSans10-Book.otf]:mode=node;script=latn;language=dflt;+tlig;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.:
+(fontspec)             <-8>"[NewCMSans08-Book.otf]:mode=node;script=latn;langua
+ge=dflt;+tlig;+smcp;+onum;"<8>"[NewCMSans08-Book.otf]:mode=node;script=latn;lan
+guage=dflt;+tlig;+smcp;+onum;"<9->"[NewCMSans10-Book.otf]:mode=node;script=latn
+;language=dflt;+tlig;+smcp;+onum;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-Bold.otf]:mode=node;script=latn;languag
+e=dflt;+tlig;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-Bold.otf]:mode=node;script=latn;languag
+e=dflt;+tlig;+smcp;+onum;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BookOblique.otf]:mode=node;script=latn;
+language=dflt;+tlig;"
+(fontspec)             - 'slanted' (m/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BookOblique.otf]:mode=node;script=latn;
+language=dflt;+tlig;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BoldOblique.otf]:mode=node;script=latn;
+language=dflt;+tlig;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BoldOblique.otf]:mode=node;script=latn;
+language=dflt;+tlig;+smcp;+onum;"
+(fontspec)             - 'bold slanted' (b/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BoldOblique.otf]:mode=node;script=latn;
+language=dflt;+tlig;"
+(fontspec)             - 'bold slanted small caps'  (b/scsl) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BoldOblique.otf]:mode=node;script=latn;
+language=dflt;+tlig;+smcp;+onum;"
+
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script dflt
+ with language dflt
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMSans10-Book.otf(1)' created for font
+(fontspec)             'NewCMSans10-Book.otf' with options [Extension =
+(fontspec)             .otf,SizeFeatures={{Size= -8,
+(fontspec)             Font=NewCMSans08-Book,ItalicFont=NewCMSans08-BookOblique
+,BoldFont=NewCMSans10-Bold,BoldItalicFont=NewCMSans10-BoldOblique,SmallCapsFeat
+ures={Numbers=OldStyle}},
+(fontspec)             {Size= 8,
+(fontspec)             Font=NewCMSans08-Book,ItalicFont=NewCMSans08-BookOblique
+,BoldFont=NewCMSans10-Bold,BoldItalicFont=NewCMSans10-BoldOblique,SmallCapsFeat
+ures={Numbers=OldStyle}},
+(fontspec)             {Size= 9-,
+(fontspec)             Font=NewCMSans10-Book,ItalicFont=NewCMSans10-BookOblique
+,BoldFont=NewCMSans10-Bold,BoldItalicFont=NewCMSans10-BoldOblique,SmallCapsFeat
+ures={Numbers=OldStyle}}
+(fontspec)             },Renderer=Basic,SizeFeatures={{Size= -8,
+(fontspec)             Font=NewCMSans08-Book.otf,ItalicFont=NewCMSans08-BookObl
+ique.otf,BoldFont=NewCMSans10-Bold.otf,BoldItalicFont=NewCMSans10-BoldOblique.o
+tf,SmallCapsFeatures={Numbers=OldStyle},},
+(fontspec)             {Size= 8,
+(fontspec)             Font=NewCMSans08-Book.otf,ItalicFont=NewCMSans08-BookObl
+ique.otf,BoldFont=NewCMSans10-Bold.otf,BoldItalicFont=NewCMSans10-BoldOblique.o
+tf,SmallCapsFeatures={Numbers=OldStyle},},
+(fontspec)             {Size= 9-,
+(fontspec)             Font=NewCMSans10-Book.otf,ItalicFont=NewCMSans10-BookObl
+ique.otf,BoldFont=NewCMSans10-Bold.otf,BoldItalicFont=NewCMSans10-BoldOblique.o
+tf,SmallCapsFeatures={Numbers=OldStyle},}},ItalicFont=NewCMSans10-BookOblique.o
+tf,BoldFont=NewCMSans10-Bold.otf,BoldItalicFont=NewCMSans10-BoldOblique.otf,Sma
+llCapsFeatures={Numbers=OldStyle},SlantedFont=NewCMSans10-BookOblique.otf,BoldS
+lantedFont=NewCMSans10-BoldOblique.otf].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <-8>"[NewCMSans08-Book.otf]:mode=base;script=latn;langua
+ge=dflt;"<8>"[NewCMSans08-Book.otf]:mode=base;script=latn;language=dflt;"<9->"[
+NewCMSans10-Book.otf]:mode=base;script=latn;language=dflt;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.:
+(fontspec)             <-8>"[NewCMSans08-Book.otf]:mode=base;script=latn;langua
+ge=dflt;+smcp;+onum;"<8>"[NewCMSans08-Book.otf]:mode=base;script=latn;language=
+dflt;+smcp;+onum;"<9->"[NewCMSans10-Book.otf]:mode=base;script=latn;language=df
+lt;+smcp;+onum;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-Bold.otf]:mode=base;script=latn;languag
+e=dflt;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-Bold.otf]:mode=base;script=latn;languag
+e=dflt;+smcp;+onum;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BookOblique.otf]:mode=base;script=latn;
+language=dflt;"
+(fontspec)             - 'slanted' (m/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BookOblique.otf]:mode=base;script=latn;
+language=dflt;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BoldOblique.otf]:mode=base;script=latn;
+language=dflt;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BoldOblique.otf]:mode=base;script=latn;
+language=dflt;+smcp;+onum;"
+(fontspec)             - 'bold slanted' (b/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BoldOblique.otf]:mode=base;script=latn;
+language=dflt;"
+(fontspec)             - 'bold slanted small caps'  (b/scsl) with NFSS spec.:
+(fontspec)             <->"[NewCMSans10-BoldOblique.otf]:mode=base;script=latn;
+language=dflt;+smcp;+onum;"
+
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> TU/NewCMSans10-Book.otf(1)/m/n on inpu
+t line 62.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> TU/NewCMSans10-Book.otf(1)/b/n on inp
+ut line 62.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/newcomputermodern/NewCMMono10-Boo
+k.fontspec)
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 52 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 52 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 52 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 52 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 52 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 52 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 50 (nil) does not define feature smcp for script dflt
+ with language dflt
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMono10-Book.otf(0)' created for font
+(fontspec)             'NewCMMono10-Book.otf' with options
+(fontspec)             [WordSpace={1,0,0},HyphenChar=None,PunctuationSpace=Word
+Space,Extension
+(fontspec)             = .otf,UprightFont = NewCMMono10-Book,BoldFont =
+(fontspec)             NewCMMono10-Bold,ItalicFont =
+(fontspec)             NewCMMono10-BookItalic,BoldItalicFont =
+(fontspec)             NewCMMono10-BoldOblique,ItalicFont=NewCMMono10-BookItali
+c.otf,BoldFont=NewCMMono10-Bold.otf,BoldItalicFont=NewCMMono10-BoldOblique.otf,
+SlantedFont=NewCMMono10-Book.otf,SlantedFeatures={FakeSlant=0.25},BoldSlantedFo
+nt=NewCMMono10-Bold.otf,BoldSlantedFeatures={FakeSlant=0.25},SmallCapsFeatures=
+{Numbers=OldStyle}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Book.otf]:mode=node;script=latn;languag
+e=dflt;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Book.otf]:mode=node;script=latn;languag
+e=dflt;+smcp;+onum;"
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Bold.otf]:mode=node;script=latn;languag
+e=dflt;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-BookItalic.otf]:mode=node;script=latn;l
+anguage=dflt;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-BookItalic.otf]:mode=node;script=latn;l
+anguage=dflt;+smcp;+onum;"
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'slanted' (m/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Book.otf]:mode=node;script=latn;languag
+e=dflt;slant=0.25;"
+(fontspec)             - 'slanted small caps'  (m/scsl) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Book.otf]:mode=node;script=latn;languag
+e=dflt;slant=0.25;+smcp;+onum;"
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-BoldOblique.otf]:mode=node;script=latn;
+language=dflt;"
+(fontspec)             - 'bold slanted' (b/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Bold.otf]:mode=node;script=latn;languag
+e=dflt;slant=0.25;"
+
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 58 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 58 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 58 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 58 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 58 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 58 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 56 (nil) does not define feature smcp for script dflt
+ with language dflt
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMono10-Book.otf(1)' created for font
+(fontspec)             'NewCMMono10-Book.otf' with options [Extension =
+(fontspec)             .otf,UprightFont = NewCMMono10-Book,BoldFont =
+(fontspec)             NewCMMono10-Bold,ItalicFont =
+(fontspec)             NewCMMono10-BookItalic,BoldItalicFont =
+(fontspec)             NewCMMono10-BoldOblique,Renderer=Basic,ItalicFont=NewCMM
+ono10-BookItalic.otf,BoldFont=NewCMMono10-Bold.otf,BoldItalicFont=NewCMMono10-B
+oldOblique.otf,SlantedFont=NewCMMono10-Book.otf,SlantedFeatures={FakeSlant=0.25
+},BoldSlantedFont=NewCMMono10-Bold.otf,BoldSlantedFeatures={FakeSlant=0.25},Sma
+llCapsFeatures={Numbers=OldStyle}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Book.otf]:mode=base;script=latn;languag
+e=dflt;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Book.otf]:mode=base;script=latn;languag
+e=dflt;+smcp;+onum;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Bold.otf]:mode=base;script=latn;languag
+e=dflt;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-BookItalic.otf]:mode=base;script=latn;l
+anguage=dflt;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-BookItalic.otf]:mode=base;script=latn;l
+anguage=dflt;+smcp;+onum;"
+(fontspec)             - 'slanted' (m/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Book.otf]:mode=base;script=latn;languag
+e=dflt;slant=0.25;"
+(fontspec)             - 'slanted small caps'  (m/scsl) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Book.otf]:mode=base;script=latn;languag
+e=dflt;slant=0.25;+smcp;+onum;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-BoldOblique.otf]:mode=base;script=latn;
+language=dflt;"
+(fontspec)             - 'bold slanted' (b/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMMono10-Bold.otf]:mode=base;script=latn;languag
+e=dflt;slant=0.25;"
+
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> TU/NewCMMono10-Book.otf(1)/m/n on inpu
+t line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> TU/NewCMMono10-Book.otf(1)/b/n on inpu
+t line 71.
+luaotfload | aux : font no 62 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 62 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 62 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 62 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 62 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 62 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 61 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 61 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 61 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 61 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 61 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 61 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script dflt
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script dflt
+ with language dflt
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMUncial10-Book.otf(0)' created for
+(fontspec)             font 'NewCMUncial10-Book.otf' with options
+(fontspec)             [SizeFeatures={{Size=-8, Font=NewCMUncial08-Book.otf,
+(fontspec)             BoldFont=NewCMUncial10-Bold.otf,SlantedFont=NewCMUncial0
+8-Book.otf,BoldSlantedFont=NewCMUncial10-Bold.otf,},
+(fontspec)             {Size=8, Font=NewCMUncial08-Book.otf,
+(fontspec)             BoldFont=NewCMUncial08-Bold.otf,SlantedFont=NewCMUncial0
+8-Book.otf,BoldSlantedFont=NewCMUncial10-Bold.otf,},
+(fontspec)             {Size= 9-, Font = NewCMUncial10-Book.otf,
+(fontspec)             BoldFont=NewCMUncial10-Bold.otf,SlantedFont=NewCMUncial1
+0-Book.otf,BoldSlantedFont=NewCMUncial10-Bold.otf,}},BoldSlantedFont=NewCMUncia
+l10-Bold.otf,SlantedFont=NewCMUncial10-Book.otf,BoldFont=NewCMUncial10-Bold.otf
+,SlantedFeatures={FakeSlant=0.25},BoldSlantedFeatures={FakeSlant=0.25}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <-8>"[NewCMUncial08-Book.otf]:mode=node;script=latn;lang
+uage=dflt;"<8>"[NewCMUncial08-Book.otf]:mode=node;script=latn;language=dflt;"<9
+->"[NewCMUncial10-Book.otf]:mode=node;script=latn;language=dflt;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"[NewCMUncial10-Bold.otf]:mode=node;script=latn;langu
+age=dflt;"
+(fontspec)             - 'slanted' (m/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMUncial10-Book.otf]:mode=node;script=latn;langu
+age=dflt;slant=0.25;"
+(fontspec)             - 'bold slanted' (b/sl) with NFSS spec.:
+(fontspec)             <->"[NewCMUncial10-Bold.otf]:mode=node;script=latn;langu
+age=dflt;slant=0.25;"
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Book.otf(0)' created for font
+(fontspec)             'NewCMMath-Book.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,RawFeature={mathfontdimen=xetex}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"[NewCMMath-Book.otf]:mode=base;script=math;language=
+dflt;mathfontdimen=xetex;"
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Book.otf(1)' created for font
+(fontspec)             'NewCMMath-Book.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=NewCMMath-B
+ook.otf,Style=MathScript},{Size=-7.2,Font=NewCMMath-Book.otf,Style=MathScriptSc
+ript}},RawFeature={mathfontdimen=xetex}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <10.2->"[NewCMMath-Book.otf]:mode=base;script=math;langu
+age=dflt;mathfontdimen=xetex;"<7.2-10.2>"[NewCMMath-Book.otf]:mode=base;script=
+math;language=dflt;mathfontdimen=xetex;+ssty=0;"<-7.2>"[NewCMMath-Book.otf]:mod
+e=base;script=math;language=dflt;mathfontdimen=xetex;+ssty=1;"
+
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `normal' on input line 97.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> TU/NewCMMath-Book.otf(1)/m/n on input l
+ine 97.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `bold' on input line 97.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> TU/NewCMMath-Book.otf(1)/b/n on input 
+line 97.
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Book.otf(2)' created for font
+(fontspec)             'NewCMMath-Book.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=NewCMMath-B
+ook.otf,Style=MathScript},{Size=-7.2,Font=NewCMMath-Book.otf,Style=MathScriptSc
+ript}},RawFeature={mathfontdimen=xetex},RawFeature={mathfontdimen=tex2}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <10.2->"[NewCMMath-Book.otf]:mode=base;script=math;langu
+age=dflt;mathfontdimen=xetex;mathfontdimen=tex2;"<7.2-10.2>"[NewCMMath-Book.otf
+]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex2;+s
+sty=0;"<-7.2>"[NewCMMath-Book.otf]:mode=base;script=math;language=dflt;mathfont
+dimen=xetex;mathfontdimen=tex2;+ssty=1;"
+
+LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
+(Font)              `symbols' in the math version `normal' on input line 97.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> TU/NewCMMath-Book.otf(2)/m/n on input 
+line 97.
+LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
+(Font)              `symbols' in the math version `bold' on input line 97.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> TU/NewCMMath-Book.otf(2)/b/n on input 
+line 97.
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Book.otf(3)' created for font
+(fontspec)             'NewCMMath-Book.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=NewCMMath-B
+ook.otf,Style=MathScript},{Size=-7.2,Font=NewCMMath-Book.otf,Style=MathScriptSc
+ript}},RawFeature={mathfontdimen=xetex},RawFeature={mathfontdimen=tex3}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <10.2->"[NewCMMath-Book.otf]:mode=base;script=math;langu
+age=dflt;mathfontdimen=xetex;mathfontdimen=tex3;"<7.2-10.2>"[NewCMMath-Book.otf
+]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex3;+s
+sty=0;"<-7.2>"[NewCMMath-Book.otf]:mode=base;script=math;language=dflt;mathfont
+dimen=xetex;mathfontdimen=tex3;+ssty=1;"
+
+LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
+(Font)              `largesymbols' in the math version `normal' on input line 9
+7.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> TU/NewCMMath-Book.otf(3)/m/n on input 
+line 97.
+LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
+(Font)              `largesymbols' in the math version `bold' on input line 97.
+
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> TU/NewCMMath-Book.otf(3)/b/n on input 
+line 97.
+LaTeX Font Info:    Redeclaring math version `bold' on input line 97.
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Bold.otf(0)' created for font
+(fontspec)             'NewCMMath-Bold.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,RawFeature={mathfontdimen=xetex}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"[NewCMMath-Bold.otf]:mode=base;script=math;language=
+dflt;mathfontdimen=xetex;"
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Bold.otf(1)' created for font
+(fontspec)             'NewCMMath-Bold.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=NewCMMath-B
+old.otf,Style=MathScript},{Size=-7.2,Font=NewCMMath-Bold.otf,Style=MathScriptSc
+ript}},RawFeature={mathfontdimen=xetex}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <10.2->"[NewCMMath-Bold.otf]:mode=base;script=math;langu
+age=dflt;mathfontdimen=xetex;"<7.2-10.2>"[NewCMMath-Bold.otf]:mode=base;script=
+math;language=dflt;mathfontdimen=xetex;+ssty=0;"<-7.2>"[NewCMMath-Bold.otf]:mod
+e=base;script=math;language=dflt;mathfontdimen=xetex;+ssty=1;"
+
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `bold' on input line 97.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/m/n --> TU/NewCMMath-Bold.otf(1)/m/n on input l
+ine 97.
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Bold.otf(2)' created for font
+(fontspec)             'NewCMMath-Bold.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=NewCMMath-B
+old.otf,Style=MathScript},{Size=-7.2,Font=NewCMMath-Bold.otf,Style=MathScriptSc
+ript}},RawFeature={mathfontdimen=xetex},RawFeature={mathfontdimen=tex2}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <10.2->"[NewCMMath-Bold.otf]:mode=base;script=math;langu
+age=dflt;mathfontdimen=xetex;mathfontdimen=tex2;"<7.2-10.2>"[NewCMMath-Bold.otf
+]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex2;+s
+sty=0;"<-7.2>"[NewCMMath-Bold.otf]:mode=base;script=math;language=dflt;mathfont
+dimen=xetex;mathfontdimen=tex2;+ssty=1;"
+
+LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
+(Font)              `symbols' in the math version `bold' on input line 97.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/m/n --> TU/NewCMMath-Bold.otf(2)/m/n on input 
+line 97.
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Bold.otf(3)' created for font
+(fontspec)             'NewCMMath-Bold.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=NewCMMath-B
+old.otf,Style=MathScript},{Size=-7.2,Font=NewCMMath-Bold.otf,Style=MathScriptSc
+ript}},RawFeature={mathfontdimen=xetex},RawFeature={mathfontdimen=tex3}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <10.2->"[NewCMMath-Bold.otf]:mode=base;script=math;langu
+age=dflt;mathfontdimen=xetex;mathfontdimen=tex3;"<7.2-10.2>"[NewCMMath-Bold.otf
+]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex3;+s
+sty=0;"<-7.2>"[NewCMMath-Bold.otf]:mode=base;script=math;language=dflt;mathfont
+dimen=xetex;mathfontdimen=tex3;+ssty=1;"
+
+LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
+(Font)              `largesymbols' in the math version `bold' on input line 97.
+
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> TU/NewCMMath-Bold.otf(3)/m/n on input 
+line 97.
+
+Package fontspec Info: 
+(fontspec)             Font family 'NewCMMath-Book.otf(4)' created for font
+(fontspec)             'NewCMMath-Book.otf' with options
+(fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
+sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=NewCMMath-B
+ook.otf,Style=MathScript},{Size=-7.2,Font=NewCMMath-Book.otf,Style=MathScriptSc
+ript}},RawFeature={mathfontdimen=xetex},StylisticSet={1}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <10.2->"[NewCMMath-Book.otf]:mode=base;script=math;langu
+age=dflt;mathfontdimen=xetex;+ss01;"<7.2-10.2>"[NewCMMath-Book.otf]:mode=base;s
+cript=math;language=dflt;mathfontdimen=xetex;+ss01;+ssty=0;"<-7.2>"[NewCMMath-B
+ook.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;+ss01;+ssty=1;
+"
+
+\sym__um_fam1=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `__um_fam1' in version `normal'
+(Font)                  TU/NewCMMath-Book.otf(4)/m/n --> TU/NewCMMath-Book.otf(
+4)/m/n on input line 99.
+LaTeX Font Info:    Overwriting symbol font `__um_fam1' in version `bold'
+(Font)                  TU/NewCMMath-Book.otf(4)/m/n --> TU/NewCMMath-Book.otf(
+4)/b/n on input line 99.
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyphenat/hyphenat.sty
+Package: hyphenat 2009/09/02 v2.3c hyphenation utilities
+
+
+Package hyphenat Warning: *******************************
+(hyphenat)                * You have used the htt option.
+(hyphenat)                * You are likely to get many Font Warning messages.
+(hyphenat)                * These can usually be ignored.
+(hyphenat)                *******************************.
+
+\langwohyphens=\language91
+LaTeX Info: Redefining \_ on input line 43.
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/minted/minted.sty
+Package: minted 2024/11/10 v3.3.0 Yet another Pygments shim for LaTeX
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/catchfile/catchfile.sty
+Package: catchfile 2019/12/09 v1.8 Catch the contents of a file (HO)
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/latex2pydata/latex2pydata.sty
+Package: latex2pydata 2024/10/16 v0.3.0 latex2pydata - write data to file in Py
+thon literal format
+\c@pydata@bufferindex=\count373
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgfopts/pgfopts.sty
+Package: pgfopts 2014/07/10 v2.1a LaTeX package options with pgfkeys
+\pgfopts@list@add@a@toks=\toks48
+\pgfopts@list@add@b@toks=\toks49
+)
+\c@minted@tmpcnt=\count374
+\c@minted@FancyVerbLineTemp=\count375
+Package newfloat Info: New float `listing' with options `fileext=lol,placement=
+tbp' on input line 1913.
+\c@listing=\count376
+Package newfloat Info: float type `listing'=4 on input line 1913.
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/biblatex.sty
+Package: biblatex 2024/03/21 v3.20 programmable bibliographies (PK/MW)
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/logreq/logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count377
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/logreq/logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+))
+\c@tabx@nest=\count378
+\c@listtotal=\count379
+\c@listcount=\count380
+\c@liststart=\count381
+\c@liststop=\count382
+\c@citecount=\count383
+\c@citetotal=\count384
+\c@multicitecount=\count385
+\c@multicitetotal=\count386
+\c@instcount=\count387
+\c@maxnames=\count388
+\c@minnames=\count389
+\c@maxitems=\count390
+\c@minitems=\count391
+\c@citecounter=\count392
+\c@maxcitecounter=\count393
+\c@savedcitecounter=\count394
+\c@uniquelist=\count395
+\c@uniquename=\count396
+\c@refsection=\count397
+\c@refsegment=\count398
+\c@maxextratitle=\count399
+\c@maxextratitleyear=\count400
+\c@maxextraname=\count401
+\c@maxextradate=\count402
+\c@maxextraalpha=\count403
+\c@abbrvpenalty=\count404
+\c@highnamepenalty=\count405
+\c@lownamepenalty=\count406
+\c@maxparens=\count407
+\c@parenlevel=\count408
+\blx@tempcnta=\count409
+\blx@tempcntb=\count410
+\blx@tempcntc=\count411
+\c@blx@maxsection=\count412
+\blx@maxsegment@0=\count413
+\blx@notetype=\count414
+\blx@parenlevel@text=\count415
+\blx@parenlevel@foot=\count416
+\blx@sectionciteorder@0=\count417
+\blx@sectionciteorderinternal@0=\count418
+\blx@entrysetcounter=\count419
+\blx@biblioinstance=\count420
+\labelnumberwidth=\skip59
+\labelalphawidth=\skip60
+\biblabelsep=\skip61
+\bibitemsep=\skip62
+\bibnamesep=\skip63
+\bibinitsep=\skip64
+\bibparsep=\skip65
+\bibhang=\skip66
+\blx@bcfin=\read6
+\blx@bcfout=\write5
+\blx@langwohyphens=\language92
+\c@mincomprange=\count421
+\c@maxcomprange=\count422
+\c@mincompwidth=\count423
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/blx-dm.def
+File: blx-dm.def 2024/03/21 v3.20 biblatex datamodel (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'ieee.dbx' not found.
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count424
+\c@savedafterword=\count425
+\c@annotator=\count426
+\c@savedannotator=\count427
+\c@author=\count428
+\c@savedauthor=\count429
+\c@bookauthor=\count430
+\c@savedbookauthor=\count431
+\c@commentator=\count432
+\c@savedcommentator=\count433
+\c@editor=\count434
+\c@savededitor=\count435
+\c@editora=\count436
+\c@savededitora=\count437
+\c@editorb=\count438
+\c@savededitorb=\count439
+\c@editorc=\count440
+\c@savededitorc=\count441
+\c@foreword=\count442
+\c@savedforeword=\count443
+\c@holder=\count444
+\c@savedholder=\count445
+\c@introduction=\count446
+\c@savedintroduction=\count447
+\c@namea=\count448
+\c@savednamea=\count449
+\c@nameb=\count450
+\c@savednameb=\count451
+\c@namec=\count452
+\c@savednamec=\count453
+\c@translator=\count454
+\c@savedtranslator=\count455
+\c@shortauthor=\count456
+\c@savedshortauthor=\count457
+\c@shorteditor=\count458
+\c@savedshorteditor=\count459
+\c@labelname=\count460
+\c@savedlabelname=\count461
+\c@institution=\count462
+\c@savedinstitution=\count463
+\c@lista=\count464
+\c@savedlista=\count465
+\c@listb=\count466
+\c@savedlistb=\count467
+\c@listc=\count468
+\c@savedlistc=\count469
+\c@listd=\count470
+\c@savedlistd=\count471
+\c@liste=\count472
+\c@savedliste=\count473
+\c@listf=\count474
+\c@savedlistf=\count475
+\c@location=\count476
+\c@savedlocation=\count477
+\c@organization=\count478
+\c@savedorganization=\count479
+\c@origlocation=\count480
+\c@savedoriglocation=\count481
+\c@origpublisher=\count482
+\c@savedorigpublisher=\count483
+\c@publisher=\count484
+\c@savedpublisher=\count485
+\c@language=\count486
+\c@savedlanguage=\count487
+\c@origlanguage=\count488
+\c@savedoriglanguage=\count489
+\c@pageref=\count490
+\c@savedpageref=\count491
+\shorthandwidth=\skip67
+\shortjournalwidth=\skip68
+\shortserieswidth=\skip69
+\shorttitlewidth=\skip70
+\shortauthorwidth=\skip71
+\shorteditorwidth=\skip72
+\locallabelnumberwidth=\skip73
+\locallabelalphawidth=\skip74
+\localshorthandwidth=\skip75
+\localshortjournalwidth=\skip76
+\localshortserieswidth=\skip77
+\localshorttitlewidth=\skip78
+\localshortauthorwidth=\skip79
+\localshorteditorwidth=\skip80
+Package biblatex Info: Trying to load enhanced support for Unicode engines...
+Package biblatex Info: ... file 'blx-unicode.def' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/blx-unicode.def)
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/blx-compat.def
+File: blx-compat.def 2024/03/21 v3.20 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/biblatex.def
+File: biblatex.def 2024/03/21 v3.20 biblatex compatibility (PK/MW)
+\c@textcitecount=\count492
+\c@textcitetotal=\count493
+\c@textcitemaxnames=\count494
+\c@biburlbigbreakpenalty=\count495
+\c@biburlbreakpenalty=\count496
+\c@biburlnumpenalty=\count497
+\c@biburlucpenalty=\count498
+\c@biburllcpenalty=\count499
+\biburlbigskip=\muskip20
+\biburlnumskip=\muskip21
+\biburlucskip=\muskip22
+\biburllcskip=\muskip23
+\c@smartand=\count500
+)
+Package biblatex Info: Trying to load bibliography style 'ieee'...
+Package biblatex Info: ... file 'ieee.bbx' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
+File: ieee.bbx 2024-11-13 v1.4 biblatex bibliography style
+Package biblatex Info: Trying to load bibliography style 'numeric-comp'...
+Package biblatex Info: ... file 'numeric-comp.bbx' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
+File: numeric-comp.bbx 2024/03/21 v3.20 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+File: numeric.bbx 2024/03/21 v3.20 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+File: standard.bbx 2024/03/21 v3.20 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count501
+\c@bbx:relatedtotal=\count502
+))))
+Package biblatex Info: Trying to load citation style 'ieee'...
+Package biblatex Info: ... file 'ieee.cbx' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex-ieee/ieee.cbx
+File: ieee.cbx 2024-11-13 v1.4 biblatex citation style
+Package biblatex Info: Trying to load citation style 'numeric'...
+Package biblatex Info: ... file 'numeric.cbx' found.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/cbx/numeric.cbx
+File: numeric.cbx 2024/03/21 v3.20 biblatex citation style (PK/MW)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Redefining '\cite'.
+
+
+Package biblatex Warning: Macro 'cite' already defined.
+(biblatex)                Using \renewbibmacro.
+
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/biblatex.cfg
+File: biblatex.cfg 
+)
+Package biblatex Info: LuaTeX detected.
+(biblatex)             Assuming input encoding 'utf8'.
+Package biblatex Info: Document encoding is UTF8 ....
+Package biblatex Info: ... and expl3
+(biblatex)             2024-11-02 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
+Package: blx-case-expl3 2024/03/21 v3.20 expl3 case changing code for biblatex
+))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2024-11-05 v7.01l Hypertext links for LaTeX
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count503
+) (/usr/local/texlive/2024/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+\@linkdim=\dimen288
+\Hy@linkcounter=\count504
+\Hy@pagecounter=\count505
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2024-11-05 v7.01l Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count506
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2024-11-05 v7.01l Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Hyper figures OFF on input line 4157.
+Package hyperref Info: Link nesting OFF on input line 4162.
+Package hyperref Info: Hyper index ON on input line 4165.
+Package hyperref Info: Plain pages OFF on input line 4172.
+Package hyperref Info: Backreferencing OFF on input line 4177.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4424.
+\c@Hy@tempcnt=\count507
+LaTeX Info: Redefining \url on input line 4763.
+\XeTeXLinkMargin=\dimen289
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count508
+\Field@Width=\dimen290
+\Fld@charsize=\dimen291
+Package hyperref Info: Hyper figures OFF on input line 6042.
+Package hyperref Info: Link nesting OFF on input line 6047.
+Package hyperref Info: Hyper index ON on input line 6050.
+Package hyperref Info: backreferencing OFF on input line 6057.
+Package hyperref Info: Link coloring OFF on input line 6062.
+Package hyperref Info: Link coloring with OCG OFF on input line 6067.
+Package hyperref Info: PDF/A mode OFF on input line 6072.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count509
+\c@Item=\count510
+\c@Hfootnote=\count511
+)
+Package hyperref Info: Driver (autodetected): hluatex.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hluatex.def
+File: hluatex.def 2024-11-05 v7.01l Hyperref driver for luaTeX
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
+with kernel methods
+)
+\Fld@listcount=\count512
+\c@bookmark@seq@number=\count513
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+85.
+)
+\Hy@SectionHShift=\skip81
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/cleveref/cleveref.sty
+Package: cleveref 2018/03/27 v0.21.4 Intelligent cross-referencing
+Package cleveref Info: `hyperref' support loaded on input line 2370.
+LaTeX Info: Redefining \cref on input line 2370.
+LaTeX Info: Redefining \Cref on input line 2370.
+LaTeX Info: Redefining \crefrange on input line 2370.
+LaTeX Info: Redefining \Crefrange on input line 2370.
+LaTeX Info: Redefining \cpageref on input line 2370.
+LaTeX Info: Redefining \Cpageref on input line 2370.
+LaTeX Info: Redefining \cpagerefrange on input line 2370.
+LaTeX Info: Redefining \Cpagerefrange on input line 2370.
+LaTeX Info: Redefining \labelcref on input line 2370.
+LaTeX Info: Redefining \labelcpageref on input line 2370.
+Package cleveref Info: `listings' support loaded on input line 3131.
+)
+Package csquotes Info: Checking for multilingual support...
+Package csquotes Info: ... found 'babel' package.
+Package csquotes Info: Adjusting default style.
+Package csquotes Info: Redefining alias 'default' -> 'english'.
+
+(./main.aux)
+\openout1 = main.aux
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+
+(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count514
+\scratchdimen=\dimen292
+\scratchbox=\box78
+\nofMPsegments=\count515
+\nofMParguments=\count516
+\everyMPshowfont=\toks50
+\MPscratchCnt=\count517
+\MPscratchDim=\dimen293
+\MPnumerator=\count518
+\makeMPintoPDFobject=\count519
+\everyMPtoPDFconversion=\toks51
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+\c@lstlisting=\count520
+Package newfloat Info: `float' package detected.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
+Package caption Info: End \AtBeginDocument code.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/b/scsl' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/b/sc' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/b/sc' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/b/n' instead on input lin
+e 149.
+
+LaTeX Font Info:    Font shape `TU/NewCMMono10-Book.otf(0)/bx/n' in size <12> n
+ot available
+(Font)              Font shape `TU/NewCMMono10-Book.otf(0)/b/n' tried instead o
+n input line 149.
+LaTeX Font Info:    Font shape `TU/NewCMMono10-Book.otf(0)/bx/it' in size <12> 
+not available
+(Font)              Font shape `TU/NewCMMono10-Book.otf(0)/b/it' tried instead 
+on input line 149.
+LaTeX Font Info:    Font shape `TU/NewCMMono10-Book.otf(0)/bx/sl' in size <12> 
+not available
+(Font)              Font shape `TU/NewCMMono10-Book.otf(0)/b/sl' tried instead 
+on input line 149.
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/bx/scsl' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/bx/sc' instead on input l
+ine 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/bx/sc' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/bx/n' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/sbx/sc' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/sb/sc' instead on input l
+ine 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/sb/n' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/m/n' instead on input lin
+e 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/sb/it' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/sb/n' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/sb/sl' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/sb/it' instead on input l
+ine 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/sb/scit' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/sb/sc' instead on input l
+ine 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/sb/sc' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/sb/n' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/sbc/sc' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/c/sc' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/c/n' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/m/n' instead on input lin
+e 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/c/it' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/c/n' instead on input lin
+e 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/c/sl' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/c/it' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/c/scit' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/c/sc' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/c/sc' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/c/n' instead on input lin
+e 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/lc/sc' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/l/sc' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/l/n' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/m/n' instead on input lin
+e 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/l/it' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/l/n' instead on input lin
+e 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/l/sl' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/l/it' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/l/scit' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/l/sc' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/l/sc' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/l/n' instead on input lin
+e 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/m/ui' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/m/n' instead on input lin
+e 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/bx/ui' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/bx/n' instead on input li
+ne 149.
+
+
+LaTeX Font Warning: Font shape `TU/NewCMMono10-Book.otf(0)/m/In' undefined
+(Font)              using `TU/NewCMMono10-Book.otf(0)/m/n' instead on input lin
+e 149.
+
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+(/usr/local/texlive/2024/texmf-dist/tex/latex/biblatex/lbx/english.lbx
+File: english.lbx 2024/03/21 v3.20 biblatex localization (PK/MW)
+)
+Package biblatex Info: LuaTeX detected.
+(biblatex)             Assuming input encoding 'utf8'.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+
+\openout5 = main.bcf
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'main.bbl' found.
+
+(./main.bbl)
+Package biblatex Info: Reference section=0 on input line 149.
+Package biblatex Info: Reference segment=0 on input line 149.
+Package hyperref Info: Link coloring OFF on input line 149.
+ (./main.out) (./main.out)
+\@outlinefile=\write6
+
+\openout6 = main.out
+
+
+[1
+
+{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[1] (./main.toc
+Package cleveref Info: loaded `english' language definitions on input line 1.
+)
+\tf@toc=\write7
+
+\openout7 = main.toc
+
+
+[1]
+
+[1]
+Package svg Info: Last page of `./svg-inkscape/mainLoopFlowchart.drawio_svg-tex
+.pdf' is 1 on input line 335.
+ (./svg-inkscape/mainLoopFlowchart.drawio_svg-tex.pdf_tex
+<./svg-inkscape/mainLoopFlowchart.drawio_svg-tex.pdf, id=194, page=1, 109.91063
+pt x 166.37157pt>
+File: ./svg-inkscape/mainLoopFlowchart.drawio_svg-tex.pdf Graphic file (type pd
+f)
+<use ./svg-inkscape/mainLoopFlowchart.drawio_svg-tex.pdf, page 1>
+Package luatex.def Info: ./svg-inkscape/mainLoopFlowchart.drawio_svg-tex.pdf , 
+page1 used on input line 56.
+(luatex.def)             Requested size: 109.91061pt x 166.3762pt.
+)
+Package svg Info: Last page of `./svg-inkscape/executeCommand.drawio_svg-tex.pd
+f' is 1 on input line 348.
+
+(./svg-inkscape/executeCommand.drawio_svg-tex.pdf_tex
+<./svg-inkscape/executeCommand.drawio_svg-tex.pdf, id=197, page=1, 211.54031pt 
+x 190.46156pt>
+File: ./svg-inkscape/executeCommand.drawio_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/executeCommand.drawio_svg-tex.pdf, page 1>
+Package luatex.def Info: ./svg-inkscape/executeCommand.drawio_svg-tex.pdf , pag
+e1 used on input line 56.
+(luatex.def)             Requested size: 211.5403pt x 190.46687pt.
+)
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
+ine 355.
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/hyph-utf8/loadhyph/loadhyph-la.
+tex UTF-8 Latin hyphenation patterns
+(/usr/local/texlive/2024/texmf-dist/tex/generic/hyph-utf8/patterns/tex/hyph-la.
+tex))
+
+[2<./svg-inkscape/mainLoopFlowchart.drawio_svg-tex.pdf>]
+\pydata@fh@_FAD58DE7366495DB4650CFEFAC2FCD61.data.minted=\write8
+
+\openout8 = _FAD58DE7366495DB4650CFEFAC2FCD61.data.minted
+runsystem(latexminted config  --timestamp 20250930151331 FAD58DE7366495DB4650CFE
+FAC2FCD61)...executed.
+
+(./_FAD58DE7366495DB4650CFEFAC2FCD61.config.minted)
+runsystem(latexminted cleanconfig  --timestamp 20250930151331 FAD58DE7366495DB46
+50CFEFAC2FCD61)...executed.
+
+(./_minted/default.style.minted)
+(./_minted/34F80B723F29243EC3BA1D2F371BB2D0.highlight.minted)
+(./_minted/8C5831C5A2A2E4A186E61D9BABF8349B.highlight.minted
+
+[3<./svg-inkscape/executeCommand.drawio_svg-tex.pdf>])
+(./_minted/12492D98557468B6A2DA8FD4940CC775.highlight.minted)
+(./_minted/CBAEB19C72253F6ABB54B3981635BC5F.highlight.minted)
+(./_minted/CD92A2A606D9314596398D74AA1BDD84.highlight.minted)
+(./_minted/5AED977C5786C5EFBE000131810D09C3.highlight.minted)
+(./_minted/3241C4F6BE1E74FD539F8C7897E06F71.highlight.minted
+
+[4])
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 468.
+See the caption package documentation for explanation.
+
+Package hyperref Info: bookmark level for unknown listing defaults to 0 on inpu
+t line 468.
+(./_minted/B39C2AC5B565B0D918119B2A5C9BEE92.highlight.minted)
+(./_minted/7B23A20ACF1A2E3DBA5AB0A9BC90A980.highlight.minted)
+(./_minted/CEA4EACFA4B682AB79A8E25FEF99042C.highlight.minted)
+(./_minted/D72595A2E87E847A51F6F3A0D7155800.highlight.minted)
+(./_minted/BFB55D744B03241B0C6E05A49D0906C4.highlight.minted)
+(./_minted/E400F2851BF7C01B14B34CBD4622D935.highlight.minted)
+(./_minted/5D0AE27A4517891CF09C0DBABA1CD4A6.highlight.minted)
+(./_minted/90FD2F149D9B73356A994B749F2DF495.highlight.minted
+
+[5]) (./_minted/12492D98557468B6A2DA8FD4940CC775.highlight.minted)
+Overfull \hbox (7.01485pt too wide) in paragraph at lines 561--566
+[]\TU/NewCM10-Book.otf(0)/m/n/12 The \TU/NewCMMono10-Book.otf(0)/l/it/12 ex-e-cu
+te_-com-mand() \TU/NewCM10-Book.otf(0)/m/n/12 func-tion uses the re-turn value 
+\TU/NewCMMono10-Book.otf(0)/l/it/12 char **args \TU/NewCM10-Book.otf(0)/m/n/12 
+from the \TU/NewCMMono10-Book.otf(0)/l/it/12 parse()
+ []
+
+(./_minted/BF123001DC041A290FD48664496F9AAD.highlight.minted
+
+[6])
+
+Package caption Warning: \setcaptiontype
+(caption)                outside box or environment on input line 614.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 615.
+See the caption package documentation for explanation.
+
+(./_minted/4D5B55D94763EB4E6B6E4C8B4D2B5ADA.highlight.minted)
+(./_minted/8493A623BCDFC3640484C5C9FC0F0D86.highlight.minted)
+(./_minted/CC6D27EF23FDA9A7C65A9C3AD15FB20E.highlight.minted
+
+[7])
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 687.
+See the caption package documentation for explanation.
+
+Package svg Info: Last page of `./svg-inkscape/pipeVis.drawio_svg-tex.pdf' is 1
+ on input line 709.
+(./svg-inkscape/pipeVis.drawio_svg-tex.pdf_tex
+<./svg-inkscape/pipeVis.drawio_svg-tex.pdf, id=305, page=1, 271.76532pt x 45.92
+157pt>
+File: ./svg-inkscape/pipeVis.drawio_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/pipeVis.drawio_svg-tex.pdf, page 1>
+Package luatex.def Info: ./svg-inkscape/pipeVis.drawio_svg-tex.pdf , page1 used
+ on input line 56.
+(luatex.def)             Requested size: 271.7653pt x 45.92354pt.
+)
+(./_minted/4E8CE2EA843E4A8C48943314296FA6C4.highlight.minted)
+
+[8<./svg-inkscape/pipeVis.drawio_svg-tex.pdf>]
+Package svg Info: Last page of `./svg-inkscape/multiPipe.drawio_svg-tex.pdf' is
+ 1 on input line 741.
+
+(./svg-inkscape/multiPipe.drawio_svg-tex.pdf_tex
+<./svg-inkscape/multiPipe.drawio_svg-tex.pdf, id=330, page=1, 580.41844pt x 76.
+8332pt>
+File: ./svg-inkscape/multiPipe.drawio_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/multiPipe.drawio_svg-tex.pdf, page 1>
+Package luatex.def Info: ./svg-inkscape/multiPipe.drawio_svg-tex.pdf , page1 us
+ed on input line 56.
+(luatex.def)             Requested size: 414.6463pt x 54.88957pt.
+)
+(./_minted/A1719258D5BF308CCB4D839F9BAC7CA7.highlight.minted)
+(./_minted/CBAEB19C72253F6ABB54B3981635BC5F.highlight.minted)
+Package svg Info: Last page of `./svg-inkscape/pipeRedirectionMemoryLayout.draw
+io_svg-tex.pdf' is 1 on input line 755.
+
+(./svg-inkscape/pipeRedirectionMemoryLayout.drawio_svg-tex.pdf_tex
+<./svg-inkscape/pipeRedirectionMemoryLayout.drawio_svg-tex.pdf, id=333, page=1,
+ 301.5014pt x 68.50594pt>
+File: ./svg-inkscape/pipeRedirectionMemoryLayout.drawio_svg-tex.pdf Graphic fil
+e (type pdf)
+<use ./svg-inkscape/pipeRedirectionMemoryLayout.drawio_svg-tex.pdf, page 1>
+Package luatex.def Info: ./svg-inkscape/pipeRedirectionMemoryLayout.drawio_svg-
+tex.pdf , page1 used on input line 56.
+(luatex.def)             Requested size: 322.50345pt x 73.27762pt.
+)
+(./_minted/D778623ED379A92DB2CD853E1CDF3606.highlight.minted
+
+[9<./svg-inkscape/multiPipe.drawio_svg-tex.pdf><./svg-inkscape/pipeRedirectionMe
+moryLayout.drawio_svg-tex.pdf>])
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 794.
+See the caption package documentation for explanation.
+
+(./_minted/D76A4A5CEE77CA751048DDDCB36F6F1D.highlight.minted)
+(./_minted/84C856AC19EBCA17DAB0A4D4F9BA22D9.highlight.minted)
+Underfull \hbox (badness 10000) in paragraph at lines 806--811
+[]\TU/NewCM10-Book.otf(0)/m/n/12 So in-stead of feed-ing the in-for-ma-tion in 
+the com-man-d-line like so:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 806--811
+[][][][][][]\TU/NewCM10-Book.otf(0)/m/n/12 , it can be read from a file e.g.
+ []
+
+Package svg Info: Last page of `./svg-inkscape/inputRedirection.drawio_svg-tex.
+pdf' is 1 on input line 815.
+(./svg-inkscape/inputRedirection.drawio_svg-tex.pdf_tex
+<./svg-inkscape/inputRedirection.drawio_svg-tex.pdf, id=414, page=1, 293.5954pt
+ x 62.48344pt>
+File: ./svg-inkscape/inputRedirection.drawio_svg-tex.pdf Graphic file (type pdf
+)
+<use ./svg-inkscape/inputRedirection.drawio_svg-tex.pdf, page 1>
+Package luatex.def Info: ./svg-inkscape/inputRedirection.drawio_svg-tex.pdf , p
+age1 used on input line 56.
+(luatex.def)             Requested size: 322.50345pt x 68.63568pt.
+)
+(./_minted/6BE907C4932BBE56A56FDD44A1D0E8AD.highlight.minted)
+(./_minted/31655778BBA0646A828AC70E26A1BAC3.highlight.minted)
+Package svg Info: Last page of `./svg-inkscape/outputRedirection.drawio_svg-tex
+.pdf' is 1 on input line 840.
+
+(./svg-inkscape/outputRedirection.drawio_svg-tex.pdf_tex
+<./svg-inkscape/outputRedirection.drawio_svg-tex.pdf, id=418, page=1, 346.29375
+pt x 85.06781pt>
+File: ./svg-inkscape/outputRedirection.drawio_svg-tex.pdf Graphic file (type pd
+f)
+<use ./svg-inkscape/outputRedirection.drawio_svg-tex.pdf, page 1>
+Package luatex.def Info: ./svg-inkscape/outputRedirection.drawio_svg-tex.pdf , 
+page1 used on input line 56.
+(luatex.def)             Requested size: 368.57838pt x 90.54398pt.
+)
+
+[10<./svg-inkscape/inputRedirection.drawio_svg-tex.pdf>]
+(./_minted/C4EBCB202ADA32ADF75E7EFEBD8ABCDD.highlight.minted)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 871.
+See the caption package documentation for explanation.
+
+
+
+[11<./svg-inkscape/outputRedirection.drawio_svg-tex.pdf>]
+(./_minted/F405AAF4AD7F73DDDD4C18444A77517F.highlight.minted)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 921.
+See the caption package documentation for explanation.
+
+
+
+[12]
+
+[13] (./_minted/316B738FBE87F94E23CA4F9680E3F7F4.highlight.minted
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[1]
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[2])
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1040.
+See the caption package documentation for explanation.
+
+
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[3] (./_minted/80A2E96E8C5C09D7E74FBCF2174569EA.highlight.minted)
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[4] (./_minted/60446091866045056B59F6368ED4EBDE.highlight.minted
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[5]
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[6])
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1185.
+See the caption package documentation for explanation.
+
+
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[7] (./_minted/6AB42909BAEA78252846558727CAF206.highlight.minted)
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[8] (./_minted/1D8C3624B9667D0A75FB04430FDE9A2F.highlight.minted
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[9])
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1293.
+See the caption package documentation for explanation.
+
+
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[10] (./_minted/A345ADDD9ECCCA2569AA7FFB87B04C92.highlight.minted)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1313.
+See the caption package documentation for explanation.
+
+
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[11] (./_minted/82A4FCFC896EC94F42EC558255C96BFB.highlight.minted
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[12])
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1375.
+See the caption package documentation for explanation.
+
+
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[13] (./_minted/CFC51553CD9A31712F00ECDBD77AD099.highlight.minted
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[14]
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[15]
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[16]
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[17])
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1577.
+See the caption package documentation for explanation.
+
+
+
+
+warning  (pdf backend): ignoring duplicate destination with the name 'page.'
+[18] (./main.aux
+Package cleveref Info: loaded `english' language definitions on input line 9.
+)
+ ***********
+LaTeX2e <2024-11-01>
+L3 programming layer <2024-11-02>
+ ***********
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 177B3CB8E227A39669C3A131B179E5F2;5166.
+Package logreq Info: Writing requests to 'main.run.xml'.
+
+\openout1 = main.run.xml
+)
+
+Here is how much of LuaTeX's memory you used:
+ 48432 strings out of 475664
+ 125081,2848258 words of node,token memory allocated
+ 15041 words of node memory still in use:
+   255 hlist, 23 vlist, 2 rule, 21 disc, 14 local_par, 393 glue, 20 kern, 36 pen
+alty, 360 glyph, 1571 attribute, 70 glue_spec, 787 attribute_list, 16 write, 14 
+save_pos, 469 pdf_literal, 7 pdf_action, 14 pdf_colorstack nodes
+   avail lists: 1:13,2:6921,3:422,4:1642,5:478,6:90,7:5630,8:199,9:1357,10:16,11
+:536,12:3
+ 69936 multiletter control sequences out of 65536+600000
+ 120 fonts using 65656403 bytes
+ 109i,10n,131p,839b,2768s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2024/texmf-dist/fonts/opentype/public/newcomputermodern/NewC
+MMath-Book.otf></usr/local/texlive/2024/texmf-dist/fonts/opentype/public/newcomp
+utermodern/NewCMMono10-BookItalic.otf></usr/local/texlive/2024/texmf-dist/fonts/
+opentype/public/newcomputermodern/NewCM08-Book.otf></usr/local/texlive/2024/texm
+f-dist/fonts/opentype/public/newcomputermodern/NewCMMono10-Bold.otf></usr/local/
+texlive/2024/texmf-dist/fonts/opentype/public/newcomputermodern/NewCMMono10-Book
+.otf></usr/local/texlive/2024/texmf-dist/fonts/opentype/public/newcomputermodern
+/NewCM10-BookItalic.otf></usr/local/texlive/2024/texmf-dist/fonts/opentype/publi
+c/newcomputermodern/NewCMMath-Book.otf></usr/local/texlive/2024/texmf-dist/fonts
+/opentype/public/newcomputermodern/NewCM10-BoldItalic.otf></usr/local/texlive/20
+24/texmf-dist/fonts/opentype/public/newcomputermodern/NewCM10-Book.otf></usr/loc
+al/texlive/2024/texmf-dist/fonts/opentype/public/newcomputermodern/NewCM10-Bold.
+otf></usr/local/texlive/2024/texmf-dist/fonts/opentype/public/newcomputermodern/
+NewCMSans10-Book.otf></usr/local/texlive/2024/texmf-dist/fonts/opentype/public/n
+ewcomputermodern/NewCMSans10-Bold.otf>
+Output written on main.pdf (34 pages, 292466 bytes).
+
+PDF statistics: 668 PDF objects out of 1000 (max. 8388607)
+ 491 compressed objects within 5 object streams
+ 93 named destinations out of 1000 (max. 131072)
+ 256 words of extra memory for PDF output out of 10000 (max. 100000000)
+
