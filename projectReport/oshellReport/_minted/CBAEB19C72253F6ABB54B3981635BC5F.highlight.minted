@@ -1,3 +1,0 @@
-\begin{MintedVerbatim}[commandchars=\\\{\}]
-\PYG{n+nb}{echo}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}foo bar baz\PYGZdq{}}\PYG{+w}{ }\PYG{p}{|}\PYG{+w}{ }wc\PYG{+w}{ }\PYGZhy{}w
-\end{MintedVerbatim}

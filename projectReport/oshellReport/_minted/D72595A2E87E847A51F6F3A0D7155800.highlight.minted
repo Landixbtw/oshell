@@ -1,6 +1,0 @@
-\begin{MintedVerbatim}[commandchars=\\\{\}]
-\PYG{n+nb}{echo}\PYG{+w}{ }\PYGZhy{}e\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}3\PYGZbs{}n1\PYGZbs{}n2\PYGZdq{}}\PYG{+w}{ }\PYG{p}{|}\PYG{+w}{ }sort\PYG{+w}{ }\PYGZhy{}n
-\PYG{l+m}{1}
-\PYG{l+m}{2}
-\PYG{l+m}{3}
-\end{MintedVerbatim}

@@ -1,3 +1,0 @@
-\begin{MintedVerbatim}[commandchars=\\\{\}]
-\PYG{n+nb}{echo}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}line1\PYGZbs{}nline2\PYGZbs{}nline3\PYGZdq{}}\PYG{+w}{ }\PYGZgt{}\PYGZgt{}\PYG{+w}{ }append.txt
-\end{MintedVerbatim}

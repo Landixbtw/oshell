@@ -54,37 +54,30 @@ char **tokenize(char *input, int capacity) {
     int t = 0;
     int start = 0;
     int len = strlen(input);
-
     for (int i = 0; i <= len; i++) { 
-        if (input[i] == ' ' || input[i] == '\0') {
-            if (i > start) {
-                input[i] = '\0';
-                tokens[t++] = &input[start]; 
-                if (t >= capacity - 1) { 
-                    capacity *= 2;
-                    char **tmp_token = realloc(tokens, sizeof(char *) * capacity);
-                    if (tmp_token == NULL) free(tokens);
-                    tokens = tmp_token;
+            if (input[i] == ' ' || input[i] == '\0') {
+                if (i > start) {
+                    input[i] = '\0';
+                    tokens[t++] = &input[start]; 
+                    if (t >= capacity - 1) { 
+                        capacity *= 2;
+                        char **tmp_token = realloc(tokens, sizeof(char *) * capacity);
+                        if (tmp_token == NULL) free(tokens);
+                        tokens = tmp_token;
+                    }
                 }
+                start = i + 1; // next token starts after space
+            } else if (input[i] == '\\') {
+                input[i] = '\n';
             }
-            start = i + 1; // next token starts after space
         }
-    }
     tokens[t] = NULL; // null-terminate the array
     return tokens;
 }
 
-
-
 // return has to be freed
 char **parse(char *input)
 {
-
-    // first we check for the DEL KEY press, if that is true, we dont need parse anything
-    // char **KEY_DEL_EVENT;
-    // if(read_key() == KEY_DEL) {
-    //     KEY_DEL_EVENT[0] = "127";
-    // }
 
     int capacity = 10;
     int count = 0;
