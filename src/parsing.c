@@ -100,11 +100,11 @@ char **parse(char *input)
         if (args == NULL) free(args);
     }
 
-    int i = 0;
-
+    fprintf(stderr, "parsing.c: input passed: %s", input);
     args = tokenize(input, capacity);
 
-    while(args[i] != NULL) // SUMMARY: AddressSanitizer: heap-buffer-overflow ../src/parsing.c:HERE in parse
+    int i = 0;
+    while(args[i] != NULL) 
     {
         i++;
     }

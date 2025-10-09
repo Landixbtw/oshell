@@ -1,4 +1,7 @@
 #include "../include/Header.h"
+#include "../include/chaining.h"
+
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -111,9 +114,10 @@ char *oshell_read_line(void)
 
 void oshell_loop(void)
 {
-    char *user_input = oshell_read_line();
-
-    char **args = parse(user_input);
+    char *tmp_user_input = oshell_read_line();
+    
+    char **user_input = split_on_chain(tmp_user_input);
+    char **args = parse(user_input[0]);
     if(args == NULL) perror("oshell: parsing failed ");
 
     execute_command(args);

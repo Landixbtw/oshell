@@ -26,7 +26,8 @@ sources = [
   # 'src/input_redirection.c',
   'src/piping.c',
   'src/clear.c',
-  'src/kill_process.c'
+  'src/kill_process.c',
+  'src/chaining.c'
 ]
 
 # Create executable
