@@ -259,7 +259,10 @@ int execute_command(char **args)
 
 
     char *new_command = make_command(args);
-    if(!command_exists(new_command)) return -1;
+    if(!command_exists(new_command)) {
+        fprintf(stderr, "execute_command(): command '%s' not found\n", args[0]);
+        return -1;
+    }
     if ((pid = fork()) < 0)
         perror("oshell: fork() error");
     else if (pid == 0) {

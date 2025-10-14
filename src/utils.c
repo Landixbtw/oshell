@@ -1,11 +1,12 @@
 #include "../include/Header.h"
 #include "../include/chaining.h"
 
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 void show_usage(void)
 {
@@ -115,12 +116,14 @@ char *oshell_read_line(void)
 void oshell_loop(void)
 {
     char *tmp_user_input = oshell_read_line();
-    
+    char **args;
     char **user_input = split_on_chain(tmp_user_input);
-    char **args = parse(user_input[0]);
-    if(args == NULL) perror("oshell: parsing failed ");
+    for(int i = 0; user_input[i] != NULL; i++) {
+        args = parse(user_input[i]);
+        if(args == NULL) perror("oshell: parsing failed ");
+        if (execute_command(args) != 0) return;
+    }
 
-    execute_command(args);
     free(user_input);
     free(args);
 }

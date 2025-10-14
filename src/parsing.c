@@ -78,7 +78,6 @@ char **tokenize(char *input, int capacity) {
 // return has to be freed
 char **parse(char *input)
 {
-
     int capacity = 10;
     int count = 0;
     char **args = malloc(sizeof(char *) * capacity);
@@ -100,7 +99,7 @@ char **parse(char *input)
         if (args == NULL) free(args);
     }
 
-    fprintf(stderr, "parsing.c: input passed: %s", input);
+    //fprintf(stderr, "parsing.c: input passed: %s \n", input);
     args = tokenize(input, capacity);
 
     int i = 0;
