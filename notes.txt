@@ -1,6 +1,6 @@
 ./build.sh -c -u && ./buildDir/oshell
 
-./build.sh -u
+./build.sh -c -u
 
 # open in same as build.sh
 ./build.sh && valgrind --leak-check=full \

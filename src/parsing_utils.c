@@ -28,13 +28,12 @@ void print_hex_dump(const char* data, size_t length) {
     fprintf(stderr, "\n");
 }
 
-char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, int end_pos) 
+char *build_quote_string(char **arg, const int start_arg, const int start_pos, const int end_arg, const int end_pos)
 {
     int total_length = 0;
 
     for(int i = start_arg; i < end_arg; i++) {
 
- 
         // this is needed otherwise, the code will try to execute the command provided e.g.
         // echo "foo bar baz" | wc -w just like that. 
         // this would output foo bar baz | wc -w /*
@@ -92,7 +91,12 @@ char *build_quote_string(char **arg, int start_arg, int start_pos, int end_arg, 
 // NOTE: Reason I am passing the array, and not just one string at a time is because I am saving the quote, 
 // and doing this with passing a string would mean I have to safe the quote char globally no?
 // this way it can be saved in the function, because we execute the function once
+// NOTE: A variable called whose value was assinged to remove_quotes has to be freed
 char **remove_quotes(char **arg) {
+    if (arg == NULL) {
+        perror("remove_quotes failed");
+    }
+
     size_t arg_count = 0;
     size_t new_arg_count = 0;
     int quote_string_pos = 0;
@@ -109,12 +113,14 @@ char **remove_quotes(char **arg) {
     // that scope
     int end_arg = -1;
     int end_pos = -1;
-    
+
     for(int i = 0; i < arg_count; i++) {
         if (processed[i]) {
             continue; // Skip already processed arguments
         }
-
+        if (arg[i] == NULL) {
+            i++;
+        }
         bool found_quote = false;
 
         for(int j = 0; j < strlen(arg[i]); j++) {
@@ -227,6 +233,7 @@ char **remove_quotes(char **arg) {
     for ( ; j < n; j++) tmp_args[j] = NULL;
 
     free(processed);
+    free(arg);
     return tmp_args;
 }
 

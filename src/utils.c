@@ -116,7 +116,7 @@ char *oshell_read_line(void)
 void oshell_loop(void)
 {
     char *tmp_user_input = oshell_read_line();
-    char **args;
+    char **args = 0;
     char **user_input = split_on_chain(tmp_user_input);
     for(int i = 0; user_input[i] != NULL; i++) {
         args = parse(user_input[i]);
