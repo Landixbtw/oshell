@@ -64,7 +64,7 @@ func RunShellCommand(shellPath, command string) ([]string, error) {
     }
     
     // Send command
-    stdin.Write([]byte(command + "\n"))
+    stdin.Write([]byte(command))
     // stdin.Write([]byte("exit\n"))
     stdin.Close()
     
@@ -96,7 +96,7 @@ func ContainsOutput(output []string, expected string) bool {
 func TestEchoCommand(t *testing.T) {
 	t.Log("...Testing echo command...")
 
-    output, err := RunShellCommand("../buildDir/oshell", "echo hello\n")
+    output, err := RunShellCommand("../buildDir/oshell", "echo \"hello\"")
     if err != nil {
         t.Fatalf("Shell command failed: %v", err)
     }
@@ -388,18 +388,13 @@ func TestHereAppend(t *testing.T) {
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
-	/* FIX:
-        '[line1 line2 line3 line4 execv() failed: No such file or directory free(): double free detected in tcache 2]'
-		This only occurs in the tests? manual cat appendHere.txt works just fine
-	*/
-
 	// Join the output lines and compare
-	actualOutput := strings.Split(strings.Join(catOutput, "\n"),"\n")
+	// actualOutput := strings.Split(strings.Join(catOutput, "\n"),"\n")
 
-	if ContainsOutput(actualOutput, expectedOutput) {
+	if ContainsOutput(catOutput, expectedOutput) {
 		t.Log("output redirection test passed ✔️")
 	} else {
-		t.Errorf("Expected:\n'%v'\nGot:\n'%v'", expectedOutput, actualOutput)
+		t.Errorf("Expected:\n'%v'\nGot:\n'%v'", expectedOutput, catOutput)
 	}
 }
 
@@ -446,7 +441,7 @@ cat nonexistent.txt | wc -l      # Error handling
 	this might make it into a v2 but as of right now this seems pretty suffisticated
 	*/
 
-	const commAmount = 3
+	const commAmount = 4
 	var command [commAmount]string
 	var expectedOutput [commAmount]string
 
@@ -459,12 +454,11 @@ cat nonexistent.txt | wc -l      # Error handling
 	command[2] = "echo -e \"3\n1\n2\" | sort -n" // expect 1\n2\n3
 	expectedOutput[2] = "1\n2\n3\n"
 
-	// throws "custom" error
-	command[2] = "echo \"\" | cat" // expect ""
-	expectedOutput[2] = "Warning: No closing quote found for quote starting at arg[3][3]\nexecv() failed: No such file or directory"
+	command[3] = "echo \"\" | cat" // expect ""
+	expectedOutput[3] = "''"
 
-	// command[4] = "echo \"no match\" | grep \"xyz\" " // expect no output ""
-	// expectedOutput[4] = "" // FIX: Outputs a single (double) quote "
+	// command[4] = "echo \"no match\" | grep \"xyz\"" // expect no output ""
+	// expectedOutput[4] = "" 
 
 	var output [commAmount]string
 	// Execute all commands
@@ -481,7 +475,7 @@ cat nonexistent.txt | wc -l      # Error handling
 		thing 
 		*/
 		if ContainsOutput(output[:], strings.TrimSpace(expectedOutput[i])) {
-			t.Log("output redirection test passed ✔️")
+			t.Log("output redirection test passed ✔️", i, commAmount)
 		} else {
 			t.Errorf("Expected:\n'%s'\nGot:\n'%s'", strings.TrimSpace(expectedOutput[i]), output[i])
 		}

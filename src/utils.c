@@ -1,10 +1,14 @@
 #include "../include/Header.h"
 #include "../include/chaining.h"
+#include "../include/parsing_utils.h"
+
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
@@ -93,6 +97,8 @@ int string_to_int(char *string) {
 }
 
 // this reads the input
+//
+// go reads some garbage value as the command and tries to execute that
 char *oshell_read_line(void)
 {
     char *line = NULL;
@@ -104,9 +110,11 @@ char *oshell_read_line(void)
         {
             // EOF
             free(line);
+            line = NULL;
         } else {
             perror("oshell: readline");
             free(line);
+            line = NULL;
             exit(EXIT_FAILURE);
         }
     }
@@ -117,7 +125,18 @@ void oshell_loop(void)
 {
     char *tmp_user_input = oshell_read_line();
     char **args = 0;
-    char **user_input = split_on_chain(tmp_user_input);
+    char **user_input;
+
+    // TODO: We should only want the string to be passed onto split_on_chain 
+    // if there actually is a chain
+    // so we need to make an array from the simple string to be able to assing 
+    // it to user_input so parse the content
+    
+    if(strstr(tmp_user_input, "&&") == 0) {
+        user_input = split_on_chain(tmp_user_input);
+    } else {
+        user_input = my_strdup(tmp_user_input);
+    }
     for(int i = 0; user_input[i] != NULL; i++) {
         args = parse(user_input[i]);
         if(args == NULL) perror("oshell: parsing failed ");

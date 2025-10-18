@@ -7,12 +7,6 @@
 #include "../include/chaining.h"
 #include "../include/parsing_utils.h"
 
-
-
-// TODO: do research on chaining and try to implement this. this should prob
-// be called while parsing if && is detected, take input and return n seperate
-// commands that are to be executed indepentend.
-
 /*
  * mkdir testdir && cd testdir && touch datei.txt
  * ping -c 1 google.com && echo "Netzwerk OK"

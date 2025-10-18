@@ -37,10 +37,6 @@ int main(void){
         // Indicates that "oshell" is not opened by terminal but other program, like 
         // golang for testing
         cfmakeraw(&term);
-        if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1) {
-            perror("tcsetattr");
-            exit(EXIT_FAILURE);
-        }
     }
 
     for(;;) {
@@ -57,13 +53,9 @@ int main(void){
             exit(EXIT_FAILURE);
         }
 
-        // for example
-        // ole@tux
-        // /home / ole / Dokumente / Projekte / c / oshell
-
-        fprintf(stderr, "%s@%s\n", user, hostname);
-        fprintf(stderr, " %s > \n", cwd);
-        fflush(stderr);
+        // fprintf(stderr, "%s@%s\n", user, hostname);
+        // fprintf(stderr, " %s > \n", cwd);
+        // fflush(stderr);
 
         oshell_loop();
     }

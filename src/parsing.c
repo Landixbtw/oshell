@@ -67,7 +67,12 @@ char **tokenize(char *input, int capacity) {
                     }
                 }
                 start = i + 1; // next token starts after space
-            } else if (input[i] == '\\') {
+            }
+            // TODO: right now if it detects \n 
+            // it replaces it with \nn so a linebreak is made but it also 
+            // prints a lonely n, the task is to basically skip the n aswell
+            // mess with i+1?
+            else if(input[i] == '\\' && input[i+1] != 'n') {
                 input[i] = '\n';
             }
         }
