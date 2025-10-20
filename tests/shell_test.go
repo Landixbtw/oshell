@@ -9,6 +9,10 @@ import (
 	"testing"
 	"time"
 	"syscall"
+	"encoding/hex"
+	"unicode"
+	"github.com/creack/pty"
+	"io"
 )
 
 /*
@@ -40,6 +44,54 @@ Inbuilt
 // NOTE: for testing, there does not need to be a main function, go is smart enough
 // to call every funtion that starts with Test
 
+// RunShellCommandPTY runs your interactive shell under a real pseudo-terminal.
+// This ensures isatty() == true, proper line buffering, and prompt behavior.
+func RunShellCommandPTY(shellPath, command string) ([]string, error) {
+	// Prepare the command
+	cmd := exec.Command(shellPath)
+
+	// Start with a pseudo-terminal
+	ptmx, err := pty.Start(cmd)
+	if err != nil {
+		return nil, fmt.Errorf("failed to start pty: %w", err)
+	}
+	defer func() {
+		_ = ptmx.Close() // close the pty
+	}()
+
+	// Give shell a moment to start and print prompt
+	time.Sleep(150 * time.Millisecond)
+
+	// Send the command
+	_, err = ptmx.Write([]byte(command + "\n"))
+	if err != nil {
+		return nil, fmt.Errorf("failed to write to pty: %w", err)
+	}
+
+	// Wait a bit for output to appear
+	time.Sleep(150 * time.Millisecond)
+
+	// Close the input to simulate EOF
+	_ = ptmx.Close()
+
+	// Read output lines
+	var output []string
+	scanner := bufio.NewScanner(ptmx)
+	for scanner.Scan() {
+		output = append(output, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		return output, fmt.Errorf("error reading pty: %w", err)
+	}
+
+	// Wait for command to finish
+	_ = cmd.Wait()
+
+	return output, nil
+}
+
+
 func RunShellCommand(shellPath, command string) ([]string, error) {
     cmd := exec.Command(shellPath)
     
@@ -64,7 +116,7 @@ func RunShellCommand(shellPath, command string) ([]string, error) {
     }
     
     // Send command
-    stdin.Write([]byte(command))
+    stdin.Write([]byte(command + "\n"))
     // stdin.Write([]byte("exit\n"))
     stdin.Close()
     
@@ -78,6 +130,151 @@ func RunShellCommand(shellPath, command string) ([]string, error) {
 
     cmd.Wait()
     return output, nil
+}
+
+
+func printHexDump(data string) {
+    bytes := []byte(data)
+    const bytesPerLine = 16
+
+    for i := 0; i < len(bytes); i += bytesPerLine {
+        end := i + bytesPerLine
+        if end > len(bytes) {
+            end = len(bytes)
+        }
+
+        line := bytes[i:end]
+        hexPart := hex.EncodeToString(line)
+
+        // Split hex into pairs
+        var hexPairs []string
+        for j := 0; j < len(hexPart); j += 2 {
+            hexPairs = append(hexPairs, hexPart[j:j+2])
+        }
+
+        // Create ASCII part
+        asciiPart := ""
+        for _, b := range line {
+            if unicode.IsPrint(rune(b)) {
+                asciiPart += string(b)
+            } else {
+                asciiPart += "."
+            }
+        }
+
+        // Align spacing
+        fmt.Printf("%04x  %-47s  |%s|\n", i, strings.Join(hexPairs, " "), asciiPart)
+    }
+}
+
+func RunShellCommandDebugPTY(shellPath, command string) error {
+	cmd := exec.Command(shellPath)
+
+	ptmx, err := pty.Start(cmd)
+	if err != nil {
+		return fmt.Errorf("failed to start pty: %w", err)
+	}
+	defer func() { _ = ptmx.Close() }()
+
+	fmt.Println("=== Debug: Shell started ===")
+
+	go func() {
+		// Copy everything the shell prints to our terminal
+		_, _ = io.Copy(os.Stdout, ptmx)
+	}()
+
+	time.Sleep(150 * time.Millisecond)
+
+	// Send the command
+	if _, err := ptmx.Write([]byte(command + "\n")); err != nil {
+		return fmt.Errorf("failed to write to pty: %w", err)
+	}
+
+	// Let the shell run for a bit
+	time.Sleep(500 * time.Millisecond)
+
+	// Send EOF (optional)
+	_ = ptmx.Close()
+
+	if err := cmd.Wait(); err != nil {
+		return fmt.Errorf("shell exited with error: %w", err)
+	}
+
+	fmt.Println("=== Debug: Shell exited ===")
+	return nil
+}
+
+// debug function for testing by chatgpt
+func RunShellCommandDebug(shellPath, command string) ([]string, error) {
+    fmt.Println("====== RunShellCommandDebug ======")
+    fmt.Printf("Shell Path: %s\n", shellPath)
+    fmt.Println("Command (raw):")
+    fmt.Println(command)
+    fmt.Println("Command (hex dump):")
+    printHexDump(command)
+
+    cmd := exec.Command(shellPath)
+
+    stdin, err := cmd.StdinPipe()
+    if err != nil {
+        fmt.Printf("❌ Error getting stdin: %v\n", err)
+        return nil, err
+    }
+
+    stdoutPipe, err := cmd.StdoutPipe()
+    if err != nil {
+        fmt.Printf("❌ Error getting stdout: %v\n", err)
+        return nil, err
+    }
+
+    stderrPipe, err := cmd.StderrPipe()
+    if err != nil {
+        fmt.Printf("❌ Error getting stderr: %v\n", err)
+        return nil, err
+    }
+
+    start := time.Now()
+    err = cmd.Start()
+    if err != nil {
+        fmt.Printf("❌ Error starting command: %v\n", err)
+        return nil, err
+    }
+
+    // Send command and close stdin
+    _, err = stdin.Write([]byte(command + "\n"))
+    if err != nil {
+        fmt.Printf("❌ Error writing to stdin: %v\n", err)
+    }
+    stdin.Close()
+
+    // Read stdout
+    stdoutScanner := bufio.NewScanner(stdoutPipe)
+    var stdoutLines []string
+    for stdoutScanner.Scan() {
+        line := stdoutScanner.Text()
+        fmt.Printf("[stdout] %s\n", line)
+        stdoutLines = append(stdoutLines, line)
+    }
+
+    // Read stderr
+    stderrScanner := bufio.NewScanner(stderrPipe)
+    var stderrLines []string
+    for stderrScanner.Scan() {
+        line := stderrScanner.Text()
+        fmt.Printf("[stderr] %s\n", line)
+        stderrLines = append(stderrLines, line)
+    }
+
+    err = cmd.Wait()
+    duration := time.Since(start)
+    fmt.Printf("Command finished in %v\n", duration)
+
+    if err != nil {
+        fmt.Printf("⚠️ Command exited with error: %v\n", err)
+    }
+
+    fmt.Println("==================================")
+    return stdoutLines, err
 }
 
 func ContainsOutput(output []string, expected string) bool {
@@ -160,7 +357,10 @@ func TestCDDir(t *testing.T) {
 	}
 }
 
-
+/*
+The expected env values are hardcoded, because when trying to get the values 
+dynamically it would print out weird stuff
+*/
 
 func TestENV(t *testing.T) {
 	t.Log("...Testing env output...")
@@ -303,7 +503,6 @@ func TestInputRedirection(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	// FIX: ???? I get the correct output if I manually put it into the shell, why not here
 	output, err := RunShellCommand("../buildDir/oshell", "cat < string.txt")
 
 	if err != nil {
@@ -376,25 +575,25 @@ func TestHereAppend(t *testing.T) {
 
 	// Execute all commands
 	for i := range command {
-	_, err := RunShellCommand("../buildDir/oshell", command[i])
+	_, err := RunShellCommandDebug("../buildDir/oshell", command[i])
 		if err != nil {
 			t.Fatalf("Shell command failed: %v", err)
 		}
 	}
 
 	// Now read the file to check final result
-	catOutput, err := RunShellCommand("../buildDir/oshell", fmt.Sprintf("cat %s", appendHere))
+	catOutput, err := RunShellCommandDebug("../buildDir/oshell", fmt.Sprintf("cat %s", appendHere))
 	if err != nil {
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
 	// Join the output lines and compare
-	// actualOutput := strings.Split(strings.Join(catOutput, "\n"),"\n")
+	actualOutput := strings.Split(strings.Join(catOutput, "\n"),"\n")
 
-	if ContainsOutput(catOutput, expectedOutput) {
+	if ContainsOutput(actualOutput, expectedOutput) {
 		t.Log("output redirection test passed ✔️")
 	} else {
-		t.Errorf("Expected:\n'%v'\nGot:\n'%v'", expectedOutput, catOutput)
+		t.Errorf("Expected:\n'%v'\nGot:\n'%v'", expectedOutput, actualOutput)
 	}
 }
 
@@ -445,14 +644,14 @@ cat nonexistent.txt | wc -l      # Error handling
 	var command [commAmount]string
 	var expectedOutput [commAmount]string
 
-	command[0] = "echo \"test123\" | grep \"test\" " // expect test123
-	expectedOutput[0] = "test123\n"
+	command[0] = "echo \"test123\" | grep \"test\"" // expect test123
+	expectedOutput[0] = "test123"
 
-	command[1] = "echo \"foo bar baz\" | wc -w " // expect 3
-	expectedOutput[1] = "3\n"
+	command[1] = "echo \"foo bar baz\" | wc -w" // expect 3
+	expectedOutput[1] = "3"
 
 	command[2] = "echo -e \"3\n1\n2\" | sort -n" // expect 1\n2\n3
-	expectedOutput[2] = "1\n2\n3\n"
+	expectedOutput[2] = "1\n2\n3"
 
 	command[3] = "echo \"\" | cat" // expect ""
 	expectedOutput[3] = "''"
@@ -464,7 +663,7 @@ cat nonexistent.txt | wc -l      # Error handling
 	// Execute all commands
 	for i := range output {
 		// error here
-		tmpOutput , err := RunShellCommand("../buildDir/oshell", command[i])
+		tmpOutput , err := RunShellCommandPTY("../buildDir/oshell", command[i])
 		if err != nil {
 			t.Fatalf("Shell command failed: %v", err)
 		}

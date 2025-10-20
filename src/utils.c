@@ -125,17 +125,22 @@ void oshell_loop(void)
 {
     char *tmp_user_input = oshell_read_line();
     char **args = 0;
-    char **user_input;
+    
+    // print_hex_dump(tmp_user_input, strlen(tmp_user_input) + 1);
+    
+    // TODO: This is allocated wrong...
+    char **user_input = malloc(strlen(tmp_user_input) * sizeof(char*));
 
     // TODO: We should only want the string to be passed onto split_on_chain 
     // if there actually is a chain
     // so we need to make an array from the simple string to be able to assing 
     // it to user_input so parse the content
     
-    if(strstr(tmp_user_input, "&&") == 0) {
+    if(strstr(tmp_user_input, "&&") != NULL) {
+        // fprintf(stderr, "needle found\n");
         user_input = split_on_chain(tmp_user_input);
     } else {
-        user_input = my_strdup(tmp_user_input);
+        user_input[0] = my_strdup(tmp_user_input);
     }
     for(int i = 0; user_input[i] != NULL; i++) {
         args = parse(user_input[i]);
