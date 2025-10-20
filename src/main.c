@@ -53,8 +53,9 @@ int main(void){
             exit(EXIT_FAILURE);
         }
 
+        fprintf(stderr, "oshell> ");
         // fprintf(stderr, "%s@%s\n", user, hostname);
-        // fprintf(stderr, " %s > \n", cwd);
+        // fprintf(stderr, " %s > ", cwd);
         // fflush(stderr);
 
         oshell_loop();

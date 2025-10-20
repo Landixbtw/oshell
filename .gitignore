@@ -7,3 +7,4 @@ tests/originalLs.txt
 tests/appendHere.txt
 valgrind-out.txt
 valgrind-out.txt.*
+shell_tests/target
