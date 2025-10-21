@@ -40,7 +40,7 @@ int change_directory(char *directory)
     char* new_path = NULL;
 
     bool use_home_path = false;
-    if(strcmp(&directory[0], "~") == 0) {
+    if(directory[0] == '~') {
         char *user_path = getenv("HOME");
         int new_path_length = strlen(user_path) + strlen(directory) + 1;
         // first char is ~ replace dir with /home/user/dir
@@ -51,7 +51,7 @@ int change_directory(char *directory)
             perror("oshell: change_directory() memory allocation failed");
         }
         snprintf(new_path, new_path_length, "%s%s", user_path, directory);
-        fprintf(stderr, "%s\n", new_path);
+        // fprintf(stderr, "%s\n", new_path);
         use_home_path = true;
     }
     
@@ -126,7 +126,6 @@ void oshell_loop(void)
     char *tmp_user_input = oshell_read_line();
     char **args = 0;
     
-    // print_hex_dump(tmp_user_input, strlen(tmp_user_input) + 1);
     
     // TODO: This is allocated wrong...
     char **user_input = malloc(strlen(tmp_user_input) * sizeof(char*));
