@@ -131,63 +131,64 @@ fn test_env_var() {
     assert_eq!(display, out_display);
 }
 
-// NOTE: This is way better then what I had 
 fn spawn_process() -> u32 {
-    let output = Command::new("bash")
-        .arg("-c")
-        .arg("sleep 30 & echo $!")
-        .output()
+    let process = Command::new("spotify")
+        .spawn()
         .expect("failed to spawn process");
 
-    let pid_str = String::from_utf8_lossy(&output.stdout);
-    pid_str.trim().parse::<u32>().expect("invalid PID")
+        process.id()
 }
 
+// NOTE: Kill_by_* always panics here. Why? the process should be killed
 fn is_alive(pid: u32) -> bool {
-    let status = Command::new("bash")
-        .arg("-c")
-        .arg(format!("kill -0 {}", pid))
+    Command::new("kill")
+        .arg("-0")
+        .arg(pid.to_string())
         .status()
-        .unwrap();
-    status.success() // `kill -0` returns 0 if process exists
-}
-
-/*
- * TODO: 
- * Not sure if kill by PID and kill by name actually work like they are supposed to, need to 
- * debug print
- * figure out how. expectrl has no print function, and print statements in the tests are not
- * printed. 
- *
- * THIS IS NOT WORKING PRETTY SURE
- * */
+        .map(|s| s.success())
+        .unwrap_or(false)}
 
 #[test]
 fn test_kill_by_name() {
     let pid = spawn_process();
     println!("Spawned process PID: {}", pid);
+
+    std::thread::sleep(std::time::Duration::from_secs(1));
+
+    assert!(is_alive(pid), "Process should be alive initially");
+
     let mut shell = spawn_shell().unwrap();
     let t_proc_name = &format!("ps -p {} -o comm=", pid);
     let proc_name = exec(&mut shell, t_proc_name).trim().to_string();
-    // NOTE: This does not print, figure out how we can make it print
+
     println!("killing: {}", proc_name);
+
     let command = &format!("kill {}", proc_name);
     exec(&mut shell, command).trim().to_string();
 
+    std::thread::sleep(std::time::Duration::from_secs(2));
+
     let alive = is_alive(pid);
     assert!(!alive, "Process {} should be killed", pid);
-    
+
 }
 
 #[test] 
 fn test_kill_by_pid() {
     let pid = spawn_process();
-    
-    let mut shell = spawn_shell().unwrap();
-    let command = &format!("kill {}", pid);
-    let output = exec(&mut shell, command).trim().to_string();
+    println!("Spawned process PID: {}", pid);
 
-    assert!(!is_alive(pid), "Process with PID {} has been failed to kill", pid);
+    std::thread::sleep(std::time::Duration::from_secs(1));
+    assert!(is_alive(pid), "Process should be alive");
+
+    let mut shell = spawn_shell().unwrap();
+
+    println!("killing: {}", pid);
+    exec(&mut shell, &format!("kill {}", pid)).trim().to_string();
+
+    std::thread::sleep(std::time::Duration::from_secs(5));
+    let alive = is_alive(pid);
+    assert!(!alive, "Process {} should be killed", pid);
 }
 
 #[test]
@@ -273,4 +274,27 @@ let mut commands: [&str; 3] = Default::default();
         let output_str= String::from_utf8_lossy(&output.stdout).trim().to_string();
         assert_eq!(oshell_out, output_str);
     }
+}
+
+#[test]
+fn test_command_chaining() {
+    let mut commands: [&str; 3] = Default::default();
+
+    commands[0] = "echo one && echo two && echo three";
+    commands[1] = "echo start && false && echo end";
+    commands[2] = "false && echo should_not_run && echo nope";
+
+    let mut shell = spawn_shell().unwrap();
+    for command in &commands{
+        let shell_out = exec(&mut shell, command).replace("\r\n", "\n").trim().to_string();
+        let output = Command::new("bash")
+        .arg("-c")
+        .arg(command)
+        .output()
+        .expect("something went wrong");
+
+        let output_str= String::from_utf8_lossy(&output.stdout).trim().to_string();
+        assert_eq!(shell_out, output_str);
+    }
+
 }

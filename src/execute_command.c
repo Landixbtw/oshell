@@ -1,6 +1,7 @@
 #include "../include/Header.h"
 #include <string.h>
 #include <errno.h>
+#include <sys/wait.h>
 
 /*
  * NOTE: More explanation on pointer to pointer, why? what? how?
@@ -241,7 +242,7 @@ int execute_command(char **args)
 
     pid_t pid = 0;
     int status = 0;
-
+    pid_t result = 0;
     /*
      * For the shell to work, proper we want to identify what is a command, and what is giberish
      * if the user enters a, that should return an error with "oshell: command not found: [command user entered]"
@@ -261,43 +262,55 @@ int execute_command(char **args)
     char *new_command = make_command(args);
     if(!command_exists(new_command)) {
         fprintf(stderr, "execute_command(): command '%s' not found\n", args[0]);
+        free(new_command);
         return -1;
     }
-    if ((pid = fork()) < 0)
+
+    if ((pid = fork()) < 0) {
         perror("oshell: fork() error");
-    else if (pid == 0) {
-        //child
-        //fprintf(stderr, "Command: %s %s %s \n", new_command, args[1], args[2]);
-        int res = execv(new_command, args);
-        if (res == -1) {
-            fprintf(stderr, "freeing new_command at %p in function execute_command\n", (void*)new_command);
-            free(new_command);
-            new_command = NULL;
-            exit(EXIT_FAILURE);
-        } else {
-            fprintf(stderr, "freeing new_command at %p in function execute_command\n", (void*)new_command);
-            free(new_command);
-            new_command = NULL;
-            sleep(5);
-            return(1);
-        }
+        free(new_command);
+        return -1;
     }
-    else do {
-        if ((pid = waitpid(pid, &status, WNOHANG)) == -1)
-            perror("oshell: waitpid() error");
-        else if (pid == 0) {
-            sleep(1);
-        } else {
-            if (WIFEXITED(status)) {
+    else if (pid == 0) {
+        // Child process
+        execv(new_command, args);
+
+        perror("oshell: execv() error");
+        free(new_command);
+        exit(EXIT_FAILURE); 
+    }
+    else {
+        while(1) {
+            result = waitpid(pid, &status, WNOHANG);
+
+            if(result == -1) {
+                perror("oshell: waitpid() error");
                 free(new_command);
+                return -1;
+            }
+            else if (result == 0) {
+                continue;
+            }
+            else {
                 break;
-                // printf("child exited with status of %d\n", WEXITSTATUS(status));
-            } else {
-                puts("child did not exit successfully");
-                free(new_command);
             }
         }
-   } while (pid == 0);
+
+        free(new_command);
+
+        if(WIFEXITED(status)) {
+            int exit_code = WEXITSTATUS(status);
+            return exit_code;
+        }
+        else if(WIFSIGNALED(status)) {
+            fprintf(stderr, "Child killed by signal %d\n", WTERMSIG(status));
+            return -1;
+        }
+        else {
+            fprintf(stderr, "Child did not exit normally\n");
+            return -1;
+        }
+    }
 
     // this needs to be here, after the commands have been execute ie < > >> otherwise it will just try and pass an empty stdin stdout
     if (do_output_redirection) {

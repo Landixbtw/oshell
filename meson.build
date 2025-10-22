@@ -1,5 +1,5 @@
 project('oshell', 'c',
-  version: '0.0.1',
+  version: '1.0.0',
   default_options: [
     'c_std=c11',
     'warning_level=3',
@@ -23,7 +23,6 @@ sources = [
   'src/parsing.c',
   'src/parsing_utils.c',
   'src/execute_command.c',
-  # 'src/input_redirection.c',
   'src/piping.c',
   'src/clear.c',
   'src/kill_process.c',

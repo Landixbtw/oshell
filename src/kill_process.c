@@ -149,7 +149,7 @@ int kill_process(char *process_name_or_id)
 
                     if(strcmp(strip_non_alpha(buffer), strip_non_alpha(process_name_or_id)) == 0) {
                         if(kill(pid, 9) == 0) {
-                            fprintf(stderr, "killed %s with PID: %i", process_name_or_id, pid);
+                            // fprintf(stderr, "killed %s with PID: %i\n", process_name_or_id, pid);
                             fflush(stderr);
                             process_found = true;
                         }

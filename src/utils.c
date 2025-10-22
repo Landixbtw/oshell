@@ -144,7 +144,7 @@ void oshell_loop(void)
     for(int i = 0; user_input[i] != NULL; i++) {
         args = parse(user_input[i]);
         if(args == NULL) perror("oshell: parsing failed ");
-        if (execute_command(args) != 0) return;
+        if (execute_command(args) != 0) break;
     }
 
     free(user_input);
