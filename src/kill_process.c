@@ -1,6 +1,7 @@
 #include "../include/Header.h"
 #include <dirent.h>
 #include <stdio.h>
+#include <sys/wait.h>
 
 
 /*
@@ -56,10 +57,6 @@ int kill_process(char *process_name_or_id)
             //perror("oshell: failed to open '/proc/'");
             exit(EXIT_FAILURE);
         }
-        // if(dir == EACCES || ENOMEM) {
-        //     perror("oshell: ");
-        //     exit(EXIT_FAILURE);
-        // }
 
         char    *buffer = NULL;
         char    *comm_file_path = NULL;
@@ -149,7 +146,9 @@ int kill_process(char *process_name_or_id)
 
                     if(strcmp(strip_non_alpha(buffer), strip_non_alpha(process_name_or_id)) == 0) {
                         if(kill(pid, 9) == 0) {
-                            // fprintf(stderr, "killed %s with PID: %i\n", process_name_or_id, pid);
+                            sleep(1);
+                            waitpid(pid, NULL, WNOHANG);
+                            fprintf(stderr, "killed %s with PID: %i\n", process_name_or_id, pid);
                             fflush(stderr);
                             process_found = true;
                         }
@@ -166,15 +165,22 @@ int kill_process(char *process_name_or_id)
         if(comm_file_path) free(comm_file_path);
         if(full_proc_path) free(full_proc_path);
         if(fp) fclose(fp);
-        // the directory was not closed in every secenario
         if(dir) closedir(dir);
-
-        // fprintf(stderr, "Total entries found: %d\n", count);
         return 0;
     }
     const pid_t pid = string_to_int(process_name_or_id);
-    kill(pid, 9);
-    fprintf(stderr,"killed %i\n", pid);
+    int status = 0;
+    if(kill(pid, 9) == 0) {
+        int t_s = 0;
+        if((t_s = waitpid(pid, &status, WNOHANG)) > 0) {
+            fprintf(stderr,"killed %i\n", pid);
+        } else {
+            perror("waitpid");
+        }
+    } else {
+        perror("kill");
+        fprintf(stderr, "waitpid status: %p", &status);
+    }
     fflush(stderr);
     return 0;
 }

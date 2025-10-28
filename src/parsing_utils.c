@@ -50,8 +50,8 @@ char *build_quote_string(char **arg, const int start_arg, const int start_pos, c
         if (i == end_arg) end_j = end_pos;
         else end_j = strlen(arg[i]);
 
-        for(int j = start_j; j < end_j; j++) total_length++; // amount of characters 
-        if(i < end_arg) total_length++; // add N (amount of args) - 1 spaces for between each word
+        for(int j = start_j; j < end_j; j++) total_length++;
+        if(i < end_arg) total_length++; 
     }
 
     char *result = malloc((sizeof(char) * total_length)  + 1);

@@ -9,6 +9,7 @@ use std::process::Command;
 use std::fs::File;
 use regex::Regex;
 
+use nix;
 
 fn spawn_shell() -> Result<ReplSession<expectrl::session::OsSession>> {
     let mut p = spawn("../buildDir/oshell")?;
@@ -84,12 +85,12 @@ fn test_echo_hello() {
 
 #[test]
 fn test_cd_home() {
-    let home = Command::new("bash")
+    let tmp_home = Command::new("bash")
         .arg("-c")
         .arg("cd ~ && pwd")
         .output()
         .unwrap();
-    let home = String::from_utf8_lossy(&home.stdout).trim().to_string();
+    let home = String::from_utf8_lossy(&tmp_home.stdout).trim().to_string();
 
     // Now run the same cd in your shell and check
     let mut shell = spawn_shell().unwrap();
@@ -141,16 +142,15 @@ fn spawn_process() -> u32 {
 
 // NOTE: Kill_by_* always panics here. Why? the process should be killed
 fn is_alive(pid: u32) -> bool {
-    Command::new("kill")
-        .arg("-0")
-        .arg(pid.to_string())
-        .status()
-        .map(|s| s.success())
-        .unwrap_or(false)}
+    let t = std::path::Path::new(&format!("/proc/{}", pid)).exists();
+    println!("{}", t);
+    return t;
+}
 
 #[test]
 fn test_kill_by_name() {
-    let pid = spawn_process();
+    let (mut child, pid) = spawn_process();
+
     println!("Spawned process PID: {}", pid);
 
     std::thread::sleep(std::time::Duration::from_secs(1));
@@ -181,10 +181,50 @@ fn test_kill_by_pid() {
     std::thread::sleep(std::time::Duration::from_secs(1));
     assert!(is_alive(pid), "Process should be alive");
 
+    println!("before kill - /proc/{} exists: {}", pid, std::path::Path::new(&format!("/proc/{}", pid)).exists());
+    println!("before kill - /proc/{}/stat contents:", pid);
+
+    // Try reading the stat file directly
+    if let Ok(content) = std::fs::read_to_string(format!("/proc/{}/stat", pid)) {
+        println!("{}", content);
+    }
+
+   if let Ok(content) = std::fs::read_to_string(format!("/proc/{}/stat", pid)) {
+        let parts: Vec<&str> = content.split_whitespace().collect();
+        let ppid = parts.get(3).unwrap_or(&"?");
+        println!("Parent PID of {}: {}", pid, ppid);
+        println!("parent proc - /proc/{} : {}", ppid, std::path::Path::new(&format!("/proc/{}", ppid)).exists());
+        if let Ok(content) = std::fs::read_to_string(format!("/proc/{}/stat", ppid)) {
+            println!("{}", content);
+        }
+    }
+
     let mut shell = spawn_shell().unwrap();
 
     println!("killing: {}", pid);
-    exec(&mut shell, &format!("kill {}", pid)).trim().to_string();
+    let result = exec(&mut shell, &format!("kill {}", pid)).trim().to_string();
+    println!("Kill command output: {}", result);
+
+    let ps = exec(&mut shell, "ps aux | grep 8070").trim().to_string();
+    println!("ps: {}", ps);
+
+
+println!("Before kill - /proc/{} exists: {}", pid, std::path::Path::new(&format!("/proc/{}", pid)).exists());
+
+let mut shell = spawn_shell().unwrap();
+println!("killing: {}", pid);
+exec(&mut shell, &format!("kill {}", pid)).trim().to_string();
+
+std::thread::sleep(std::time::Duration::from_millis(500));
+
+println!("After kill - /proc/{} exists: {}", pid, std::path::Path::new(&format!("/proc/{}", pid)).exists());
+println!("After kill - /proc/{}/stat contents:", pid);
+
+// Try reading the stat file directly
+if let Ok(content) = std::fs::read_to_string(format!("/proc/{}/stat", pid)) {
+    println!("{}", content);
+}
+
 
     std::thread::sleep(std::time::Duration::from_secs(5));
     let alive = is_alive(pid);

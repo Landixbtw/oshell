@@ -4,17 +4,6 @@
 
 #include <stdio.h>
 
-/*
- * TODO:  
- *      - extract command name
- *      - arguments
- *      - input redirection ( < )
- *      - output redirection ( > )
- *      - piping ( | )
- *      - background execution ( & )
- *
- */
-
 // claude.ai made v1, only removing quotes from one word not multiple args ie "foo bar baz"
 //
 /* 
@@ -68,10 +57,6 @@ char **tokenize(char *input, int capacity) {
                 }
                 start = i + 1; // next token starts after space
             }
-            // TODO: right now if it detects \n 
-            // it replaces it with \nn so a linebreak is made but it also 
-            // prints a lonely n, the task is to basically skip the n aswell
-            // mess with i+1?
             else if(input[i] == '\\' && input[i+1] != 'n') {
                 input[i] = '\n';
             }
@@ -104,7 +89,6 @@ char **parse(char *input)
         if (args == NULL) free(args);
     }
 
-    //fprintf(stderr, "parsing.c: input passed: %s \n", input);
     args = tokenize(input, capacity);
 
     int i = 0;

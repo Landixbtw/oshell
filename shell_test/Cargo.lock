@@ -24,10 +24,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
+name = "bitflags"
+version = "2.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "812e12b5285cc515a9c72a5c1d3b6d46a19dac5acfef5265968c166106e31dd3"
+
+[[package]]
 name = "cfg-if"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
+
+[[package]]
+name = "cfg_aliases"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
 
 [[package]]
 name = "conpty"
@@ -45,7 +57,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a0e0706d01b4f43adaf7e0fb460e07477c36b74ae60fdeb1d045001bd77b4bd1"
 dependencies = [
  "conpty",
- "nix",
+ "nix 0.26.4",
  "ptyprocess",
  "regex",
 ]
@@ -77,11 +89,23 @@ version = "0.26.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "598beaf3cc6fdd9a5dfb1630c2800c7acd31df7aaf0f565796fba2b53ca1af1b"
 dependencies = [
- "bitflags",
+ "bitflags 1.3.2",
  "cfg-if",
  "libc",
  "memoffset",
  "pin-utils",
+]
+
+[[package]]
+name = "nix"
+version = "0.30.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "74523f3a35e05aba87a1d978330aef40f67b0304ac79c1c00b294c9830543db6"
+dependencies = [
+ "bitflags 2.10.0",
+ "cfg-if",
+ "cfg_aliases",
+ "libc",
 ]
 
 [[package]]
@@ -96,7 +120,7 @@ version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "101be273c0b1680d7056afddbaa88f02b6e9f2dc161165c30bee9914b6025a79"
 dependencies = [
- "nix",
+ "nix 0.26.4",
 ]
 
 [[package]]
@@ -133,6 +157,7 @@ name = "shell_test"
 version = "0.1.0"
 dependencies = [
  "expectrl",
+ "nix 0.30.1",
  "regex",
 ]
 
