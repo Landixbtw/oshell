@@ -243,6 +243,8 @@ int execute_command(char **args)
     pid_t pid = 0;
     int status = 0;
     pid_t result = 0;
+    // 1 = true, 0 = false
+    int fg_exec = 1;
     /*
      * For the shell to work, proper we want to identify what is a command, and what is giberish
      * if the user enters a, that should return an error with "oshell: command not found: [command user entered]"
@@ -258,6 +260,9 @@ int execute_command(char **args)
      * --> command_exists with access()
      * */
 
+    if(find_shell_operator("&", args) > 0) {
+        fg_exec = 0;
+    }
 
     char *new_command = make_command(args);
     if(!command_exists(new_command)) {
@@ -273,13 +278,21 @@ int execute_command(char **args)
     }
     else if (pid == 0) {
         // Child process
-        execv(new_command, args);
-
-        perror("oshell: execv() error");
-        free(new_command);
-        exit(EXIT_FAILURE); 
-    }
-    else {
+        int exec_result = execv(new_command, args);
+        
+        if(exec_result == -1) {
+            perror("oshell: execv() error");
+            free(new_command);
+            exit(EXIT_FAILURE); 
+        }
+        /*
+         * We only want to wait on the process, if the process, is in foreground. 
+         * for background execution we just immediatly return.
+         *
+         * The background progress will still share stdout/stderr, 
+         * if we were do disable that, we would have to redirect the output e.g. /dev/null
+         * */
+    } else if (fg_exec) {
         while(1) {
             result = waitpid(pid, &status, WNOHANG);
 
@@ -310,8 +323,7 @@ int execute_command(char **args)
             fprintf(stderr, "Child did not exit normally\n");
             return -1;
         }
-    }
-
+    } 
     // this needs to be here, after the commands have been execute ie < > >> otherwise it will just try and pass an empty stdin stdout
     if (do_output_redirection) {
         dup2(saved_stdout, STDOUT_FILENO);
