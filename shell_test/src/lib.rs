@@ -5,11 +5,11 @@ use expectrl::{
     process::Termios,
 };
 use std::io::{Read, Result, Write};
-use std::process::Command;
+use std::process::{Command};
 use std::fs::File;
 use regex::Regex;
 
-use nix;
+
 
 fn spawn_shell() -> Result<ReplSession<expectrl::session::OsSession>> {
     let mut p = spawn("../buildDir/oshell")?;
@@ -132,14 +132,7 @@ fn test_env_var() {
     assert_eq!(display, out_display);
 }
 
-fn spawn_process() -> u32 {
-    let process = Command::new("spotify")
-        .spawn()
-        .expect("failed to spawn process");
-
-        process.id()
-}
-
+ 
 // NOTE: Kill_by_* always panics here. Why? the process should be killed
 fn is_alive(pid: u32) -> bool {
     let t = std::path::Path::new(&format!("/proc/{}", pid)).exists();
@@ -149,7 +142,18 @@ fn is_alive(pid: u32) -> bool {
 
 #[test]
 fn test_kill_by_name() {
-    let (mut child, pid) = spawn_process();
+    let mut shell = spawn_shell().unwrap();
+
+    let output = exec(&mut shell, "spotify & && pidof -n spotify");
+
+    let pid = output
+        .split_whitespace() 
+        .next() 
+        .expect("Could not find any output")
+        .parse::<u32>() 
+        .expect("Could not parse PID as a number"); 
+
+
 
     println!("Spawned process PID: {}", pid);
 
@@ -157,7 +161,6 @@ fn test_kill_by_name() {
 
     assert!(is_alive(pid), "Process should be alive initially");
 
-    let mut shell = spawn_shell().unwrap();
     let t_proc_name = &format!("ps -p {} -o comm=", pid);
     let proc_name = exec(&mut shell, t_proc_name).trim().to_string();
 
@@ -175,7 +178,18 @@ fn test_kill_by_name() {
 
 #[test] 
 fn test_kill_by_pid() {
-    let pid = spawn_process();
+    let mut shell = spawn_shell().unwrap();
+
+    let output = exec(&mut shell, "spotify & && pidof -n spotify");
+
+    let pid = output
+        .split_whitespace() 
+        .next() 
+        .expect("Could not find any output")
+        .parse::<u32>() 
+        .expect("Could not parse PID as a number"); 
+
+
     println!("Spawned process PID: {}", pid);
 
     std::thread::sleep(std::time::Duration::from_secs(1));
@@ -198,8 +212,6 @@ fn test_kill_by_pid() {
             println!("{}", content);
         }
     }
-
-    let mut shell = spawn_shell().unwrap();
 
     println!("killing: {}", pid);
     let result = exec(&mut shell, &format!("kill {}", pid)).trim().to_string();
