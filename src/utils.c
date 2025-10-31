@@ -1,6 +1,7 @@
 #include "../include/Header.h"
 #include "../include/chaining.h"
 #include "../include/parsing_utils.h"
+#include "../include/utils.h"
 
 
 #include <stdbool.h>
@@ -125,18 +126,11 @@ void oshell_loop(void)
 {
     char *tmp_user_input = oshell_read_line();
     char **args = 0;
-    
-    
-    // TODO: This is allocated wrong...
-    char **user_input = malloc(strlen(tmp_user_input) * sizeof(char*));
 
-    // TODO: We should only want the string to be passed onto split_on_chain 
-    // if there actually is a chain
-    // so we need to make an array from the simple string to be able to assing 
-    // it to user_input so parse the content
-    
+    char **user_input = malloc(arg_count(tmp_user_input) * sizeof(char*));
+
+    // not sure how but this seems to work
     if(strstr(tmp_user_input, "&&") != NULL) {
-        // fprintf(stderr, "needle found\n");
         user_input = split_on_chain(tmp_user_input);
     } else {
         user_input[0] = my_strdup(tmp_user_input);
@@ -209,4 +203,26 @@ int find_shell_operator(char* operator, char **args) {
         }
     }
     return -1;
+}
+/*
+ * We want to make a helper function to count the arguments/ strings inside a string 
+ * for proper allocation
+ * */
+int arg_count(char *string) {
+    int count = 0; 
+    int in_word = 0; // 0 outside, 1 inside
+
+    // we want to loop through the string
+    while(string) {
+        if(isspace(*string)) {
+            // we detect a space meaning we are outside a word/ have a new word
+        } else {
+            if(in_word == 0) {
+                in_word = 1;
+                count++;
+            }
+        }
+        string++;
+    }
+    return count;
 }
