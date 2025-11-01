@@ -39,3 +39,4 @@ test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fin
 This explain file descriptors and all really good 
 https://barsky.ca/marina/SR/c2018/lectures/7.pipe/06.01.FileDescriptorsPipes.pdf  
 
+- [ ] fix memory leaks
