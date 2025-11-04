@@ -36,6 +36,9 @@ int main(void){
     } else {
         // Indicates that "oshell" is not opened by terminal but other program, like 
         // golang for testing
+        // NOTE: technically this is not needed anymore, since the problem was that golang
+        // was interacting with the shell through pipes, 
+        // the rust test interacts through pty
         cfmakeraw(&term);
     }
 
