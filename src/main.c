@@ -42,6 +42,7 @@ int main(void){
         cfmakeraw(&term);
     }
 
+    char *hostname = NULL;
     for(;;) {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
@@ -49,19 +50,18 @@ int main(void){
         // > >> the stdout is sent to the file, so this will also be sent to the file
         // so all shell prompts messages etc that is not from the user is printed to stderr
         char* user = getenv("USER");
-        char *hostname = malloc(128);
+        hostname = malloc(128);
         assert(hostname != NULL);
         if(gethostname(hostname, 128) == -1) {
             perror("oshell: gethostname() error");
             exit(EXIT_FAILURE);
         }
 
-        fprintf(stderr, "oshell> ");
-        // fprintf(stderr, "%s@%s\n", user, hostname);
-        // fprintf(stderr, " %s > ", cwd);
-        // fflush(stderr);
+        // fprintf(stderr, "oshell> ");
+        fprintf(stderr, "%s@%s\n %s > ", user, hostname, cwd);
 
         oshell_loop();
     }
+    free(hostname);
     return 0;
 }

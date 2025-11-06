@@ -209,20 +209,24 @@ int find_shell_operator(char* operator, char **args) {
  * for proper allocation
  * */
 int arg_count(char *string) {
+    
     int count = 0; 
     int in_word = 0; // 0 outside, 1 inside
 
     // we want to loop through the string
-    while(string) {
-        if(isspace(*string)) {
-            // we detect a space meaning we are outside a word/ have a new word
-        } else {
-            if(in_word == 0) {
+    for(int i = 0; i < strlen(string); i++)
+    {
+        if(isspace(string[i]))
+        {
+            //
+        } else 
+        {
+            if(in_word == 0) 
+            {
                 in_word = 1;
                 count++;
             }
         }
-        string++;
     }
     return count;
 }

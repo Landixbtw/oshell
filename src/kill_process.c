@@ -179,7 +179,7 @@ int kill_process(char *process_name_or_id)
         }
     } else {
         perror("kill");
-        fprintf(stderr, "waitpid status: %p", &status);
+        fprintf(stderr, "waitpid status: %ls", &status);
     }
     fflush(stderr);
     return 0;
