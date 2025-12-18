@@ -3,31 +3,28 @@
 #ifndef HEADER_H_
 #define HEADER_H_
 
-#define _GNU_SOURCE // needed for ie gethostname()
+#define _GNU_SOURCE     // needed for ie gethostname()
 #define _DEFAULT_SOURCE // needed for ie DT_DIR utils ~ 102
 
-
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include <sys/ioctl.h>
 
+#include <assert.h>
+#include <complex.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
-#include <complex.h>
-#include <assert.h>
-#include <fcntl.h>
 
+#include <dirent.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <dirent.h>
-
-
 
 // parse.h
 char **parse(char *input);
@@ -50,6 +47,6 @@ int string_to_int(char *string);
 
 int input_redirection(char **args);
 
-int find_shell_operator(char* operator, char **args);
+int find_shell_operator(char *operator, char ** args);
 
 #endif

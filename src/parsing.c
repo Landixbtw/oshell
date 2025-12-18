@@ -1,66 +1,67 @@
 #include "../include/Header.h"
 #include "../include/parsing_utils.h"
 
-
 #include <stdio.h>
 
-// claude.ai made v1, only removing quotes from one word not multiple args ie "foo bar baz"
+// claude.ai made v1, only removing quotes from one word not multiple args ie
+// "foo bar baz"
 //
-/* 
- * Recognize that the opening quote starts a quoted string 
- * Continue reading characters (including spaces) until you find the matching closing quote 
- * Treat everything inside as a single token 
- * Handle escaped quotes within quoted strings
+/*
+ * Recognize that the opening quote starts a quoted string
+ * Continue reading characters (including spaces) until you find the matching
+ * closing quote Treat everything inside as a single token Handle escaped quotes
+ * within quoted strings
  *
  * everything in between quotes will be treated as a single argument
  * */
 
 /*
- * TODO: 
+ * TODO:
  * Write function description
  * */
 
-// include checking for \ newline in tokenize to split immediatly here. way better then
-// in seperate function
+// include checking for \ newline in tokenize to split immediatly here. way
+// better then in seperate function
 //
 // we want to handle \ as \n not just text
 // right now it is just text which does not allow us to chain commands
 // together via linebreak since && is not implemented (yet)
 
 /*
- * If \ is detected as a single char we want to linebreak 
- * we do not want to linebreak if \n is detected since it could 
+ * If \ is detected as a single char we want to linebreak
+ * we do not want to linebreak if \n is detected since it could
  * be included in a string thta is supposed to go into a file or sometihng
  * and we do not want to mess with that. And mess up the input.
  * */
 
-
-
-char **tokenize(char *input, int capacity) {
+char **tokenize(char *input, int capacity)
+{
     char **tokens = malloc(sizeof(char *) * capacity);
-    if (!tokens) return NULL;
+    if (!tokens)
+        return NULL;
 
     int t = 0;
     int start = 0;
     int len = strlen(input);
-    for (int i = 0; i <= len; i++) { 
-            if (input[i] == ' ' || input[i] == '\0') {
-                if (i > start) {
-                    input[i] = '\0';
-                    tokens[t++] = &input[start]; 
-                    if (t >= capacity - 1) { 
-                        capacity *= 2;
-                        char **tmp_token = realloc(tokens, sizeof(char *) * capacity);
-                        if (tmp_token == NULL) free(tokens);
-                        tokens = tmp_token;
-                    }
+    for (int i = 0; i <= len; i++) {
+        if (input[i] == ' ' || input[i] == '\0') {
+            if (i > start) {
+                input[i] = '\0';
+                tokens[t++] = &input[start];
+                if (t >= capacity - 1) {
+                    capacity *= 2;
+                    char **tmp_token =
+                        realloc(tokens, sizeof(char *) * capacity);
+                    if (tmp_token == NULL)
+                        free(tokens);
+                    tokens = tmp_token;
                 }
-                start = i + 1; // next token starts after space
             }
-            else if(input[i] == '\\' && input[i+1] != 'n') {
-                input[i] = '\n';
-            }
+            start = i + 1; // next token starts after space
+        } else if (input[i] == '\\' && input[i + 1] != 'n') {
+            input[i] = '\n';
         }
+    }
     tokens[t] = NULL; // null-terminate the array
     return tokens;
 }
@@ -72,48 +73,53 @@ char **parse(char *input)
     int count = 0;
     char **args = malloc(sizeof(char *) * capacity);
 
-    // pointer to a pointer -- represents an array of strings 
+    // pointer to a pointer -- represents an array of strings
     // args should never be NULL
-    if(args == NULL) {
+    if (args == NULL) {
         perror("oshell: CRITICAL ERROR **args is NULL");
         exit(EXIT_FAILURE);
     }
 
-    if (count >= capacity - 1) {  
+    if (count >= capacity - 1) {
         capacity *= 2;
         args = realloc(args, sizeof(char *) * capacity);
-        if(args == NULL) {
+        if (args == NULL) {
             perror("oshell: parsing() realloc failed ");
         }
 
-        if (args == NULL) free(args);
+        if (args == NULL)
+            free(args);
     }
 
     args = tokenize(input, capacity);
 
     int i = 0;
-    while(args[i] != NULL) 
-    {
+    while (args[i] != NULL) {
         i++;
     }
 
     // go one back after the NULL to be at the last char
-    if(i > 0) i--;
+    if (i > 0)
+        i--;
     else {
         perror("?");
     }
 
-    if(args[i] == NULL) { exit(-1);}
+    if (args[i] == NULL) {
+        exit(-1);
+    }
     char *mod_str = args[i];
 
-    if(mod_str == NULL) perror("oshell: parsing()");
+    if (mod_str == NULL)
+        perror("oshell: parsing()");
     // replace \n with \0
     if (strlen(mod_str) > 0 && mod_str[strlen(mod_str) - 1] == '\n') {
         mod_str[strlen(mod_str) - 1] = '\0';
     }
 
     /*
-     * We want to remove the quotes after tokeninazation so that we dont mess up the tokens
+     * We want to remove the quotes after tokeninazation so that we dont mess up
+     * the tokens
      * ["test 1 2 3"] is not the same as [test] [1] [2] [3]
      * */
 

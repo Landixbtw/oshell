@@ -1,6 +1,6 @@
 #include "../include/Header.h"
-#include <string.h>
 #include <errno.h>
+#include <string.h>
 #include <sys/wait.h>
 
 /*
@@ -9,32 +9,34 @@
  * */
 
 // claude.ai
-int command_exists(const char *command) {
+int command_exists(const char *command)
+{
     // For absolute/relative paths
     if (strchr(command, '/')) {
         return access(command, X_OK) == 0;
     }
-    
+
     // Search PATH
     char *path_env = getenv("PATH");
-    if (!path_env) return 0;
-    
+    if (!path_env)
+        return 0;
+
     char *path = strdup(path_env);
     char *dir = strtok(path, ":");
-    
+
     while (dir) {
         char full_path[PATH_MAX];
         snprintf(full_path, sizeof(full_path), "%s/%s", dir, command);
-        
+
         if (access(full_path, X_OK) == 0) {
             free(path);
-            return 1;  // Found it
+            return 1; // Found it
         }
         dir = strtok(NULL, ":");
     }
-    
+
     free(path);
-    return 0;  // Not found
+    return 0; // Not found
 }
 
 int execute_command(char **args)
@@ -43,27 +45,29 @@ int execute_command(char **args)
     char *command = strtok(args[0], " ");
 
     // if the command is NULL meaning just enter, we just return
-    if (command == NULL) return 0;
+    if (command == NULL)
+        return 0;
 
-
-    if (strcmp(command, "exit") == 0)
-    {
-        fprintf(stderr,"Exiting Shell...\n");
+    if (strcmp(command, "exit") == 0) {
+        fprintf(stderr, "Exiting Shell...\n");
         exit(EXIT_SUCCESS);
     }
-    if (strcmp(args[0], "help") == 0)
-    {
+    if (strcmp(args[0], "help") == 0) {
         show_usage();
         return 0;
     }
 
     // cd -> CD function - utils.c
-    if (strcmp("cd", command) == 0)
-    {
-        if(args[1] != NULL) {
+    if (strcmp("cd", command) == 0) {
+        if (args[1] != NULL) {
             int status = change_directory(args[1]);
             if (status != 0) {
-                fprintf(stderr, "change_directory() error: %s \nTo avoid this error make sure this directory you want to navigate to exists. \n\t directory and Directory are not the same.\n", strerror(errno));
+                fprintf(stderr,
+                        "change_directory() error: %s \nTo avoid this error "
+                        "make sure this directory you want to navigate to "
+                        "exists. \n\t directory and Directory are not the "
+                        "same.\n",
+                        strerror(errno));
             }
         } else {
             chdir(getenv("HOME"));
@@ -81,19 +85,19 @@ int execute_command(char **args)
         return 0;
     }
     if (args[0] != NULL && args[1] == NULL && strcmp("kill", command) == 0) {
-        fprintf(stderr,"Please give a process to kill.\n");
+        fprintf(stderr, "Please give a process to kill.\n");
         return 1;
     }
 
     // pipe -> | function
     int pipe_pos = find_shell_operator("|", args);
     if (pipe_pos > 0 && args[pipe_pos + 1] != NULL) {
-        if(pipe_redirection(args) != 0) {
+        if (pipe_redirection(args) != 0) {
             // perror("oshell: pipe_redirection()");
         }
-        // this is needed otherwise, the code will try to execute the command provided e.g.
-        // echo "foo bar baz" | wc -w just like that. 
-        // this would output foo bar baz | wc -w 
+        // this is needed otherwise, the code will try to execute the command
+        // provided e.g. echo "foo bar baz" | wc -w just like that. this would
+        // output foo bar baz | wc -w
         return 0;
     }
 
@@ -102,7 +106,6 @@ int execute_command(char **args)
         clear();
         return 0;
     }
-
 
     /*
      * input redirection -> < function
@@ -118,11 +121,12 @@ int execute_command(char **args)
     int input_red_pos = find_shell_operator("<", args);
 
     if (input_red_pos > 0 && args[input_red_pos + 1] != NULL) {
-        // < does not check if the file in the argument is a valid file, it will redirect anything
-        char        *filename = args[2];
-        FILE        *file = fopen(filename, "r");
+        // < does not check if the file in the argument is a valid file, it will
+        // redirect anything
+        char *filename = args[2];
+        FILE *file = fopen(filename, "r");
 
-        if(file == NULL) {
+        if (file == NULL) {
             fprintf(stderr, "Error: %s is not a valid file.", filename);
         }
 
@@ -148,7 +152,6 @@ int execute_command(char **args)
         do_input_redirection = 1;
     }
 
-
     /*
      *  output redirection
      *  This redirects the output from a command not to the console stream
@@ -164,10 +167,11 @@ int execute_command(char **args)
     int truncate_pos = find_shell_operator(">", args);
     int append_pos = find_shell_operator(">>", args);
     // redirect stdout to the file
-    if ((append_pos > 0 && args[append_pos + 1] != NULL) || (truncate_pos > 0 && args[truncate_pos + 1] != NULL)) {
+    if ((append_pos > 0 && args[append_pos + 1] != NULL) ||
+        (truncate_pos > 0 && args[truncate_pos + 1] != NULL)) {
         // > truncate (overwrite) ; >> append
-        
-        if (args[truncate_pos + 1] == NULL || args[append_pos + 1] == NULL)  {
+
+        if (args[truncate_pos + 1] == NULL || args[append_pos + 1] == NULL) {
             fprintf(stderr, "Error: missing filename after > / >> \n");
             return -1;
         }
@@ -189,13 +193,16 @@ int execute_command(char **args)
             // inplace bitwise OR (x |= y ; x = x | y)
             // add flag O_APPEND to flags
             // &= ~xyz (remove xyz)
-            flags = O_APPEND | O_WRONLY | O_CREAT; // create if needed, append if exists
+            flags = O_APPEND | O_WRONLY | O_CREAT; // create if needed, append
+                                                   // if exists
         } else {
-            flags = O_TRUNC | O_WRONLY | O_CREAT; // create if needed, truncate if exists
+            flags = O_TRUNC | O_WRONLY | O_CREAT; // create if needed, truncate
+                                                  // if exists
         }
 
         fd = open(filename, flags, 0644);
-        if(fd == -1) perror("oshell: open() failed");
+        if (fd == -1)
+            perror("oshell: open() failed");
 
         if (dup2(fd, STDOUT_FILENO) == -1) {
             perror("oshell: dup2 error");
@@ -210,28 +217,31 @@ int execute_command(char **args)
         do_output_redirection = 1;
     }
 
-
- // env -> getenvvar
+    // env -> getenvvar
     // if the first char after echo is a $ we want to pass it on to getenvvar()
     // else just pass it to execute
     // init envVar
     char *envVar = malloc(sizeof(args[1]));
-    if(envVar == NULL) {
-        fprintf(stderr, "execute_command(): *envVar: Error when trying to allocate 'sizeof(%s)' memory. \n", args[1]);
+    if (envVar == NULL) {
+        fprintf(stderr,
+                "execute_command(): *envVar: Error when trying to allocate "
+                "'sizeof(%s)' memory. \n",
+                args[1]);
         return -1;
     }
 
     int dollar_pos = find_shell_operator("$", args);
-    if(dollar_pos >= 0 && args[dollar_pos][1]) {
+    if (dollar_pos >= 0 && args[dollar_pos][1]) {
         char envChar = args[dollar_pos][0];
-        // we start at the first second char, this should be the first letter after
-        // $ and we copy everything short of 1 and put it together into one String
-        strncpy(envVar, &args[dollar_pos][1], sizeof(args[dollar_pos] -1));
+        // we start at the first second char, this should be the first letter
+        // after $ and we copy everything short of 1 and put it together into
+        // one String
+        strncpy(envVar, &args[dollar_pos][1], sizeof(args[dollar_pos] - 1));
 
-        char envCharStr[2] = {envChar, '\0'};  // Convert to a proper string
-        // when we just use envChar, (a non null terminated char) strcmp wont now when the
-        // strings ends, and just read garbage
-        if(strcmp("$",envCharStr) == 0) {
+        char envCharStr[2] = {envChar, '\0'}; // Convert to a proper string
+        // when we just use envChar, (a non null terminated char) strcmp wont
+        // now when the strings ends, and just read garbage
+        if (strcmp("$", envCharStr) == 0) {
             // fprintf(stderr, "passing %s to secure_getenv\n", envVar);
             fprintf(stderr, "%s \n\n", secure_getenv(envVar));
             free(envVar);
@@ -239,33 +249,34 @@ int execute_command(char **args)
         }
     }
 
-
     pid_t pid = 0;
     int status = 0;
     pid_t result = 0;
     // 1 = true, 0 = false
     int fg_exec = 1;
     /*
-     * For the shell to work, proper we want to identify what is a command, and what is giberish
-     * if the user enters a, that should return an error with "oshell: command not found: [command user entered]"
-     * because otherwise it will try to execute the command a and this will obv not work if a is not a valid command for the 
-     * shell or in /usr/bin
+     * For the shell to work, proper we want to identify what is a command, and
+     * what is giberish if the user enters a, that should return an error with
+     * "oshell: command not found: [command user entered]" because otherwise it
+     * will try to execute the command a and this will obv not work if a is not
+     * a valid command for the shell or in /usr/bin
      *
      * BRAINSTROM
      *
-     * Looping through everything in /usr/bin is just dumb this will take way too long no? For me its about 3800 entries so thats not happening
+     * Looping through everything in /usr/bin is just dumb this will take way
+     * too long no? For me its about 3800 entries so thats not happening
      *
-     * just rule out anything that is shorter then strlen(x)? 
+     * just rule out anything that is shorter then strlen(x)?
      *
      * --> command_exists with access()
      * */
 
-    if(find_shell_operator("&", args) > 0) {
+    if (find_shell_operator("&", args) > 0) {
         fg_exec = 0;
     }
 
     char *new_command = make_command(args);
-    if(!command_exists(new_command)) {
+    if (!command_exists(new_command)) {
         fprintf(stderr, "execute_command(): command '%s' not found\n", args[0]);
         free(new_command);
         return -1;
@@ -275,56 +286,53 @@ int execute_command(char **args)
         perror("oshell: fork() error");
         free(new_command);
         return -1;
-    }
-    else if (pid == 0) {
+    } else if (pid == 0) {
         // Child process
         int exec_result = execv(new_command, args);
-        
-        if(exec_result == -1) {
+
+        if (exec_result == -1) {
             perror("oshell: execv() error");
             free(new_command);
-            exit(EXIT_FAILURE); 
+            exit(EXIT_FAILURE);
         }
         /*
-         * We only want to wait on the process, if the process, is in foreground. 
-         * for background execution we just immediatly return.
+         * We only want to wait on the process, if the process, is in
+         * foreground. for background execution we just immediatly return.
          *
-         * The background progress will still share stdout/stderr, 
-         * if we were do disable that, we would have to redirect the output e.g. /dev/null
+         * The background progress will still share stdout/stderr,
+         * if we were do disable that, we would have to redirect the output e.g.
+         * /dev/null
          * */
     } else if (fg_exec) {
-        while(1) {
+        while (1) {
             result = waitpid(pid, &status, WNOHANG);
 
-            if(result == -1) {
+            if (result == -1) {
                 perror("oshell: waitpid() error");
                 free(new_command);
                 return -1;
-            }
-            else if (result == 0) {
+            } else if (result == 0) {
                 continue;
-            }
-            else {
+            } else {
                 break;
             }
         }
 
         free(new_command);
 
-        if(WIFEXITED(status)) {
+        if (WIFEXITED(status)) {
             int exit_code = WEXITSTATUS(status);
             return exit_code;
-        }
-        else if(WIFSIGNALED(status)) {
+        } else if (WIFSIGNALED(status)) {
             fprintf(stderr, "Child killed by signal %d\n", WTERMSIG(status));
             return -1;
-        }
-        else {
+        } else {
             fprintf(stderr, "Child did not exit normally\n");
             return -1;
         }
-    } 
-    // this needs to be here, after the commands have been execute ie < > >> otherwise it will just try and pass an empty stdin stdout
+    }
+    // this needs to be here, after the commands have been execute ie < > >>
+    // otherwise it will just try and pass an empty stdin stdout
     if (do_output_redirection) {
         dup2(saved_stdout, STDOUT_FILENO);
         close(saved_stdout);
@@ -338,5 +346,3 @@ int execute_command(char **args)
     }
     return 0;
 }
-
-

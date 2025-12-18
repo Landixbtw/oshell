@@ -1,11 +1,10 @@
-#ifndef CHAINING_H 
+#ifndef CHAINING_H
 #define CHAINING_H
 
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-
-char **split_on_chain(char* input);
+char **split_on_chain(char *input);
 
 #endif
