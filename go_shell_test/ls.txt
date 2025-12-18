@@ -1,0 +1,7 @@
+appendHere.txt
+append.txt
+go.mod
+ls.txt
+originalLs.txt
+shell_test.go
+string.txt

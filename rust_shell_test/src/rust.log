@@ -1,0 +1,13 @@
+
+running 1 test
+Spawned process PID: 22297
+killing: 22297
+test test_kill_by_pid ... FAILED
+
+failures:
+
+failures:
+    test_kill_by_pid
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 6.14s
+
