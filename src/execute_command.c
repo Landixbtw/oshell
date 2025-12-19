@@ -221,7 +221,7 @@ int execute_command(char **args)
     // if the first char after echo is a $ we want to pass it on to getenvvar()
     // else just pass it to execute
     // init envVar
-    char *envVar = malloc(sizeof(args[1]));
+    char *envVar = malloc(strlen(args[1]) + 1);
     if (envVar == NULL) {
         fprintf(stderr,
                 "execute_command(): *envVar: Error when trying to allocate "
